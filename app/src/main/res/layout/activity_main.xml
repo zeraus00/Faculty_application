@@ -175,6 +175,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Schedule"
+                android:textStyle="bold"
                 android:textSize="12sp"
                 android:layout_marginTop="8dp"/>
         </LinearLayout>
@@ -199,6 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Violation"
+                android:textStyle="bold"
                 android:textSize="12sp"
                 android:layout_marginTop="8dp"/>
         </LinearLayout>
@@ -219,12 +221,14 @@
                 android:padding="12dp"
                 android:src="@drawable/inspection"
                 app:tint="#FFB74D"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textStyle="bold"
                 android:text="Attendance"
-                android:textSize="12sp"
-                android:layout_marginTop="8dp"/>
+                android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
 
