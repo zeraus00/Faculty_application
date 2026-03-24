@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/login"
     android:background="@drawable/facultybg1"
     tools:context=".login">
 
@@ -158,6 +159,7 @@
                     android:layout_height="50dp"
                     android:layout_marginTop="16dp"
                     android:backgroundTint="@color/blue"
+                    android:id="@+id/btnlogin"
                     android:text="Log In"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
