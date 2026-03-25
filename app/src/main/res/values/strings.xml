@@ -2,4 +2,18 @@
     <string name="app_name">Faculty_App</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="forgot_page">
+        <font size="25">
+            <font color="white">
+                Forgot your password?
+            </font>
+        </font>
+    </string>
+    <string name="entrmail"><font color="white">Enter your email address</font></string>
+    <string name="email">Email</string>
+    <string name="send"><font color="white">Send ➔</font></string>
+    <string name="submitBtn">Submit</string>
+    <string name="Verify_text">Verify your Email address.</string>
+    <string name="Email">(sample@gmail.com)</string>
 </resources>
