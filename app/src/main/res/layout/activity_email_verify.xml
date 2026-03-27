@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/facultybg1"
-    tools:context=".e_verification">
+    tools:context=".email_verify">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideTop"
