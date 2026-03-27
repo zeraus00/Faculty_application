@@ -12,13 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Faculty_App">
         <activity
+            android:name=".frgt_email_verify"
+            android:exported="false" />
+        <activity
+            android:name=".email_verification"
+            android:exported="false" />
+        <activity
             android:name=".email_verified"
             android:exported="false" />
         <activity
             android:name=".frgt_email_verification"
             android:exported="false" />
         <activity
-            android:name=".e_verification"
+            android:name=".email_verify"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
