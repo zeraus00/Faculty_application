@@ -155,7 +155,7 @@
         android:text="PROF. BOGART"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/textView4"
