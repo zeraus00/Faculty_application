@@ -16,4 +16,16 @@
     <string name="submitBtn">Submit</string>
     <string name="Verify_text">Verify your Email address.</string>
     <string name="Email">(sample@gmail.com)</string>
+    <string name="reset">
+        <font size="25">
+            <font color="white">
+                Reset Password
+            </font>
+        </font>
+    </string>
+    <string name="resetPassDesc">
+        Password must be 8 characters long.
+        \nPassword must contain at least one number or\nspecial character.
+        \nPassword must contain at leat one upper case.
+    </string>
 </resources>

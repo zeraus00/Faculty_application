@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Faculty_App">
         <activity
+            android:name=".frgt_reset_pass"
+            android:exported="false" />
+        <activity
             android:name=".frgt_email_verify"
             android:exported="false" />
         <activity
