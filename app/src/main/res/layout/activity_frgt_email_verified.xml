@@ -84,7 +84,7 @@
             android:id="@+id/txtEmailVerificationDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Your Email has been successfully Verified"
+            android:text="Your Email has been successfully Verified."
             android:textColor="@color/white"/>
 
     </LinearLayout>
