@@ -29,7 +29,7 @@ public class login extends AppCompatActivity {
 
         // Set click listener
         btnlogin.setOnClickListener(v -> {
-            Intent intent = new Intent(login.this, MainActivity.class);
+            Intent intent = new Intent(login.this, Home_Page.class);
             startActivity(intent);
         });
 

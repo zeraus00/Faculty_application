@@ -12,6 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Faculty_App">
         <activity
+            android:name=".Home_Page"
+            android:exported="false"
+            android:theme="@style/Theme.Faculty_App" />
+        <activity
             android:name=".frgt_email_verified"
             android:exported="false" />
         <activity
@@ -33,7 +37,7 @@
             android:name=".email_verify"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".home"
             android:exported="false" />
         <activity
             android:name=".login"
