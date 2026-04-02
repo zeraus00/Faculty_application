@@ -67,7 +67,7 @@
         app:layout_constraintStart_toStartOf="@+id/guide_v_margin_start"
         app:layout_constraintTop_toTopOf="@+id/guideTop"
         app:srcCompat="?attr/actionModeCloseDrawable"
-        app:tint="@android:color/white"/>
+        app:tint="@android:color/white" />
 
     <TextView
         android:id="@+id/textView3"

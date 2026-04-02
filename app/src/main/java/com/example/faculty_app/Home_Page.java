@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +26,7 @@ import java.util.List;
 public class Home_Page extends AppCompatActivity {
 
     private LinearLayout navHome, navClass, navProfile, navLogout;
+    private ShapeableImageView btnNotification;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +45,18 @@ public class Home_Page extends AppCompatActivity {
         navClass = findViewById(R.id.navClass);
         navProfile = findViewById(R.id.navProfile);
         navLogout = findViewById(R.id.navLogout);
+        btnNotification = findViewById(R.id.btnNotification);
 
         // Load the fragment on start
         if(savedInstanceState == null) {
             loadFragment(new home_fragment());
             setActiveTab(navHome);
         }
+
+        // Notification Click Listener
+        btnNotification.setOnClickListener(v -> {
+            loadFragment(new Fragment_Notification());
+        });
 
         //Click Listeners for navigation
         navHome.setOnClickListener(v -> {
@@ -65,6 +73,7 @@ public class Home_Page extends AppCompatActivity {
     private void loadFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
                 .commit();
     }
 
