@@ -1,9 +1,12 @@
 package com.example.faculty_app;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -12,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Home_Page extends AppCompatActivity {
+
+    private LinearLayout navHome, navClass, navProfile, navLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,24 +38,67 @@ public class Home_Page extends AppCompatActivity {
             return insets;
         });
 
-        // 1. Initialize RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.classesRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        // Initialize Navigation Buttons
+        navHome = findViewById(R.id.navHome);
+        navClass = findViewById(R.id.navClass);
+        navProfile = findViewById(R.id.navProfile);
+        navLogout = findViewById(R.id.navLogout);
 
-        // 2. Create Dummy Data
-        List<ClassModel> classList = new ArrayList<>();
-        classList.add(new ClassModel("#606 · DS-3202", "Machine Learning", "7:00 AM - 9:00 AM | AV 308b"));
-        classList.add(new ClassModel("#606 · DS-3202", "Software Engineering", "7:00 AM - 9:00 AM | AV 308b"));
-        classList.add(new ClassModel("#606 · DS-3202", "Operating System", "7:00 AM - 9:00 AM | AV 308b"));
+        // Load the fragment on start
+        if(savedInstanceState == null) {
+            loadFragment(new home_fragment());
+            setActiveTab(navHome);
+        }
 
-        // 3. Set the Adapter
-        ClassAdapter adapter = new ClassAdapter(classList);
-        recyclerView.setAdapter(adapter);
+        //Click Listeners for navigation
+        navHome.setOnClickListener(v -> {
+            loadFragment(new home_fragment());
+            setActiveTab(navHome);
+        });
+
+        navClass.setOnClickListener(v -> setActiveTab(navClass));
+        navProfile.setOnClickListener(v -> setActiveTab(navProfile));
+        navLogout.setOnClickListener(v -> setActiveTab(navLogout));
     }
 
-    // --- INNER CLASSES ---
+    // helper methods
+    private void loadFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+    }
 
-    // Data Model
+    private void setActiveTab(LinearLayout active) {
+        resetNavItem(navHome);
+        resetNavItem(navClass);
+        resetNavItem(navProfile);
+        resetNavItem(navLogout);
+        if (active != null) highlightNavItem(active);
+    }
+
+    private void resetNavItem(LinearLayout item) {
+        if (item == null) return;
+        ImageView icon = (ImageView) item.getChildAt(0);
+        TextView label = (TextView) item.getChildAt(1);
+
+        int blueColor = getColor(R.color.blue);
+        icon.setColorFilter(blueColor);
+        label.setTextColor(blueColor);
+        item.setBackgroundColor(Color.TRANSPARENT);
+    }
+
+    private void highlightNavItem(LinearLayout item) {
+        if (item == null) return;
+        ImageView icon = (ImageView) item.getChildAt(0);
+        TextView label = (TextView) item.getChildAt(1);
+
+        int whiteColor = getColor(R.color.white);
+        icon.setColorFilter(whiteColor);
+        label.setTextColor(whiteColor);
+        item.setBackgroundColor(getColor(R.color.blue));
+    }
+
+    // Inner classes (data)
     public static class ClassModel {
         String code, name, details;
         public ClassModel(String code, String name, String details) {
@@ -59,7 +108,6 @@ public class Home_Page extends AppCompatActivity {
         }
     }
 
-    // Adapter Logic
     public static class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> {
         private final List<ClassModel> list;
 
@@ -70,8 +118,7 @@ public class Home_Page extends AppCompatActivity {
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // Inflate your item_class layout
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_class, parent, false);
+            View view =  LayoutInflater.from(parent.getContext()).inflate(R.layout.item_class, parent, false);
             return new ViewHolder(view);
         }
 
@@ -84,17 +131,14 @@ public class Home_Page extends AppCompatActivity {
         }
 
         @Override
-        public int getItemCount() {
+        public int getItemCount(){
             return list.size();
         }
 
-        // ViewHolder Logic
         public static class ViewHolder extends RecyclerView.ViewHolder {
             TextView txtCode, txtName, txtDetails;
-
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
-                // Matching the IDs from your item_class.xml
                 txtCode = itemView.findViewById(R.id.ClassCode);
                 txtName = itemView.findViewById(R.id.ClasName);
                 txtDetails = itemView.findViewById(R.id.ClassDetails);
