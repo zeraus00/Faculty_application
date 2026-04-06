@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_profile"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".profile">
@@ -11,128 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:background="@drawable/header_background" />
-
-    <LinearLayout
-        android:id="@+id/footerView"
-        android:layout_width="match_parent"
-        android:layout_height="78dp"
-        android:layout_gravity="bottom"
-        android:background="@drawable/footer_background"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:elevation="10dp"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp">
-
-        <LinearLayout
-            android:id="@+id/navHome"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/home"
-                app:tint="#4A7BEA" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Home"
-                android:textSize="11sp"
-                android:textColor="#4A7BEA" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/navClass"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/book"
-                app:tint="#4A7BEA" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Class"
-                android:textSize="11sp"
-                android:textColor="#4A7BEA" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/navProfile"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/profico"
-                app:tint="#4A7BEA" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Profile"
-                android:textSize="11sp"
-                android:textColor="#4A7BEA" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/navLogout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="4dp"
-            android:background="?attr/selectableItemBackgroundBorderless">
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/logout"
-                app:tint="#4A7BEA" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="Log out"
-                android:textSize="11sp"
-                android:textColor="#4A7BEA" />
-        </LinearLayout>
-
-    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView4"
