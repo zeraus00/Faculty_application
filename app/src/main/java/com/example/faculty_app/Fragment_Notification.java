@@ -43,14 +43,6 @@ public class Fragment_Notification extends Fragment {
         // Set the Adapter
         recyclerView.setAdapter(new NotifAdapter(list));
 
-        // Back Button Logic
-        View btnBack = view.findViewById(R.id.btnBack);
-        if (btnBack != null) {
-            btnBack.setOnClickListener(v -> {
-                getParentFragmentManager().popBackStack();
-            });
-        }
-
         return view;
     }
 
