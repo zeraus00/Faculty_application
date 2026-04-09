@@ -2,28 +2,31 @@ package com.example.faculty_app;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.imageview.ShapeableImageView;
+import java.util.List;
 
 public class Home_Page extends AppCompatActivity {
 
     private LinearLayout navHome, navClass, navProfile, navLogout;
-    private ShapeableImageView btnNotification;
-
-    private View headerView;
-    private View profileImg;
-    private View profName;
+    private ShapeableImageView btnNotification, profileImg;
+    private TextView profName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,76 +34,66 @@ public class Home_Page extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home_page);
 
-        View mainView = findViewById(R.id.main);
-        if (mainView != null) {
-            ViewCompat.setOnApplyWindowInsetsListener(mainView, (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                return insets;
-            });
-        }
+        // Standard Edge-to-Edge Padding
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
+        // Initialize Views
         navHome = findViewById(R.id.navHome);
         navClass = findViewById(R.id.navClass);
         navProfile = findViewById(R.id.navProfile);
         navLogout = findViewById(R.id.navLogout);
-
         btnNotification = findViewById(R.id.btnNotification);
-        headerView = findViewById(R.id.headerView);
         profileImg = findViewById(R.id.profileImg);
         profName = findViewById(R.id.profName);
 
+        // Default Page
         if (savedInstanceState == null) {
-            showHeader();
             loadFragment(new home_fragment());
             setActiveTab(navHome);
         }
 
-        btnNotification.setOnClickListener(v -> {
-            showHeader();
-            loadFragment(new Fragment_Notification());
-        });
+        // --- Click Listeners ---
 
         navHome.setOnClickListener(v -> {
-            showHeader();
             loadFragment(new home_fragment());
             setActiveTab(navHome);
         });
 
         navClass.setOnClickListener(v -> {
-            showHeader();
             loadFragment(new AllClassesFragment());
             setActiveTab(navClass);
         });
 
         navProfile.setOnClickListener(v -> {
-            hideHeader();
             loadFragment(new profile());
             setActiveTab(navProfile);
         });
 
-        navLogout.setOnClickListener(v -> setActiveTab(navLogout));
+        btnNotification.setOnClickListener(v -> {
+            loadFragment(new Fragment_Notification());
+        });
     }
 
-    private void loadFragment(Fragment fragment) {
-        getSupportFragmentManager()
-                .beginTransaction()
+    /**
+     * Simplified Fragment Loader
+     * Automatically hides the header if the fragment is the Profile page
+     */
+    public void loadFragment(Fragment fragment) {
+        // Logic: If the fragment is 'profile', hide the header. Otherwise, show it.
+        int visibility = (fragment instanceof profile) ? View.GONE : View.VISIBLE;
+
+        profileImg.setVisibility(visibility);
+        profName.setVisibility(visibility);
+        btnNotification.setVisibility(visibility);
+
+        getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
+                .addToBackStack(null)
                 .commit();
-    }
-
-    private void showHeader() {
-        if (headerView != null) headerView.setVisibility(View.VISIBLE);
-        if (profileImg != null) profileImg.setVisibility(View.VISIBLE);
-        if (profName != null) profName.setVisibility(View.VISIBLE);
-        if (btnNotification != null) btnNotification.setVisibility(View.VISIBLE);
-    }
-
-    private void hideHeader() {
-        if (headerView != null) headerView.setVisibility(View.GONE);
-        if (profileImg != null) profileImg.setVisibility(View.GONE);
-        if (profName != null) profName.setVisibility(View.GONE);
-        if (btnNotification != null) btnNotification.setVisibility(View.GONE);
     }
 
     private void setActiveTab(LinearLayout active) {
@@ -108,82 +101,67 @@ public class Home_Page extends AppCompatActivity {
         resetNavItem(navClass);
         resetNavItem(navProfile);
         resetNavItem(navLogout);
-
-        if (active != null) {
-            highlightNavItem(active);
-        }
+        if (active != null) highlightNavItem(active);
     }
 
     private void resetNavItem(LinearLayout item) {
         if (item == null || item.getChildCount() < 2) return;
-
         ImageView icon = (ImageView) item.getChildAt(0);
         TextView label = (TextView) item.getChildAt(1);
-
-        int blueColor = getColor(R.color.blue);
-        icon.setColorFilter(blueColor);
-        label.setTextColor(blueColor);
+        icon.setColorFilter(getColor(R.color.blue));
+        label.setTextColor(getColor(R.color.blue));
         item.setBackgroundColor(Color.TRANSPARENT);
     }
 
     private void highlightNavItem(LinearLayout item) {
         if (item == null || item.getChildCount() < 2) return;
-
         ImageView icon = (ImageView) item.getChildAt(0);
         TextView label = (TextView) item.getChildAt(1);
-
-        int whiteColor = getColor(R.color.white);
-        icon.setColorFilter(whiteColor);
-        label.setTextColor(whiteColor);
+        icon.setColorFilter(getColor(R.color.white));
+        label.setTextColor(getColor(R.color.white));
         item.setBackgroundColor(getColor(R.color.blue));
     }
 
-    public static class ClassModel {
-        String code, name, details;
+    // --- Static Model & Adapter ---
 
-        public ClassModel(String code, String name, String details) {
-            this.code = code;
-            this.name = name;
-            this.details = details;
-        }
+    public static class ClassModel {
+        public String code, name, details;
+        public ClassModel(String c, String n, String d) { this.code = c; this.name = n; this.details = d; }
     }
 
-    public static class ClassAdapter extends androidx.recyclerview.widget.RecyclerView.Adapter<ClassAdapter.ViewHolder> {
-        private final java.util.List<ClassModel> list;
+    public static class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> {
+        private final List<ClassModel> list;
+        public ClassAdapter(List<ClassModel> list) { this.list = list; }
 
-        public ClassAdapter(java.util.List<ClassModel> list) {
-            this.list = list;
-        }
-
-        @androidx.annotation.NonNull
+        @NonNull
         @Override
-        public ViewHolder onCreateViewHolder(@androidx.annotation.NonNull android.view.ViewGroup parent, int viewType) {
-            View view = android.view.LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_class, parent, false);
-            return new ViewHolder(view);
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_class, parent, false);
+            return new ViewHolder(v);
         }
 
         @Override
-        public void onBindViewHolder(@androidx.annotation.NonNull ViewHolder holder, int position) {
-            ClassModel item = list.get(position);
-            holder.txtCode.setText(item.code);
-            holder.txtName.setText(item.name);
-            holder.txtDetails.setText(item.details);
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ClassModel m = list.get(position);
+            holder.c.setText(m.code);
+            holder.n.setText(m.name);
+            holder.d.setText(m.details);
+
+            holder.itemView.setOnClickListener(v -> {
+                Home_Page activity = (Home_Page) v.getContext();
+                activity.loadFragment(new StudentAttendance());
+            });
         }
 
-        @Override
-        public int getItemCount() {
-            return list.size();
-        }
+        @Override public int getItemCount() { return list.size(); }
 
-        public static class ViewHolder extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
-            TextView txtCode, txtName, txtDetails;
-
-            public ViewHolder(@androidx.annotation.NonNull View itemView) {
+        public static class ViewHolder extends RecyclerView.ViewHolder {
+            TextView c, n, d;
+            public ViewHolder(View itemView) {
                 super(itemView);
-                txtCode = itemView.findViewById(R.id.ClassCode);
-                txtName = itemView.findViewById(R.id.ClasName);
-                txtDetails = itemView.findViewById(R.id.ClassDetails);
+                c = itemView.findViewById(R.id.ClassCode);
+                n = itemView.findViewById(R.id.ClasName);
+                d = itemView.findViewById(R.id.ClassDetails);
             }
         }
     }
