@@ -2,7 +2,10 @@ package com.example.faculty_app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 public class login extends AppCompatActivity {
 
     private Button btnlogin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +30,21 @@ public class login extends AppCompatActivity {
         });
         // Initialize button
         btnlogin = findViewById(R.id.btnlogin);
+        EditText passwordView = findViewById(R.id.editTextTextPassword);
+        ImageView TogglePassword = findViewById(R.id.ivTogglePassword);
+
+        TogglePassword.setOnClickListener(v -> {
+            if(passwordView.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_NUMBER_VARIATION_PASSWORD)) {
+                passwordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                TogglePassword.setImageResource(R.drawable.view);
+            }
+            else {
+                passwordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+                TogglePassword.setImageResource(R.drawable.hide);
+            }
+
+            passwordView.setSelection(passwordView.getText().length());
+        });
 
         // Set click listener
         btnlogin.setOnClickListener(v -> {
