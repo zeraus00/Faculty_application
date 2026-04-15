@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginBottom="10dp"
-    app:cardBackgroundColor="#ECECEC"
+    app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
@@ -14,18 +14,18 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="10dp">
+        android:padding="12dp">
 
         <ImageView
             android:id="@+id/imgStudent"
-            android:layout_width="34dp"
-            android:layout_height="34dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/sampleprofile" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="12dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:text="Alice Johnson"
                 android:textColor="#111111"
-                android:textSize="13sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -44,16 +44,52 @@
                 android:layout_height="wrap_content"
                 android:text="211-442"
                 android:textColor="#666666"
-                android:textSize="10sp" />
+                android:textSize="11sp" />
+
+            <Spinner
+                android:id="@+id/spinnerViolation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/txtViolation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="NO VIOLATION"
-                android:textColor="#444444"
-                android:textSize="9sp"
+                android:textColor="#FF5A5A"
+                android:textSize="10sp"
                 android:textStyle="bold" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutAttendanceButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/btnPresent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_unselected"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:text="Present"
+                android:textSize="10sp"
+                android:layout_marginEnd="5dp"/>
+
+            <TextView
+                android:id="@+id/btnAbsent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_status_unselected"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="5dp"
+                android:text="Absent"
+                android:textSize="10sp"/>
         </LinearLayout>
 
         <TextView
@@ -61,11 +97,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_present_chip"
-            android:paddingHorizontal="10dp"
-            android:paddingVertical="4dp"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="6dp"
             android:text="Present"
             android:textColor="#47C85A"
-            android:textSize="9sp"
+            android:textSize="10sp"
             android:textStyle="bold" />
 
     </LinearLayout>

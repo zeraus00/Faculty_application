@@ -5,7 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,11 +26,8 @@ public class StudentAttendance extends Fragment {
     private RecyclerView recyclerView;
     private AttendanceAdapter adapter;
     private List<AttendanceModel> studentList;
-    private TextView txtTotal, txtPresent, txtAbsent;
-
-    public StudentAttendance() {
-
-    }
+    private TextView txtTotal, txtPresent, txtAbsent, btnEdit;
+    private boolean isEditMode = false;
 
     @Nullable
     @Override
@@ -37,80 +39,80 @@ public class StudentAttendance extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Initialize Views
         txtTotal = view.findViewById(R.id.txtTotal);
         txtPresent = view.findViewById(R.id.txtPresent);
         txtAbsent = view.findViewById(R.id.txtAbsent);
+        btnEdit = view.findViewById(R.id.btnEdit);
         recyclerView = view.findViewById(R.id.studentRecyclerView);
 
-        // Setup RecyclerView with a LayoutManager
-        if (getContext() != null) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        }
-
-        // Load Data
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         loadStudentData();
-
-        // Set Adapter
         adapter = new AttendanceAdapter(studentList);
         recyclerView.setAdapter(adapter);
 
-        // Update Stats
+        // --- FIXED EDIT/SAVE BUTTON LOGIC ---
+        btnEdit.setOnClickListener(v -> {
+            isEditMode = !isEditMode;
+            if (isEditMode) {
+                // UI changes for "Save & Submit" state
+                btnEdit.setText("Save & Submit");
+                btnEdit.setBackgroundResource(R.drawable.bg_save_button); // SOLID PURPLE
+                btnEdit.setTextColor(Color.WHITE); // White text for purple bg
+            } else {
+                // UI changes for "Edit" state
+                btnEdit.setText("Edit");
+                btnEdit.setBackgroundResource(R.drawable.bg_edit_button); // OUTLINED PURPLE
+                btnEdit.setTextColor(Color.parseColor("#7A67F8"));
+
+                // Refresh stats on save
+                updateStatsUI();
+                Toast.makeText(getContext(), "Attendance Submitted Successfully!", Toast.LENGTH_SHORT).show();
+            }
+            adapter.setEditMode(isEditMode);
+        });
+
         updateStatsUI();
     }
 
     private void loadStudentData() {
         studentList = new ArrayList<>();
-        studentList.add(new AttendanceModel("Alice Johnson", "211-442", "NO VIOLATION", "Present"));
-        studentList.add(new AttendanceModel("Bob Smith", "211-445", "NO UNIFORM", "Absent"));
-        studentList.add(new AttendanceModel("Charlie Brown", "211-448", "NO VIOLATION", "Present"));
-        studentList.add(new AttendanceModel("Diana Prince", "211-450", "NO VIOLATION", "Present"));
-        studentList.add(new AttendanceModel("Edward Norton", "211-455", "LATE", "Absent"));
+        studentList.add(new AttendanceModel("Alice Johnson", "211-442", "NO VIOLATION", true));
+        studentList.add(new AttendanceModel("Bob Smith", "211-445", "NO ID", false));
+        studentList.add(new AttendanceModel("Charlie Brown", "211-448", "NO VIOLATION", true));
+        studentList.add(new AttendanceModel("Diana Prince", "211-450", "NO VIOLATION", true));
+        studentList.add(new AttendanceModel("Edward Norton", "211-455", "IMPROPER UNIFORM", false));
     }
 
     private void updateStatsUI() {
-        int presentCount = 0;
-        int absentCount = 0;
-
-        if (studentList == null) return;
-
-        for (AttendanceModel student : studentList) {
-            if (student.getStatus().equalsIgnoreCase("Present")) {
-                presentCount++;
-            } else {
-                absentCount++;
-            }
+        int present = 0, absent = 0;
+        for (AttendanceModel s : studentList) {
+            if (s.isPresent()) present++; else absent++;
         }
-
-        if (txtTotal != null) txtTotal.setText(String.valueOf(studentList.size()));
-        if (txtPresent != null) txtPresent.setText(String.valueOf(presentCount));
-        if (txtAbsent != null) txtAbsent.setText(String.valueOf(absentCount));
+        txtTotal.setText(String.valueOf(studentList.size()));
+        txtPresent.setText(String.valueOf(present));
+        txtAbsent.setText(String.valueOf(absent));
     }
 
-    // INNER CLASS: DATA MODEL
     public static class AttendanceModel {
-        private final String name, id, violation, status;
-
-        public AttendanceModel(String name, String id, String violation, String status) {
-            this.name = name;
-            this.id = id;
-            this.violation = violation;
-            this.status = status;
+        private String name, id, violation;
+        private boolean isPresent;
+        public AttendanceModel(String name, String id, String violation, boolean isPresent) {
+            this.name = name; this.id = id; this.violation = violation; this.isPresent = isPresent;
         }
-
         public String getName() { return name; }
         public String getId() { return id; }
         public String getViolation() { return violation; }
-        public String getStatus() { return status; }
+        public void setViolation(String v) { this.violation = v; }
+        public boolean isPresent() { return isPresent; }
+        public void setPresent(boolean present) { isPresent = present; }
     }
 
-    // INNER CLASS: RECYCLERVIEW ADAPTER
-    public static class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
+    public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
         private final List<AttendanceModel> list;
+        private boolean isEditMode = false;
 
-        public AttendanceAdapter(List<AttendanceModel> list) {
-            this.list = list;
-        }
+        public AttendanceAdapter(List<AttendanceModel> list) { this.list = list; }
+        public void setEditMode(boolean mode) { this.isEditMode = mode; notifyDataSetChanged(); }
 
         @NonNull
         @Override
@@ -124,29 +126,70 @@ public class StudentAttendance extends Fragment {
             AttendanceModel student = list.get(position);
             holder.name.setText(student.getName());
             holder.id.setText(student.getId());
-            holder.violation.setText(student.getViolation());
-            holder.status.setText(student.getStatus());
 
-            if (student.getStatus().equalsIgnoreCase("Absent")) {
-                holder.status.setTextColor(Color.parseColor("#FF5A5A")); // Red
+            if (isEditMode) {
+                holder.statusChip.setVisibility(View.GONE);
+                holder.txtViolation.setVisibility(View.GONE);
+                holder.layoutButtons.setVisibility(View.VISIBLE);
+                holder.spinnerViolation.setVisibility(View.VISIBLE);
+
+                String[] violations = {"NO VIOLATION", "NO ID", "IMPROPER UNIFORM"};
+                ArrayAdapter<String> spinAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, violations);
+                holder.spinnerViolation.setAdapter(spinAdapter);
+
+                for(int i=0; i<violations.length; i++) {
+                    if(violations[i].equals(student.getViolation())) holder.spinnerViolation.setSelection(i);
+                }
+
+                holder.spinnerViolation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override public void onItemSelected(AdapterView<?> p, View v, int pos, long id) { student.setViolation(violations[pos]); }
+                    @Override public void onNothingSelected(AdapterView<?> p) {}
+                });
+
+                updateToggleUI(holder, student.isPresent());
+                holder.btnPresent.setOnClickListener(v -> { student.setPresent(true); updateToggleUI(holder, true); });
+                holder.btnAbsent.setOnClickListener(v -> { student.setPresent(false); updateToggleUI(holder, false); });
             } else {
-                holder.status.setTextColor(Color.parseColor("#47C85A")); // Green
+                holder.statusChip.setVisibility(View.VISIBLE);
+                holder.txtViolation.setVisibility(View.VISIBLE);
+                holder.layoutButtons.setVisibility(View.GONE);
+                holder.spinnerViolation.setVisibility(View.GONE);
+                holder.txtViolation.setText(student.getViolation());
+                holder.statusChip.setText(student.isPresent() ? "Present" : "Absent");
+                holder.statusChip.setTextColor(student.isPresent() ? Color.parseColor("#47C85A") : Color.parseColor("#FF5A5A"));
             }
         }
 
-        @Override
-        public int getItemCount() {
-            return list != null ? list.size() : 0;
+        private void updateToggleUI(ViewHolder h, boolean present) {
+            if (present) {
+                h.btnPresent.setBackgroundResource(R.drawable.bg_present_chip);
+                h.btnPresent.setTextColor(Color.parseColor("#47C85A"));
+                h.btnAbsent.setBackgroundResource(R.drawable.bg_status_unselected);
+                h.btnAbsent.setTextColor(Color.GRAY);
+            } else {
+                h.btnPresent.setBackgroundResource(R.drawable.bg_status_unselected);
+                h.btnPresent.setTextColor(Color.GRAY);
+                h.btnAbsent.setBackgroundResource(R.drawable.bg_absent_selected);
+                h.btnAbsent.setTextColor(Color.parseColor("#FF5A5A"));
+            }
         }
 
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-            TextView name, id, violation, status;
+        @Override public int getItemCount() { return list.size(); }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+            TextView name, id, txtViolation, statusChip, btnPresent, btnAbsent;
+            Spinner spinnerViolation;
+            LinearLayout layoutButtons;
             public ViewHolder(@NonNull View itemView) {
                 super(itemView);
                 name = itemView.findViewById(R.id.txtStudentName);
                 id = itemView.findViewById(R.id.txtStudentId);
-                violation = itemView.findViewById(R.id.txtViolation);
-                status = itemView.findViewById(R.id.txtStatus);
+                txtViolation = itemView.findViewById(R.id.txtViolation);
+                statusChip = itemView.findViewById(R.id.txtStatus);
+                btnPresent = itemView.findViewById(R.id.btnPresent);
+                btnAbsent = itemView.findViewById(R.id.btnAbsent);
+                spinnerViolation = itemView.findViewById(R.id.spinnerViolation);
+                layoutButtons = itemView.findViewById(R.id.layoutAttendanceButtons);
             }
         }
     }
