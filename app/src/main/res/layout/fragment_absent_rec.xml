@@ -95,7 +95,7 @@
             android:id="@+id/statsContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="30dp"
             android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="3">
@@ -243,6 +243,7 @@
             android:background="#D8D8D8" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="10dp"
             android:id="@+id/absentRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
