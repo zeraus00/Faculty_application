@@ -1,10 +1,9 @@
 package com.example.faculty_app;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,19 +23,27 @@ public class student_violation_rec extends Fragment {
     private LinearLayout absent;
     private LinearLayout present;
 
-    public student_violation_rec() {
-    }
+    private TextView txtStudentName;
+    private TextView txtStudentId;
+    private TextView txtStatus;
+    private TextView txtPresentCount;
+    private TextView txtAbsentCount;
+    private TextView txtViolationCount;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_student_violation_rec, container, false);
+    public student_violation_rec() {
+        super(R.layout.fragment_student_violation_rec);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        txtStudentName = view.findViewById(R.id.txtStudentName);
+        txtStudentId = view.findViewById(R.id.txtStudentId);
+        txtStatus = view.findViewById(R.id.txtStatus);
+        txtPresentCount = view.findViewById(R.id.txtPresentCount);
+        txtAbsentCount = view.findViewById(R.id.txtAbsentCount);
+        txtViolationCount = view.findViewById(R.id.txtViolationCount);
 
         absent = view.findViewById(R.id.absent);
         present = view.findViewById(R.id.presentrec);
@@ -45,22 +52,8 @@ public class student_violation_rec extends Fragment {
         violationRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         violationRecyclerView.setNestedScrollingEnabled(false);
 
-        violationList = new ArrayList<>();
-        violationList.add(new ViolationRecordModel("Improper Uniform", "Mar 10, 2026", "UNSETTLED"));
-
-        violationAdapter = new ViolationRecordAdapter(violationList, new ViolationRecordAdapter.OnViolationActionListener() {
-            @Override
-            public void onMarkSettledClicked(ViolationRecordModel item, int position) {
-                violationList.set(position, new ViolationRecordModel(
-                        item.getTitle(),
-                        item.getDate(),
-                        "SETTLED"
-                ));
-                violationAdapter.notifyItemChanged(position);
-            }
-        });
-
-        violationRecyclerView.setAdapter(violationAdapter);
+        bindStudentData();
+        setupViolationList();
 
         absent.setOnClickListener(v -> {
             absent_rec absentFragment = new absent_rec();
@@ -83,6 +76,66 @@ public class student_violation_rec extends Fragment {
                     .addToBackStack(null)
                     .commit();
         });
+    }
+
+    private void bindStudentData() {
+        Bundle args = getArguments();
+        if (args == null) return;
+
+        String name = args.getString("student_name", "");
+        String id = args.getString("student_id", "");
+        boolean isPresent = args.getBoolean("student_present", false);
+        String studentViolation = args.getString("student_violation", "").trim();
+
+        boolean hasViolation = !studentViolation.isEmpty()
+                && !studentViolation.equalsIgnoreCase("NO VIOLATION")
+                && !studentViolation.equalsIgnoreCase("NONE");
+
+        txtStudentName.setText(name);
+        txtStudentId.setText(id);
+        txtStatus.setText(isPresent ? "PRESENT" : "ABSENT");
+
+        txtPresentCount.setText(isPresent ? "1" : "0");
+        txtAbsentCount.setText(isPresent ? "0" : "1");
+        txtViolationCount.setText(hasViolation ? "1" : "0");
+    }
+
+    private void setupViolationList() {
+        violationList = new ArrayList<>();
+
+        Bundle args = getArguments();
+        if (args != null) {
+            String studentViolation = args.getString("student_violation", "").trim();
+
+            boolean hasViolation = !studentViolation.isEmpty()
+                    && !studentViolation.equalsIgnoreCase("NO VIOLATION")
+                    && !studentViolation.equalsIgnoreCase("NONE");
+
+            if (hasViolation) {
+                violationList.add(new ViolationRecordModel(
+                        studentViolation,
+                        "Mar 10, 2026",
+                        "UNSETTLED"
+                ));
+            }
+        }
+
+        violationAdapter = new ViolationRecordAdapter(
+                violationList,
+                new ViolationRecordAdapter.OnViolationActionListener() {
+                    @Override
+                    public void onMarkSettledClicked(ViolationRecordModel item, int position) {
+                        violationList.set(position, new ViolationRecordModel(
+                                item.getTitle(),
+                                item.getDate(),
+                                "SETTLED"
+                        ));
+                        violationAdapter.notifyItemChanged(position);
+                    }
+                }
+        );
+
+        violationRecyclerView.setAdapter(violationAdapter);
     }
 
     private Bundle copyArgs() {
