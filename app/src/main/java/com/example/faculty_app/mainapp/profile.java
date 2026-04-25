@@ -1,4 +1,4 @@
-package com.example.faculty_app;
+package com.example.faculty_app.mainapp;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.faculty_app.R;
 
 public class profile extends Fragment {
 

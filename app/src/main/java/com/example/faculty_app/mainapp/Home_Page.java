@@ -1,4 +1,4 @@
-package com.example.faculty_app;
+package com.example.faculty_app.mainapp;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.faculty_app.R;
 import com.google.android.material.imageview.ShapeableImageView;
 import java.util.List;
 

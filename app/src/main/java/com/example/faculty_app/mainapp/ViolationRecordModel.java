@@ -1,4 +1,4 @@
-package com.example.faculty_app;
+package com.example.faculty_app.mainapp;
 
 public class ViolationRecordModel {
 

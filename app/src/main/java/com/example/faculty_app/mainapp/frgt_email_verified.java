@@ -1,4 +1,4 @@
-package com.example.faculty_app;
+package com.example.faculty_app.mainapp;
 
 import android.os.Bundle;
 
@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.faculty_app.R;
 
 public class frgt_email_verified extends AppCompatActivity {
 

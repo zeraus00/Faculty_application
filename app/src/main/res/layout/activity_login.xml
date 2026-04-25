@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:id="@+id/login"
     android:background="@drawable/facultybg1"
-    tools:context=".login">
+    tools:context=".mainapp.login">
 
     <TextView
         android:id="@+id/textView"

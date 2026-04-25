@@ -1,12 +1,12 @@
-package com.example.faculty_app;
+package com.example.faculty_app.mainapp;
 
-public class PresentHistoryModel {
+public class AbsentHistoryModel {
 
-    private final String date;
-    private final String description;
-    private final String status;
+    private String date;
+    private String description;
+    private String status;
 
-    public PresentHistoryModel(String date, String description, String status) {
+    public AbsentHistoryModel(String date, String description, String status) {
         this.date = date;
         this.description = description;
         this.status = status;
