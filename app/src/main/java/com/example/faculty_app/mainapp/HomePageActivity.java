@@ -22,7 +22,7 @@ import com.example.faculty_app.R;
 import com.google.android.material.imageview.ShapeableImageView;
 import java.util.List;
 
-public class Home_Page extends AppCompatActivity {
+public class HomePageActivity extends AppCompatActivity {
 
     private LinearLayout navHome, navClass, navProfile, navLogout;
     private ShapeableImageView btnNotification, profileImg;
@@ -52,14 +52,14 @@ public class Home_Page extends AppCompatActivity {
 
         // Default Page
         if (savedInstanceState == null) {
-            loadFragment(new home_fragment());
+            loadFragment(new HomeFragment());
             setActiveTab(navHome);
         }
 
         // --- Click Listeners ---
 
         navHome.setOnClickListener(v -> {
-            loadFragment(new home_fragment());
+            loadFragment(new HomeFragment());
             setActiveTab(navHome);
         });
 
@@ -69,12 +69,12 @@ public class Home_Page extends AppCompatActivity {
         });
 
         navProfile.setOnClickListener(v -> {
-            loadFragment(new profile());
+            loadFragment(new ProfileFragment());
             setActiveTab(navProfile);
         });
 
         btnNotification.setOnClickListener(v -> {
-            loadFragment(new Fragment_Notification());
+            loadFragment(new NotificationFragment());
         });
     }
 
@@ -84,7 +84,7 @@ public class Home_Page extends AppCompatActivity {
      */
     public void loadFragment(Fragment fragment) {
         // Logic: If the fragment is 'profile', hide the header. Otherwise, show it.
-        int visibility = (fragment instanceof profile) ? View.GONE : View.VISIBLE;
+        int visibility = (fragment instanceof ProfileFragment) ? View.GONE : View.VISIBLE;
 
         profileImg.setVisibility(visibility);
         profName.setVisibility(visibility);
@@ -148,7 +148,7 @@ public class Home_Page extends AppCompatActivity {
             holder.d.setText(m.details);
 
             holder.itemView.setOnClickListener(v -> {
-                Home_Page activity = (Home_Page) v.getContext();
+                HomePageActivity activity = (HomePageActivity) v.getContext();
                 activity.loadFragment(new StudentAttendance());
             });
         }

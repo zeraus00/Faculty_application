@@ -16,7 +16,7 @@ import com.example.faculty_app.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class student_violation_rec extends Fragment {
+public class ViolationHistoryFragment extends Fragment {
 
     private RecyclerView violationRecyclerView;
     private ViolationRecordAdapter violationAdapter;
@@ -32,7 +32,7 @@ public class student_violation_rec extends Fragment {
     private TextView txtAbsentCount;
     private TextView txtViolationCount;
 
-    public student_violation_rec() {
+    public ViolationHistoryFragment() {
         super(R.layout.fragment_student_violation_rec);
     }
 
@@ -58,7 +58,7 @@ public class student_violation_rec extends Fragment {
         setupViolationList();
 
         absent.setOnClickListener(v -> {
-            absent_rec absentFragment = new absent_rec();
+            AbsentHistoryFragment absentFragment = new AbsentHistoryFragment();
             absentFragment.setArguments(copyArgs());
 
             getParentFragmentManager()
@@ -69,7 +69,7 @@ public class student_violation_rec extends Fragment {
         });
 
         present.setOnClickListener(v -> {
-            student_record recordFragment = new student_record();
+            PresentHistoryFragment recordFragment = new PresentHistoryFragment();
             recordFragment.setArguments(copyArgs());
 
             getParentFragmentManager()

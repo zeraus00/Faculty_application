@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
 
-public class frgt_email_verification extends AppCompatActivity {
+public class ForgotEmailVerificationActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

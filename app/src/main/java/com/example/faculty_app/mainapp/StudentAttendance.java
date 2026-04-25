@@ -167,7 +167,7 @@ public class StudentAttendance extends Fragment {
 
             holder.itemView.setOnClickListener(v -> {
                 if (!isEditMode) {
-                    student_record studentRecordFragment = new student_record();
+                    PresentHistoryFragment studentRecordFragment = new PresentHistoryFragment();
 
                     Bundle bundle = new Bundle();
                     bundle.putString("student_name", student.getName());

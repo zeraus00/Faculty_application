@@ -15,7 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
 
-public class login extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private Button btnlogin;
 
@@ -50,7 +50,7 @@ public class login extends AppCompatActivity {
 
         // Set click listener
         btnlogin.setOnClickListener(v -> {
-            Intent intent = new Intent(login.this, Home_Page.class);
+            Intent intent = new Intent(LoginActivity.this, HomePageActivity.class);
             startActivity(intent);
         });
 

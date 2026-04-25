@@ -17,10 +17,10 @@ import com.example.faculty_app.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fragment_Notification extends Fragment {
+public class NotificationFragment extends Fragment {
 
     // Required empty public constructor
-    public Fragment_Notification() {
+    public NotificationFragment() {
     }
 
     @Nullable

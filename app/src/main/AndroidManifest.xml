@@ -12,26 +12,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Faculty_App">
         <activity
-            android:name=".mainapp.Home_Page"
+            android:name=".mainapp.HomePageActivity"
             android:exported="false"
             android:theme="@style/Theme.Faculty_App" />
         <activity
-            android:name=".mainapp.frgt_email_verified"
+            android:name=".mainapp.ForgotEmailVerifiedActivity"
             android:exported="false" />
         <activity
-            android:name=".mainapp.frgt_reset_pass"
+            android:name=".mainapp.ForgotResetPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".mainapp.frgt_email_verify"
+            android:name=".mainapp.ForgotEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".mainapp.email_verification"
+            android:name=".mainapp.EmailVerificationActivity"
             android:exported="false" />
         <activity
-            android:name=".mainapp.email_verified"
+            android:name=".mainapp.EmailVerifiedActivity"
             android:exported="false" />
         <activity
-            android:name=".mainapp.frgt_email_verification"
+            android:name=".mainapp.ForgotEmailVerificationActivity"
             android:exported="false" />
         <activity
             android:name=".email_verify"
@@ -40,7 +40,7 @@
             android:name=".home"
             android:exported="false" />
         <activity
-            android:name=".mainapp.login"
+            android:name=".mainapp.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

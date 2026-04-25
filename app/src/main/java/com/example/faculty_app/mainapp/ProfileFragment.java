@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.faculty_app.R;
 
-public class profile extends Fragment {
+public class ProfileFragment extends Fragment {
 
-    public profile() {
+    public ProfileFragment() {
     }
 
     @Override

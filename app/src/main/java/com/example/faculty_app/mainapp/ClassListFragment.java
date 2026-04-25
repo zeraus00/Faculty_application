@@ -12,10 +12,10 @@ import com.example.faculty_app.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link classlist#newInstance} factory method to
+ * Use the {@link ClassListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class classlist extends Fragment {
+public class ClassListFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class classlist extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public classlist() {
+    public ClassListFragment() {
         // Required empty public constructor
     }
 
@@ -39,8 +39,8 @@ public class classlist extends Fragment {
      * @return A new instance of fragment classlist.
      */
     // TODO: Rename and change types and number of parameters
-    public static classlist newInstance(String param1, String param2) {
-        classlist fragment = new classlist();
+    public static ClassListFragment newInstance(String param1, String param2) {
+        ClassListFragment fragment = new ClassListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
