@@ -1,12 +1,12 @@
-package com.example.faculty_app.core.services;
+package com.example.faculty_app.core.api.rvaucms;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.faculty_app.core.dto.rvaucmsapi.response.ApiError;
-import com.example.faculty_app.core.dto.rvaucmsapi.response.ApiResponse;
-import com.example.faculty_app.core.dto.rvaucmsapi.HttpCallback;
+import com.example.faculty_app.core.api.rvaucms.dto.response.ApiError;
+import com.example.faculty_app.core.api.rvaucms.dto.response.ApiResponse;
+import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
