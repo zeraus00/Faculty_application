@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.attendance;
+package com.example.faculty_app.mainapp.attendance.models;
 
 public class AbsentHistoryModel {
 

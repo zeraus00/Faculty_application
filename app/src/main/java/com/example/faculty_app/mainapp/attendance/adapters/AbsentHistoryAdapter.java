@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.attendance;
+package com.example.faculty_app.mainapp.attendance.adapters;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
+import com.example.faculty_app.mainapp.attendance.models.AbsentHistoryModel;
 
 import java.util.List;
 

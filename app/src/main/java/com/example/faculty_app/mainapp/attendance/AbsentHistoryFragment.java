@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
+import com.example.faculty_app.mainapp.attendance.adapters.AbsentHistoryAdapter;
+import com.example.faculty_app.mainapp.attendance.models.AbsentHistoryModel;
 import com.example.faculty_app.mainapp.violations.ViolationHistoryFragment;
 
 import java.util.ArrayList;

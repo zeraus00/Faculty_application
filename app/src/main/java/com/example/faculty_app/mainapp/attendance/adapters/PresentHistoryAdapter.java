@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.attendance;
+package com.example.faculty_app.mainapp.attendance.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
+import com.example.faculty_app.mainapp.attendance.models.PresentHistoryModel;
 
 import java.util.List;
 
