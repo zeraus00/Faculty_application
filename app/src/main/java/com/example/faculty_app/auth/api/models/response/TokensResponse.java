@@ -1,6 +1,6 @@
 package com.example.faculty_app.auth.api.models.response;
 
-import com.example.faculty_app.core.api.rvaucms.dto.response.ApiResponse;
+import com.example.faculty_app.core.api.rvaucms.dto.response.ResultSuccess;
 
-public class TokensResponse extends ApiResponse<Tokens> {
+public class TokensResponse extends ResultSuccess<Tokens> {
 }

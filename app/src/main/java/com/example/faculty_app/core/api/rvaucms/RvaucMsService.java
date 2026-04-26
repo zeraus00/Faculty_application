@@ -5,9 +5,11 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.faculty_app.BuildConfig;
-import com.example.faculty_app.core.api.rvaucms.dto.response.ApiError;
-import com.example.faculty_app.core.api.rvaucms.dto.response.ApiResponse;
+import com.example.faculty_app.core.api.rvaucms.dto.AxisCallback;
+import com.example.faculty_app.core.api.rvaucms.dto.response.ResultFail;
+import com.example.faculty_app.core.api.rvaucms.dto.response.ResultSuccess;
 import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
+import com.example.faculty_app.core.api.rvaucms.dto.response.AxisResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -25,13 +27,61 @@ public class RvaucMsService {
     private static Retrofit retrofit;
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static <R, T extends ApiResponse<R>> Callback<T> rvaucMsCallback(HttpCallback<T> callback) {
+    public static <TResult, TResponse extends ResultSuccess<TResult>> Callback<TResponse> axisCallback(
+            AxisCallback<TResult> callback) {
+        return new Callback<TResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<TResponse> call,
+                                   @NonNull Response<TResponse> response) {
+
+                if (!response.isSuccessful()) {
+                    String message = "Something went wrong.";
+
+                    try (var errorBody = response.errorBody()) {
+                        if (errorBody != null) {
+                            var json = errorBody.string();
+                            var mapped = mapper.readValue(json, ResultFail.class);
+
+                            message = mapped.message;
+                        }
+                    } catch (IOException e) {
+                        Log.e("AXIS_API", "Failed to parse response error.", e);
+                    }
+
+                    callback.onResult(new AxisResult.Fail<>(response.code(), message));
+                    return;
+                }
+                var body = response.body();
+
+                if (body == null) {
+                    callback.onResult(new AxisResult.Fail<>("Response body is null."));
+                    return;
+                }
+
+                if (!body.success) {
+                    callback.onResult(new AxisResult.Fail<>(body.message));
+                    return;
+                }
+
+                callback.onResult(new AxisResult.Success<TResult>(body.result));
+
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<TResponse> call, @NonNull Throwable t) {
+                callback.onResult(new AxisResult.Fail<>("Failed request.", t));
+            }
+        };
+    }
+
+    public static <R, T extends ResultSuccess<R>> Callback<T> rvaucMsCallback(HttpCallback<T> callback) {
         return new Callback<T>() {
             @Override
             public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     callback.onSuccess(response.body());
-                } else {
+                }
+                else {
                     String message = "Something went wrong";
 
                     try {
@@ -40,7 +90,7 @@ public class RvaucMsService {
                             if (errorBody != null) {
                                 var json = errorBody.string();
 
-                                var mapped = mapper.readValue(json, ApiError.class);
+                                var mapped = mapper.readValue(json, ResultFail.class);
 
                                 message = mapped.message;
                             }
@@ -59,23 +109,24 @@ public class RvaucMsService {
             }
         };
     }
+
     public static <T> T createService(Class<T> classRef) {
         return getRetrofitClient().create(classRef);
     }
 
     public static Retrofit getRetrofitClient() {
-        if (retrofit == null) throw new RuntimeException("RvaucMs client was not initialized.");
+        if (retrofit == null)
+            throw new RuntimeException("RvaucMs client was not initialized.");
         return retrofit;
     }
 
-    public static <TInterceptor extends Interceptor> void init(TInterceptor[] interceptors, Authenticator authenticator) {
+    public static <TInterceptor extends Interceptor> void init(TInterceptor[] interceptors,
+                                                               Authenticator authenticator) {
         try {
-            var retrofitBuilder = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.BASE_URL)
-                    .addConverterFactory(JacksonConverterFactory.create());
+            var retrofitBuilder = new Retrofit.Builder().baseUrl(BuildConfig.BASE_URL)
+                                                        .addConverterFactory(JacksonConverterFactory.create());
 
-            var okHttpClientBuilder = new OkHttpClient.Builder()
-                    .authenticator(authenticator);
+            var okHttpClientBuilder = new OkHttpClient.Builder().authenticator(authenticator);
 
             for (TInterceptor interceptor : interceptors) {
                 okHttpClientBuilder.addInterceptor(interceptor);
