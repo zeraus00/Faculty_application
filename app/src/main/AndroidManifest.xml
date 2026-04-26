@@ -26,10 +26,10 @@
             android:name=".mainapp.ForgotEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".mainapp.EmailVerificationActivity"
+            android:name=".auth.EmailVerificationActivity"
             android:exported="false" />
         <activity
-            android:name=".mainapp.EmailVerifiedActivity"
+            android:name=".auth.EmailVerifiedActivity"
             android:exported="false" />
         <activity
             android:name=".mainapp.ForgotEmailVerificationActivity"
@@ -41,7 +41,7 @@
             android:name=".home"
             android:exported="false" />
         <activity
-            android:name=".mainapp.LoginActivity"
+            android:name=".auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

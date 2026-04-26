@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp;
+package com.example.faculty_app.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
+import com.example.faculty_app.mainapp.HomePageActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
