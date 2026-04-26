@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.classes.services;
+package com.example.faculty_app.shared;
 
 public interface BaseCallback<T> {
     void onSuccess(T dto);
