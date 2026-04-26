@@ -29,6 +29,10 @@ public class AuthenticationService {
     public static Response<TokensResponse> refreshTokens(RefreshTokensRequest request) throws IOException {
         return getAuthenticationClient().refreshTokens(request).execute();
     }
+    public static void refreshTokensAsync(RefreshTokensRequest request, HttpCallback<TokensResponse> callback) {
+        var auth = getAuthenticationClient();
+        auth.refreshTokens(request).enqueue(rvaucMsCallback(callback));
+    }
 
     public static void signOut(SignOutRequest request, HttpCallback<VoidResponse> callback) {
         var auth = getAuthenticationClient();

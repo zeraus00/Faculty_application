@@ -2,6 +2,8 @@ package com.example.faculty_app.mainapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,10 +14,11 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.faculty_app.R;
 import com.example.faculty_app.auth.LoginActivity;
 import com.example.faculty_app.core.auth.SessionManager;
+import com.example.faculty_app.core.auth.models.TokenRefresher;
+import com.example.faculty_app.core.auth.models.Tokens;
 import com.example.faculty_app.mainapp.home.HomePageActivity;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,13 +32,34 @@ public class MainActivity extends AppCompatActivity {
 
         var accessToken = SessionManager.getInstance().getAccessToken();
 
-        if (accessToken == null || accessToken.isEmpty()) {
-            redirectToLogIn();
-        } else {
-            redirectToHome();
-        }
+        var hasAccessToken = accessToken != null && !accessToken.isEmpty();
 
-        finish();
+        if (hasAccessToken) {
+            redirectToHome();
+        } else {
+            refreshOnDemand();
+        }
+    }
+
+    private void refreshOnDemand() {
+        TokenRefresher.getInstance().refreshAsync(new TokenRefresher.RefreshCallback() {
+            @Override
+            public void onSuccess(Tokens tokens) {
+                runOnUiThread(() -> {
+                    redirectToHome();
+                    finish();
+                });
+            }
+            @Override
+            public void onFail(String message) {
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, "Failed authentication", Toast.LENGTH_LONG).show();
+                    log(message);
+                    redirectToLogIn();
+                    finish();
+                });
+            }
+        });
     }
 
     private void redirectToHome() {
@@ -46,5 +70,9 @@ public class MainActivity extends AppCompatActivity {
     private void redirectToLogIn() {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
+    }
+
+    private void log(String message){
+        Log.d("MAIN_ACTIVITY", message);
     }
 }

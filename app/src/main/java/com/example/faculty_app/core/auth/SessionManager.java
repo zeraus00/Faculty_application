@@ -51,31 +51,6 @@ public class SessionManager {
         notifyLoggedOut();
     }
 
-    public boolean refreshOnDemand() {
-        var refreshToken = getRefreshToken();
-        if (refreshToken == null) return false;
-
-        try {
-            var refreshRequest = new RefreshTokensRequest();
-            refreshRequest.refreshToken = refreshToken;
-
-            var refreshResponse = AuthenticationService.refreshTokens(refreshRequest);
-            if (!refreshResponse.isSuccessful()) return false;
-
-            var resBody = refreshResponse.body();
-            if (resBody == null || !resBody.success) return false;
-
-            setRefreshToken(resBody.result.refreshToken);
-            setAccessToken(resBody.result.accessToken);
-
-            return true;
-
-        } catch (Exception e) {
-            Log.e("token_refresh", "Failed refreshing", e);
-            return false;
-        }
-    }
-
     public Payload getPayload() { return payload; }
     public void setAccessToken(String token) { accessToken = token; setPayload(token); }
     public String getAccessToken() { return accessToken; }

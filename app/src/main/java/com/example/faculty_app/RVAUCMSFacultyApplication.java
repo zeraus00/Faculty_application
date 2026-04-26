@@ -8,6 +8,7 @@ import com.example.faculty_app.core.api.rvaucms.RvaucMsService;
 import com.example.faculty_app.core.auth.AuthInterceptor;
 import com.example.faculty_app.core.auth.SessionManager;
 import com.example.faculty_app.core.auth.TokenAuthenticator;
+import com.example.faculty_app.core.auth.models.TokenRefresher;
 
 import okhttp3.Interceptor;
 
@@ -17,6 +18,7 @@ public class RVAUCMSFacultyApplication extends Application {
         super.onCreate();
 
         SessionManager.init(this);
+        TokenRefresher.init(SessionManager.getInstance());
         RvaucMsService.init(
                 new Interceptor[] {
                     new AuthInterceptor(() -> SessionManager.getInstance().getAccessToken())

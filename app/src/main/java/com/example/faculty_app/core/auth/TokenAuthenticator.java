@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.faculty_app.core.auth.models.RefreshTokensRequest;
+import com.example.faculty_app.core.auth.models.TokenRefresher;
+import com.example.faculty_app.core.auth.models.Tokens;
 
 import java.io.IOException;
 
@@ -35,21 +37,13 @@ public class TokenAuthenticator implements Authenticator {
                 return buildNewRequest(response, currentAccessToken);
             }
 
+            if(refreshToken == null || refreshToken.isBlank()) return clearSession();
 
-            var refreshRequest = new RefreshTokensRequest();
-            refreshRequest.refreshToken = refreshToken;
-            var refreshResponse = AuthenticationService.refreshTokens(refreshRequest);
-            if (!refreshResponse.isSuccessful()) return clearSession();
+            var tokens = TokenRefresher.getInstance().refresh();
 
-            var resBody = refreshResponse.body();
+            if(tokens == null) return clearSession();
 
-            if(resBody == null) return clearSession();
-            if(!resBody.success) return clearSession();
-
-            sessionManager.setRefreshToken(resBody.result.refreshToken);
-            sessionManager.setAccessToken(resBody.result.accessToken);
-
-            return buildNewRequest(response, resBody.result.accessToken);
+            return buildNewRequest(response, tokens.accessToken);
 
         }
     }

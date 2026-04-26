@@ -113,7 +113,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideLogoBottom"/>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnFrgtVerifying"
+        android:id="@+id/btn_email_verified_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintWidth_percent="0.7"
