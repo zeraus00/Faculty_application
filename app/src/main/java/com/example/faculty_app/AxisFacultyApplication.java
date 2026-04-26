@@ -6,7 +6,7 @@ import android.app.Application;
 import android.util.Log;
 
 
-import com.example.faculty_app.core.api.rvaucms.RvaucMsService;
+import com.example.faculty_app.core.api.axis.AxisService;
 import com.example.faculty_app.auth.services.AuthInterceptor;
 import com.example.faculty_app.auth.services.SessionManager;
 import com.example.faculty_app.auth.services.TokenAuthenticator;
@@ -14,16 +14,16 @@ import com.example.faculty_app.auth.services.TokenRefresher;
 
 import okhttp3.Interceptor;
 
-public class RVAUCMSFacultyApplication extends Application {
+public class AxisFacultyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
 
         SessionManager.init(this);
         TokenRefresher.init(SessionManager.getInstance());
-        RvaucMsService.init(new Interceptor[]{new AuthInterceptor(() -> SessionManager.getInstance()
-                                                                                      .getAccessToken())},
-                            new TokenAuthenticator());
+        AxisService.init(new Interceptor[]{new AuthInterceptor(() -> SessionManager.getInstance()
+                                                                                   .getAccessToken())},
+                         new TokenAuthenticator());
 
         if (isMockAuth())
             enableDevSession();

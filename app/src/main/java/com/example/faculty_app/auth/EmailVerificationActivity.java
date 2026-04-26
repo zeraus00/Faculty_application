@@ -18,7 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
+import com.example.faculty_app.core.api.axis.dto.HttpCallback;
 import com.example.faculty_app.auth.api.AuthenticationApi;
 import com.example.faculty_app.auth.services.SessionManager;
 import com.example.faculty_app.auth.api.models.response.Tokens;

@@ -1,4 +1,4 @@
-package com.example.faculty_app.core.api.rvaucms.dto.response;
+package com.example.faculty_app.core.api.axis.dto.response;
 
 public class ResultSuccess<T> {
     public boolean success;

@@ -1,10 +1,10 @@
 package com.example.faculty_app.auth.api;
 
-import static com.example.faculty_app.core.api.rvaucms.RvaucMsService.rvaucMsCallback;
+import static com.example.faculty_app.core.api.axis.AxisService.rvaucMsCallback;
 
-import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
-import com.example.faculty_app.core.api.rvaucms.dto.response.VoidResponse;
-import com.example.faculty_app.core.api.rvaucms.RvaucMsService;
+import com.example.faculty_app.core.api.axis.dto.HttpCallback;
+import com.example.faculty_app.core.api.axis.dto.response.VoidResponse;
+import com.example.faculty_app.core.api.axis.AxisService;
 import com.example.faculty_app.auth.api.models.AuthenticationClient;
 import com.example.faculty_app.auth.api.models.request.RefreshTokensRequest;
 import com.example.faculty_app.auth.api.models.request.SignInCodeRequest;
@@ -48,7 +48,7 @@ public class AuthenticationApi {
 
     private static AuthenticationClient getAuthenticationClient() {
         if (authenticationClient == null)
-            authenticationClient = RvaucMsService.createService(AuthenticationClient.class);
+            authenticationClient = AxisService.createService(AuthenticationClient.class);
         return authenticationClient;
     }
 }

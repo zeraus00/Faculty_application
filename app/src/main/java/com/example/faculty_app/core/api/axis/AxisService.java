@@ -1,15 +1,15 @@
-package com.example.faculty_app.core.api.rvaucms;
+package com.example.faculty_app.core.api.axis;
 
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.faculty_app.BuildConfig;
-import com.example.faculty_app.core.api.rvaucms.dto.AxisCallback;
-import com.example.faculty_app.core.api.rvaucms.dto.response.ResultFail;
-import com.example.faculty_app.core.api.rvaucms.dto.response.ResultSuccess;
-import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
-import com.example.faculty_app.core.api.rvaucms.dto.response.AxisResult;
+import com.example.faculty_app.core.api.axis.dto.AxisCallback;
+import com.example.faculty_app.core.api.axis.dto.response.ResultFail;
+import com.example.faculty_app.core.api.axis.dto.response.ResultSuccess;
+import com.example.faculty_app.core.api.axis.dto.HttpCallback;
+import com.example.faculty_app.core.api.axis.dto.response.AxisResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -23,7 +23,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-public class RvaucMsService {
+public class AxisService {
     private static Retrofit retrofit;
     private static final ObjectMapper mapper = new ObjectMapper();
 

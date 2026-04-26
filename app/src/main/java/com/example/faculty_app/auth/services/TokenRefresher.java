@@ -3,7 +3,7 @@ package com.example.faculty_app.auth.services;
 import androidx.annotation.Nullable;
 
 import com.example.faculty_app.auth.api.AuthenticationApi;
-import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
+import com.example.faculty_app.core.api.axis.dto.HttpCallback;
 import com.example.faculty_app.auth.api.models.request.RefreshTokensRequest;
 import com.example.faculty_app.auth.api.models.response.Tokens;
 import com.example.faculty_app.auth.api.models.response.TokensResponse;
