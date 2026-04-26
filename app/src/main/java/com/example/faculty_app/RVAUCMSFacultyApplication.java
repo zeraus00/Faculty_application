@@ -21,20 +21,21 @@ public class RVAUCMSFacultyApplication extends Application {
 
         SessionManager.init(this);
         TokenRefresher.init(SessionManager.getInstance());
-        RvaucMsService.init(
-                new Interceptor[] {
-                    new AuthInterceptor(() -> SessionManager.getInstance().getAccessToken())
-                },
-                new TokenAuthenticator()
-        );
+        RvaucMsService.init(new Interceptor[]{new AuthInterceptor(() -> SessionManager.getInstance()
+                                                                                      .getAccessToken())},
+                            new TokenAuthenticator());
 
-        if (isMockAuth()) enableDevSession();
+        if (isMockAuth())
+            enableDevSession();
     }
+
     private void enableDevSession() {
         Log.d("DEV_SESSION_ENABLED", "Developer session enabled. Authentication is mocked.");
         SessionManager session = SessionManager.getInstance();
 
-        session.setAccessToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NywiZW1haWwiOiJsZWUuYWdhdG9uQGdtYWlsLmNvbSIsInVzZXJuYW1lIjoiTGVlQTciLCJyb2xlIjoic3R1ZGVudCIsInN1cm5hbWUiOiJBZ2F0b24iLCJmaXJzdE5hbWUiOiJMZWUgQXJjaGVsYXVzIiwibWlkZGxlTmFtZSI6IiIsImdlbmRlciI6Im1hbGUiLCJjb250YWN0TnVtYmVyIjoiMDkxNzEyMzQ1MDciLCJkZXBhcnRtZW50IjoiRGVwYXJ0bWVudCBPZiBDb21wdXRlciBTY2llbmNlIiwic3R1ZGVudE51bWJlciI6IjEwMS0wMDAxIiwieWVhckxldmVsIjozLCJibG9jayI6IkEiLCJpYXQiOjE3NzcyMDIzNzcsImV4cCI6MjA5Mjc3ODM3N30.mPEquFTY03eQS205YhcLvKSvmRXO9_rTwYvpUXQU19k");
+        session.setAccessToken(
+                "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9" +
+                        ".eyJpZCI6NiwiZW1haWwiOiJiZWEuYmVsYXJtaW5vQGx1LmVkdS5waCIsInVzZXJuYW1lIjoiQmVhQmVsYTYiLCJyb2xlIjoicHJvZmVzc29yIiwic3VybmFtZSI6IkJlbGFybWlubyIsImZpcnN0TmFtZSI6IkJlYSIsIm1pZGRsZU5hbWUiOiIiLCJnZW5kZXIiOiJmZW1hbGUiLCJjb250YWN0TnVtYmVyIjoiMDkxNzEyMzQ1MDYiLCJjb2xsZWdlIjoiQ29sbGVnZSBvZiBDb21wdXRpbmcgU2NpZW5jZSIsImZhY3VsdHlSYW5rIjoicHJvZmVzc29yIiwiaWF0IjoxNzc3MjMyODExLCJleHAiOjIwOTI4MDg4MTF9.UDSUPabm_iwmrRMBUw5pHJvuLM7AxvLDoIct9AukauI");
         session.setRememberMe(true);
 
         //  optional mock payload
