@@ -6,14 +6,13 @@ import com.example.faculty_app.BuildConfig;
 import com.example.faculty_app.mainapp.classes.data.response.classlist.ClassList;
 import com.example.faculty_app.mainapp.classes.domain.models.ClassDto;
 import com.example.faculty_app.mainapp.classes.services.ScheduleService;
-import com.example.faculty_app.mainapp.classes.services.ScheduleServiceCallback;
+import com.example.faculty_app.mainapp.classes.services.ClassListCallback;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class ScheduleRepository {
     public static void fetchClassDtoList(ClassDtoListCallback callback) {
-        ScheduleService.fetchClassList(new ScheduleServiceCallback() {
+        ScheduleService.fetchClassList(new ClassListCallback() {
             @Override
             public void onSuccess(ClassList classList) {
                 callback.onSuccess(fromApiClassList(classList));

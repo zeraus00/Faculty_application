@@ -6,7 +6,7 @@ import com.example.faculty_app.mainapp.classes.data.response.classlist.ClassList
 
 public class ScheduleService {
 
-    public static void fetchClassList(ScheduleServiceCallback callback) {
+    public static void fetchClassList(ClassListCallback callback) {
         ScheduleApi.getClassList(new HttpCallback<ClassListResponse>() {
             @Override
             public void onSuccess(ClassListResponse response) {
