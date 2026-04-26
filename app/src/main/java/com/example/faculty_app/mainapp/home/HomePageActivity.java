@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp;
+package com.example.faculty_app.mainapp.home;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,6 +19,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
+import com.example.faculty_app.mainapp.AllClassesFragment;
+import com.example.faculty_app.mainapp.HomeFragment;
+import com.example.faculty_app.mainapp.NotificationFragment;
+import com.example.faculty_app.mainapp.ProfileFragment;
+import com.example.faculty_app.mainapp.ClassAttendanceFragment;
 import com.google.android.material.imageview.ShapeableImageView;
 import java.util.List;
 
@@ -149,7 +154,7 @@ public class HomePageActivity extends AppCompatActivity {
 
             holder.itemView.setOnClickListener(v -> {
                 HomePageActivity activity = (HomePageActivity) v.getContext();
-                activity.loadFragment(new StudentAttendance());
+                activity.loadFragment(new ClassAttendanceFragment());
             });
         }
 

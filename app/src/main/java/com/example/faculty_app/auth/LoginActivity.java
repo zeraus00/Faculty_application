@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.mainapp.HomePageActivity;
+import com.example.faculty_app.mainapp.home.HomePageActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
