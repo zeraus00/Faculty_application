@@ -26,7 +26,7 @@ public class CurrentClassWithListFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home_fragment, container, false);
+        View view = inflater.inflate(R.layout.fragment_current_class_with_list, container, false);
 
         // Handle the See All Click
         TextView seeAll = view.findViewById(R.id.seeAll);

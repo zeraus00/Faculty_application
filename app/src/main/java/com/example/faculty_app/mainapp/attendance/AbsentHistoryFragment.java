@@ -35,7 +35,7 @@ public class AbsentHistoryFragment extends Fragment {
     private TextView txtViolationCount;
 
     public AbsentHistoryFragment() {
-        super(R.layout.fragment_absent_rec);
+        super(R.layout.fragment_absent_history);
     }
 
     @Override

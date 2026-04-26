@@ -36,7 +36,7 @@ public class PresentHistoryFragment extends Fragment {
     private List<PresentHistoryModel> historyList;
 
     public PresentHistoryFragment() {
-        super(R.layout.fragment_student_rec);
+        super(R.layout.fragment_present_history);
     }
 
     @Override

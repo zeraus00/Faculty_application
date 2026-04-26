@@ -23,7 +23,7 @@
             android:name=".mainapp.forgotpassword.ForgotResetPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".mainapp.forgotpassword.ForgotEmailActivity"
+            android:name=".mainapp.forgotpassword.ForgotVerifyEmailActivity"
             android:exported="false" />
         <activity
             android:name=".auth.EmailVerificationActivity"
