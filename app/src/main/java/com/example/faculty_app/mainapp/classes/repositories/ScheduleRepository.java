@@ -6,7 +6,7 @@ import com.example.faculty_app.BuildConfig;
 import com.example.faculty_app.mainapp.classes.data.response.classlist.ClassList;
 import com.example.faculty_app.mainapp.classes.domain.models.ClassDto;
 import com.example.faculty_app.mainapp.classes.services.ScheduleService;
-import com.example.faculty_app.mainapp.classes.services.ClassListCallback;
+import com.example.faculty_app.mainapp.classes.domain.models.ClassListCallback;
 
 import java.util.ArrayList;
 
