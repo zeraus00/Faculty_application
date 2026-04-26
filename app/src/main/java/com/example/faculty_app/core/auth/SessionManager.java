@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.example.faculty_app.core.auth.models.RefreshTokensRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +56,7 @@ public class SessionManager {
         if (refreshToken == null) return false;
 
         try {
-            var refreshRequest = new AuthenticationService.RefreshTokensRequest();
+            var refreshRequest = new RefreshTokensRequest();
             refreshRequest.refreshToken = refreshToken;
 
             var refreshResponse = AuthenticationService.refreshTokens(refreshRequest);

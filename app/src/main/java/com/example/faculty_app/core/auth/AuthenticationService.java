@@ -3,16 +3,18 @@ package com.example.faculty_app.core.auth;
 import static com.example.faculty_app.core.api.rvaucms.RvaucMsService.rvaucMsCallback;
 
 import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
-import com.example.faculty_app.core.api.rvaucms.dto.response.ApiResponse;
 import com.example.faculty_app.core.api.rvaucms.dto.response.VoidResponse;
 import com.example.faculty_app.core.api.rvaucms.RvaucMsService;
+import com.example.faculty_app.core.auth.models.AuthenticationClient;
+import com.example.faculty_app.core.auth.models.RefreshTokensRequest;
+import com.example.faculty_app.core.auth.models.SignInCodeRequest;
+import com.example.faculty_app.core.auth.models.SignOutRequest;
+import com.example.faculty_app.core.auth.models.TokensResponse;
+import com.example.faculty_app.core.auth.models.VerifyCodeRequest;
 
 import java.io.IOException;
 
-import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.http.Body;
-import retrofit2.http.POST;
 
 public class AuthenticationService {
     private static AuthenticationClient authenticationClient;
@@ -35,46 +37,5 @@ public class AuthenticationService {
     private static AuthenticationClient getAuthenticationClient() {
         if (authenticationClient == null) authenticationClient = RvaucMsService.createService(AuthenticationClient.class);
         return authenticationClient;
-    }
-
-    interface AuthenticationClient {
-        @POST("/auth/session-management/sign-in")
-        Call<VoidResponse> requestSignInCode(@Body SignInCodeRequest request);
-
-        @POST("/auth/session-management/verify-code")
-        Call<TokensResponse> verifyCode(@Body VerifyCodeRequest request);
-
-        @POST("/auth/session-management/refresh")
-        Call<TokensResponse> refreshTokens(@Body RefreshTokensRequest request);
-
-        @POST("/auth/session-management/sign-out")
-        Call<VoidResponse> signOut(@Body SignOutRequest signOutRequest);
-    }
-    public static class SignInCodeRequest {
-        public String identifier;
-        public String password;
-        public boolean isPersistentAuth = false;
-        public String deviceToken = "";
-        public SignInCodeRequest(){}
-    }
-    public static class VerifyCodeRequest {
-        public String email;
-        public String code;
-        public boolean isPersistentAuth = false;
-        public VerifyCodeRequest() {}
-    }
-    public static class RefreshTokensRequest {
-        public String refreshToken;
-        public RefreshTokensRequest() {}
-    }
-    public static class SignOutRequest {
-        public String refreshToken;
-        public SignOutRequest(){}
-    }
-    public static class TokensResponse extends ApiResponse<Tokens> {}
-    public static class Tokens {
-        public String accessToken;
-        public String refreshToken;
-        public Tokens(){}
     }
 }

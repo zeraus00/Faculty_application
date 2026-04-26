@@ -3,6 +3,8 @@ package com.example.faculty_app.core.auth;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.faculty_app.core.auth.models.RefreshTokensRequest;
+
 import java.io.IOException;
 
 import okhttp3.Authenticator;
@@ -34,7 +36,7 @@ public class TokenAuthenticator implements Authenticator {
             }
 
 
-            var refreshRequest = new AuthenticationService.RefreshTokensRequest();
+            var refreshRequest = new RefreshTokensRequest();
             refreshRequest.refreshToken = refreshToken;
             var refreshResponse = AuthenticationService.refreshTokens(refreshRequest);
             if (!refreshResponse.isSuccessful()) return clearSession();
