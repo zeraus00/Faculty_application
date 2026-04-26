@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp;
+package com.example.faculty_app.mainapp.attendance;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,11 +12,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
+import com.example.faculty_app.mainapp.violations.ViolationHistoryFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PresentHistoryFragment extends Fragment {
+public class AbsentHistoryFragment extends Fragment {
+
+    private RecyclerView absentRecyclerView;
+    private AbsentHistoryAdapter absentAdapter;
+    private List<AbsentHistoryModel> absentList;
+
+    private LinearLayout presentrec, violation;
 
     private TextView txtStudentName;
     private TextView txtStudentId;
@@ -25,15 +32,8 @@ public class PresentHistoryFragment extends Fragment {
     private TextView txtAbsentCount;
     private TextView txtViolationCount;
 
-    private LinearLayout absent;
-    private LinearLayout violation;
-
-    private RecyclerView historyRecyclerView;
-    private PresentHistoryAdapter historyAdapter;
-    private List<PresentHistoryModel> historyList;
-
-    public PresentHistoryFragment() {
-        super(R.layout.fragment_student_rec);
+    public AbsentHistoryFragment() {
+        super(R.layout.fragment_absent_rec);
     }
 
     @Override
@@ -47,34 +47,34 @@ public class PresentHistoryFragment extends Fragment {
         txtAbsentCount = view.findViewById(R.id.txtAbsentCount);
         txtViolationCount = view.findViewById(R.id.txtViolationCount);
 
-        absent = view.findViewById(R.id.absent);
+        absentRecyclerView = view.findViewById(R.id.absentRecyclerView);
+        absentRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        absentRecyclerView.setNestedScrollingEnabled(false);
+
+        presentrec = view.findViewById(R.id.presentrec);
         violation = view.findViewById(R.id.violation);
 
-        historyRecyclerView = view.findViewById(R.id.historyRecyclerView);
-        historyRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
-        historyRecyclerView.setNestedScrollingEnabled(false);
-
         bindStudentData();
-        setupPresentHistory();
+        setupAbsentList();
 
-        absent.setOnClickListener(v -> {
-            AbsentHistoryFragment absentFragment = new AbsentHistoryFragment();
-            absentFragment.setArguments(copyArgs());
+        presentrec.setOnClickListener(v -> {
+            PresentHistoryFragment fragment = new PresentHistoryFragment();
+            fragment.setArguments(copyArgs());
 
             getParentFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, absentFragment)
+                    .replace(R.id.fragment_container, fragment)
                     .addToBackStack(null)
                     .commit();
         });
 
         violation.setOnClickListener(v -> {
-            ViolationHistoryFragment violationFragment = new ViolationHistoryFragment();
-            violationFragment.setArguments(copyArgs());
+            ViolationHistoryFragment fragment = new ViolationHistoryFragment();
+            fragment.setArguments(copyArgs());
 
             getParentFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragment_container, violationFragment)
+                    .replace(R.id.fragment_container, fragment)
                     .addToBackStack(null)
                     .commit();
         });
@@ -86,7 +86,7 @@ public class PresentHistoryFragment extends Fragment {
 
         String name = bundle.getString("student_name", "");
         String id = bundle.getString("student_id", "");
-        boolean isPresent = bundle.getBoolean("student_present", true);
+        boolean isPresent = bundle.getBoolean("student_present", false);
         String studentViolation = bundle.getString("student_violation", "").trim();
 
         boolean hasViolation = !studentViolation.isEmpty()
@@ -102,28 +102,49 @@ public class PresentHistoryFragment extends Fragment {
         txtViolationCount.setText(hasViolation ? "1" : "0");
     }
 
-    private void setupPresentHistory() {
-        historyList = new ArrayList<>();
+    private void setupAbsentList() {
+        absentList = new ArrayList<>();
 
         Bundle args = getArguments();
         if (args != null) {
-            boolean isPresent = args.getBoolean("student_present", true);
+            boolean isPresent = args.getBoolean("student_present", false);
 
-            if (isPresent) {
-                String presentDate = args.getString("present_date", "Mar 10, 2026");
-                String presentDescription = args.getString("present_description", "Marked Present in Class");
-                String presentStatus = args.getString("present_status", "PRESENT");
+            String absentDate = args.getString("absent_date", "Mar 9, 2026");
+            String absentDescription = args.getString("absent_description", "Marked Absent in Class");
+            String absentStatus = args.getString("absent_status", "UNEXCUSED");
 
-                historyList.add(new PresentHistoryModel(
-                        presentDate,
-                        presentDescription,
-                        presentStatus
+            if (!isPresent) {
+                absentList.add(new AbsentHistoryModel(
+                        absentDate,
+                        absentDescription,
+                        absentStatus
                 ));
             }
         }
 
-        historyAdapter = new PresentHistoryAdapter(historyList);
-        historyRecyclerView.setAdapter(historyAdapter);
+        absentAdapter = new AbsentHistoryAdapter(absentList, new AbsentHistoryAdapter.OnAbsentActionListener() {
+            @Override
+            public void onApproveClicked(AbsentHistoryModel item, int position) {
+                absentList.set(position, new AbsentHistoryModel(
+                        item.getDate(),
+                        item.getDescription(),
+                        "APPROVED"
+                ));
+                absentAdapter.notifyItemChanged(position);
+            }
+
+            @Override
+            public void onDenyClicked(AbsentHistoryModel item, int position) {
+                absentList.set(position, new AbsentHistoryModel(
+                        item.getDate(),
+                        item.getDescription(),
+                        "UNEXCUSED"
+                ));
+                absentAdapter.notifyItemChanged(position);
+            }
+        });
+
+        absentRecyclerView.setAdapter(absentAdapter);
     }
 
     private Bundle copyArgs() {
@@ -133,12 +154,8 @@ public class PresentHistoryFragment extends Fragment {
         if (old != null) {
             data.putString("student_name", old.getString("student_name", ""));
             data.putString("student_id", old.getString("student_id", ""));
-            data.putBoolean("student_present", old.getBoolean("student_present", true));
+            data.putBoolean("student_present", old.getBoolean("student_present", false));
             data.putString("student_violation", old.getString("student_violation", "NO VIOLATION"));
-
-            data.putString("present_date", old.getString("present_date", "Mar 10, 2026"));
-            data.putString("present_description", old.getString("present_description", "Marked Present in Class"));
-            data.putString("present_status", old.getString("present_status", "PRESENT"));
 
             data.putString("absent_date", old.getString("absent_date", "Mar 9, 2026"));
             data.putString("absent_description", old.getString("absent_description", "Marked Absent in Class"));

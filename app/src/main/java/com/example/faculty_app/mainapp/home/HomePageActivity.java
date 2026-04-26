@@ -23,7 +23,7 @@ import com.example.faculty_app.mainapp.classes.AllClassesFragment;
 import com.example.faculty_app.mainapp.classes.CurrentClassWithListFragment;
 import com.example.faculty_app.mainapp.NotificationFragment;
 import com.example.faculty_app.mainapp.ProfileFragment;
-import com.example.faculty_app.mainapp.ClassAttendanceFragment;
+import com.example.faculty_app.mainapp.attendance.ClassAttendanceFragment;
 import com.google.android.material.imageview.ShapeableImageView;
 import java.util.List;
 

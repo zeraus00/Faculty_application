@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp;
+package com.example.faculty_app.mainapp.violations;
 
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
+import com.example.faculty_app.mainapp.attendance.AbsentHistoryFragment;
+import com.example.faculty_app.mainapp.attendance.PresentHistoryFragment;
 
 import java.util.ArrayList;
 import java.util.List;

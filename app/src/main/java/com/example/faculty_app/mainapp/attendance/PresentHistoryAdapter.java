@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp;
+package com.example.faculty_app.mainapp.attendance;
 
 import android.view.LayoutInflater;
 import android.view.View;
