@@ -8,11 +8,13 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.mainapp.classes.models.Cls;
+import com.example.faculty_app.mainapp.classes.domain.models.ClassDto;
+import com.example.faculty_app.mainapp.classes.domain.models.ClassesViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +25,8 @@ import java.util.List;
  */
 public class AllClassesFragment extends Fragment {
 
-    private RecyclerView recyclerView;
     private ClassAdapter adapter;
-    private List<Cls> allClassList;
+    private final List<ClassDto> classList = new ArrayList<>();
 
     public AllClassesFragment() {
         // Required empty public constructor
@@ -33,12 +34,21 @@ public class AllClassesFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         // Inflate fragment_all_classes.xml
-        View view = inflater.inflate(R.layout.fragment_all_classes, container, false);
+        return inflater.inflate(R.layout.fragment_all_classes, container, false);
+    }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ClassesViewModel viewModel =
+                new ViewModelProvider(requireActivity()).get(ClassesViewModel.class);
         // 1. Initialize Views (Matching the pattern in Fragment_Notification)
-        recyclerView = view.findViewById(R.id.allClassesRecyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.allClassesRecyclerView);
 
         // 2. Setup Layout Manager
         if (getContext() != null) {
@@ -47,19 +57,18 @@ public class AllClassesFragment extends Fragment {
             recyclerView.setNestedScrollingEnabled(false);
         }
 
-        // 3. Populate data list using the Model defined in Home_Page
-        allClassList = new ArrayList<>();
-        allClassList.add(new Cls("#606 · DS-3202", "Machine Learning", "7:00 AM - 9:00 AM | AV 308b"));
-        allClassList.add(new Cls("#607 · CS-301", "Automata Theory", "10:00 AM - 12:00 PM | RM 402"));
-        allClassList.add(new Cls("#608 · OS-101", "Operating Systems", "1:00 PM - 3:00 PM | LB 204"));
-        allClassList.add(new Cls("#609 · DS-3203", "Data Science", "3:00 PM - 5:00 PM | AV 308b"));
-        allClassList.add(new Cls("#610 · IT-402", "Network Security", "8:00 AM - 10:00 AM | Lab 1"));
-        allClassList.add(new Cls("#611 · CS-202", "Data Structures", "10:00 AM - 12:00 PM | RM 302"));
-
-        // 4. Set the Adapter defined in Home_Page
-        adapter = new ClassAdapter(allClassList);
+        // 3. Set the Adapter defined in Home_Page
+        adapter = new ClassAdapter(classList);
         recyclerView.setAdapter(adapter);
 
-        return view;
+        viewModel.getClassList().observe(getViewLifecycleOwner(), this::updateClassList);
+
+    }
+
+    private void updateClassList(ArrayList<ClassDto> dto) {
+        classList.clear();
+        if (dto != null)
+            classList.addAll(dto);
+        adapter.notifyDataSetChanged();
     }
 }

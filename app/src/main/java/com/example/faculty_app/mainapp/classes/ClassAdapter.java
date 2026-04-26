@@ -10,14 +10,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.mainapp.attendance.ClassAttendanceFragment;
-import com.example.faculty_app.mainapp.classes.models.Cls;
+import com.example.faculty_app.mainapp.classes.domain.models.ClassDto;
 import com.example.faculty_app.mainapp.home.HomePageActivity;
 
 import java.util.List;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> {
-    private final List<Cls> list;
-    public ClassAdapter(List<Cls> list) { this.list = list; }
+    private final List<ClassDto> list;
+
+    public ClassAdapter(List<ClassDto> list) {
+        this.list = list;
+    }
 
     @NonNull
     @Override
@@ -28,7 +31,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ClassAdapter.ViewHolder holder, int position) {
-        Cls m = list.get(position);
+        ClassDto m = list.get(position);
         holder.c.setText(m.code);
         holder.n.setText(m.name);
         holder.d.setText(m.details);
@@ -39,10 +42,14 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
         });
     }
 
-    @Override public int getItemCount() { return list.size(); }
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView c, n, d;
+
         public ViewHolder(View itemView) {
             super(itemView);
             c = itemView.findViewById(R.id.ClassCode);

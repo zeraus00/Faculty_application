@@ -1,7 +1,7 @@
-package com.example.faculty_app.mainapp.classes.api;
+package com.example.faculty_app.mainapp.classes.data.api;
 
-import com.example.faculty_app.mainapp.classes.models.classlist.ClassListResponse;
-import com.example.faculty_app.mainapp.classes.models.classruntime.ClassRuntimeResponse;
+import com.example.faculty_app.mainapp.classes.data.response.classlist.ClassListResponse;
+import com.example.faculty_app.mainapp.classes.data.response.classruntime.ClassRuntimeResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

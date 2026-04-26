@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.classes.models.classruntime;
+package com.example.faculty_app.mainapp.classes.data.response.classruntime;
 
 import androidx.annotation.Nullable;
 

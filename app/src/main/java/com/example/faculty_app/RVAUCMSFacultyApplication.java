@@ -1,5 +1,7 @@
 package com.example.faculty_app;
 
+import static com.example.faculty_app.core.auth.Utils.isMockAuth;
+
 import android.app.Application;
 import android.util.Log;
 
@@ -26,7 +28,7 @@ public class RVAUCMSFacultyApplication extends Application {
                 new TokenAuthenticator()
         );
 
-        if (BuildConfig.DEBUG && BuildConfig.USE_MOCK_AUTH) enableDevSession();
+        if (isMockAuth()) enableDevSession();
     }
     private void enableDevSession() {
         Log.d("DEV_SESSION_ENABLED", "Developer session enabled. Authentication is mocked.");

@@ -5,28 +5,55 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView; // Import TextView
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.mainapp.classes.models.Cls;
+import com.example.faculty_app.mainapp.classes.domain.models.ClassDto;
+import com.example.faculty_app.mainapp.classes.domain.models.ClassesViewModel;
+import com.example.faculty_app.mainapp.classes.repositories.ClassDtoListCallback;
+import com.example.faculty_app.mainapp.classes.repositories.ScheduleRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CurrentClassWithListFragment extends Fragment {
+    private ClassesViewModel viewModel;
+    private final ArrayList<ClassDto> classList = new ArrayList<>();
+    private ClassAdapter adapter;
+
 
     public CurrentClassWithListFragment() {
     }
 
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_current_class_with_list, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_current_class_with_list, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+        viewModel = new ViewModelProvider(requireActivity()).get(ClassesViewModel.class);
+
+        RecyclerView recyclerView = view.findViewById(R.id.classesRecyclerView);
+        if (getContext() != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
+
+        adapter = new ClassAdapter(classList);
+        recyclerView.setAdapter(adapter);
 
         // Handle the See All Click
         TextView seeAll = view.findViewById(R.id.seeAll);
@@ -35,28 +62,45 @@ public class CurrentClassWithListFragment extends Fragment {
             public void onClick(View v) {
                 // Navigate to AllClassesFragment
                 getParentFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new AllClassesFragment()) // Ensure ID matches your MainActivity container
-                        .addToBackStack(null) // Allows user to press back to return home
-                        .commit();
+                                          .replace(R.id.fragment_container,
+                                                   new AllClassesFragment()) // Ensure ID matches
+                                          // your MainActivity container
+                                          .addToBackStack(null) // Allows user to press back to
+                                          // return home
+                                          .commit();
             }
         });
 
-        // 2. Initialize the RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.classesRecyclerView);
-        if (getContext() != null) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        viewModel.getClassesToday().observe(getViewLifecycleOwner(), (this::updateClassList));
+
+        boolean mustRefresh = viewModel.getClassList().getValue() == null ||
+                viewModel.getClassList().getValue().isEmpty();
+
+        if (mustRefresh) {
+            loadClasses();
         }
+    }
 
-        // 3. Populate data
-        List<Cls> classList = new ArrayList<>();
-        classList.add(new Cls("#606 · DS-3202", "Machine Learning", "7:00 AM - 9:00 AM | AV 308b"));
-        classList.add(new Cls("#607 · CS-301", "Automata Theory", "10:00 AM - 12:00 PM | RM 402"));
-        classList.add(new Cls("#608 · OS-101", "Operating Systems", "1:00 PM - 3:00 PM | LB 204"));
+    private void loadClasses() {
+        ScheduleRepository.fetchClassDtoList(new ClassDtoListCallback() {
+            @Override
+            public void onSuccess(ArrayList<ClassDto> dto) {
+                if (!isAdded())
+                    return;
+                viewModel.setClassList(dto);
+            }
 
-        // 4. Set the Adapter
-        ClassAdapter adapter = new ClassAdapter(classList);
-        recyclerView.setAdapter(adapter);
+            @Override
+            public void onFail(String message) {
+                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
 
-        return view;
+    private void updateClassList(ArrayList<ClassDto> dto) {
+        classList.clear();
+        if (dto != null)
+            classList.addAll(dto);
+        adapter.notifyDataSetChanged();
     }
 }

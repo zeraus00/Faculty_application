@@ -1,11 +1,11 @@
-package com.example.faculty_app.mainapp.classes.api;
+package com.example.faculty_app.mainapp.classes.data.api;
 
 import static com.example.faculty_app.core.api.rvaucms.RvaucMsService.rvaucMsCallback;
 
 import com.example.faculty_app.core.api.rvaucms.RvaucMsService;
 import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
-import com.example.faculty_app.mainapp.classes.models.classlist.ClassListResponse;
-import com.example.faculty_app.mainapp.classes.models.classruntime.ClassRuntimeResponse;
+import com.example.faculty_app.mainapp.classes.data.response.classlist.ClassListResponse;
+import com.example.faculty_app.mainapp.classes.data.response.classruntime.ClassRuntimeResponse;
 
 public class ScheduleApi {
     private static Client client;

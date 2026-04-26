@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.classes.models.classlist;
+package com.example.faculty_app.mainapp.classes.data.response.classlist;
 
 import java.util.List;
 

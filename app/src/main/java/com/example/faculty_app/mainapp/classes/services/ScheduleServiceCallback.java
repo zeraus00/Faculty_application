@@ -1,0 +1,9 @@
+package com.example.faculty_app.mainapp.classes.services;
+
+import com.example.faculty_app.mainapp.classes.data.response.classlist.ClassList;
+
+public interface ScheduleServiceCallback {
+    void onSuccess(ClassList classList);
+
+    void onFail(String message);
+}
