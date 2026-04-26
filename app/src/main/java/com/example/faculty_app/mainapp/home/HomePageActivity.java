@@ -19,8 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.mainapp.AllClassesFragment;
-import com.example.faculty_app.mainapp.HomeFragment;
+import com.example.faculty_app.mainapp.classes.AllClassesFragment;
+import com.example.faculty_app.mainapp.classes.CurrentClassWithListFragment;
 import com.example.faculty_app.mainapp.NotificationFragment;
 import com.example.faculty_app.mainapp.ProfileFragment;
 import com.example.faculty_app.mainapp.ClassAttendanceFragment;
@@ -57,14 +57,14 @@ public class HomePageActivity extends AppCompatActivity {
 
         // Default Page
         if (savedInstanceState == null) {
-            loadFragment(new HomeFragment());
+            loadFragment(new CurrentClassWithListFragment());
             setActiveTab(navHome);
         }
 
         // --- Click Listeners ---
 
         navHome.setOnClickListener(v -> {
-            loadFragment(new HomeFragment());
+            loadFragment(new CurrentClassWithListFragment());
             setActiveTab(navHome);
         });
 

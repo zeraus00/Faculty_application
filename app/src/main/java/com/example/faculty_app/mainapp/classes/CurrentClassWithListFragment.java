@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp;
+package com.example.faculty_app.mainapp.classes;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,13 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
+import com.example.faculty_app.mainapp.home.HomePageActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class CurrentClassWithListFragment extends Fragment {
 
-    public HomeFragment() {
+    public CurrentClassWithListFragment() {
     }
 
     @Nullable

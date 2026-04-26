@@ -23,7 +23,7 @@ import com.example.faculty_app.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentAttendance extends Fragment {
+public class ClassAttendanceFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private AttendanceAdapter adapter;
