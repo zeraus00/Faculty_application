@@ -6,9 +6,13 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SessionManager {
     private final SharedPreferences prefs;
     private static SessionManager instance;
+    private final List<Runnable> logoutListeners = new ArrayList<>();
     private String email;
     private boolean rememberMe;
     private String accessToken;
@@ -23,6 +27,17 @@ public class SessionManager {
     public static void init(Context context) {
         if(instance == null) instance = new SessionManager(context);
     }
+
+    public void addLogoutListener(Runnable listener) {
+        if (!logoutListeners.contains(listener)) logoutListeners.add(listener);
+    }
+    public void removeLogoutListener(Runnable listener) {
+        logoutListeners.remove(listener);
+    }
+    public void notifyLoggedOut() {
+        for (Runnable listener: new ArrayList<>(logoutListeners)) listener.run();
+    }
+
     public void clear() {
         email = null;
         rememberMe = false;
@@ -31,6 +46,7 @@ public class SessionManager {
         var editor = prefs.edit();
         editor.clear();
         editor.apply();
+        notifyLoggedOut();
     }
 
     public boolean refreshOnDemand() {

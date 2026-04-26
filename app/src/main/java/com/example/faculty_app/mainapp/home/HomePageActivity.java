@@ -1,5 +1,6 @@
 package com.example.faculty_app.mainapp.home;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
+import com.example.faculty_app.auth.LoginActivity;
+import com.example.faculty_app.core.auth.SessionManager;
 import com.example.faculty_app.mainapp.classes.AllClassesFragment;
 import com.example.faculty_app.mainapp.classes.CurrentClassWithListFragment;
 import com.example.faculty_app.mainapp.misc.NotificationFragment;
@@ -32,12 +35,19 @@ public class HomePageActivity extends AppCompatActivity {
     private LinearLayout navHome, navClass, navProfile, navLogout;
     private ShapeableImageView btnNotification, profileImg;
     private TextView profName;
+    private final Runnable logoutListener = () -> {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home_page);
+
+        SessionManager.getInstance().addLogoutListener(logoutListener);
 
         // Standard Edge-to-Edge Padding
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -81,6 +91,12 @@ public class HomePageActivity extends AppCompatActivity {
         btnNotification.setOnClickListener(v -> {
             loadFragment(new NotificationFragment());
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SessionManager.getInstance().removeLogoutListener(logoutListener);
     }
 
     /**
