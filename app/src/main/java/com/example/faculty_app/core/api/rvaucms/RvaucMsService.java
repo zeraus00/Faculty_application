@@ -69,21 +69,28 @@ public class RvaucMsService {
     }
 
     public static <TInterceptor extends Interceptor> void init(TInterceptor[] interceptors, Authenticator authenticator) {
-        var retrofitBuilder = new Retrofit.Builder()
-                .baseUrl(BuildConfig.BASE_URL)
-                .addConverterFactory(JacksonConverterFactory.create());
+        try {
+            var retrofitBuilder = new Retrofit.Builder()
+                    .baseUrl(BuildConfig.BASE_URL)
+                    .addConverterFactory(JacksonConverterFactory.create());
 
-        var okHttpClientBuilder = new OkHttpClient.Builder()
-                .authenticator(authenticator);
+            var okHttpClientBuilder = new OkHttpClient.Builder()
+                    .authenticator(authenticator);
 
-        for (TInterceptor interceptor : interceptors) {
-            okHttpClientBuilder.addInterceptor(interceptor);
+            for (TInterceptor interceptor : interceptors) {
+                okHttpClientBuilder.addInterceptor(interceptor);
+            }
+
+            var okHttpClient = okHttpClientBuilder.build();
+
+            retrofitBuilder.client(okHttpClient);
+
+            retrofit = retrofitBuilder.build();
+
+            Log.e("RVAUCMS", "Success initializing rvaucms api service.");
+        } catch (Exception e) {
+            Log.e("RVAUCMS", "Failed initializing rvaucms api service.", e);
+            throw new RuntimeException(e);
         }
-
-        var okHttpClient = okHttpClientBuilder.build();
-
-        retrofitBuilder.client(okHttpClient);
-
-        retrofit = retrofitBuilder.build();
     }
 }
