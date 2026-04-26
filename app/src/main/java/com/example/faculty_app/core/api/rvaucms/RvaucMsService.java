@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.faculty_app.BuildConfig;
 import com.example.faculty_app.core.api.rvaucms.dto.response.ApiError;
 import com.example.faculty_app.core.api.rvaucms.dto.response.ApiResponse;
 import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
@@ -69,7 +70,7 @@ public class RvaucMsService {
 
     public static <TInterceptor extends Interceptor> void init(TInterceptor[] interceptors, Authenticator authenticator) {
         var retrofitBuilder = new Retrofit.Builder()
-                .baseUrl("http://192.168.100.6:2620")
+                .baseUrl(BuildConfig.BASE_URL)
                 .addConverterFactory(JacksonConverterFactory.create());
 
         var okHttpClientBuilder = new OkHttpClient.Builder()
