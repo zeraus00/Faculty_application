@@ -19,11 +19,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
-import com.example.faculty_app.core.auth.AuthenticationService;
-import com.example.faculty_app.core.auth.SessionManager;
-import com.example.faculty_app.core.auth.models.Tokens;
-import com.example.faculty_app.core.auth.models.TokensResponse;
-import com.example.faculty_app.core.auth.models.VerifyCodeRequest;
+import com.example.faculty_app.auth.api.AuthenticationApi;
+import com.example.faculty_app.auth.services.SessionManager;
+import com.example.faculty_app.auth.api.models.response.Tokens;
+import com.example.faculty_app.auth.api.models.response.TokensResponse;
+import com.example.faculty_app.auth.api.models.request.VerifyCodeRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,12 +50,9 @@ public class EmailVerificationActivity extends AppCompatActivity {
         String email = sessionManager.getEmail();
 
         if (email == null) {
-            Toast
-                .makeText(
-                    EmailVerificationActivity.this,
-                    "Something went wrong. Please try again later.",
-                    Toast.LENGTH_LONG
-                ).show();
+            Toast.makeText(EmailVerificationActivity.this,
+                           "Something went wrong. Please try again later.",
+                           Toast.LENGTH_LONG).show();
             redirectToLogin();
             return;
         }
@@ -76,9 +73,12 @@ public class EmailVerificationActivity extends AppCompatActivity {
         emailView.setText(email);
 
         btnSubmit.setOnClickListener((view) -> {
-            String code = assembleCode(new ArrayList<>(
-                    Arrays.asList(digit1, digit2, digit3, digit4, digit5, digit6)
-            ));
+            String code = assembleCode(new ArrayList<>(Arrays.asList(digit1,
+                                                                     digit2,
+                                                                     digit3,
+                                                                     digit4,
+                                                                     digit5,
+                                                                     digit6)));
 
             boolean rememberMe = sessionManager.getRememberMe();
             VerifyCodeRequest request = assembleVerifyCodeRequest(email, code, rememberMe);
@@ -103,7 +103,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
         stopTimer();
     }
 
-    private String assembleCode (List<EditText> ets) {
+    private String assembleCode(List<EditText> ets) {
         StringBuilder code = new StringBuilder();
 
         for (EditText et : new ArrayList<>(ets)) {
@@ -112,26 +112,27 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
         return code.toString();
     }
-    private VerifyCodeRequest assembleVerifyCodeRequest(String email, String code, boolean rememberMe) {
+
+    private VerifyCodeRequest assembleVerifyCodeRequest(String email,
+                                                        String code,
+                                                        boolean rememberMe) {
         var request = new VerifyCodeRequest();
         request.email = email;
         request.code = code;
         request.isPersistentAuth = rememberMe;
         return request;
     }
+
     private void verifyCode(VerifyCodeRequest request) {
         log("Verifying sign in request code.");
-        AuthenticationService.verifyCode(request, new HttpCallback<TokensResponse>() {
+        AuthenticationApi.verifyCode(request, new HttpCallback<TokensResponse>() {
             @Override
             public void onSuccess(TokensResponse response) {
                 runOnUiThread(() -> {
-                    if(!response.success) {
-                        Toast
-                            .makeText(
-                                EmailVerificationActivity.this,
-                                response.message,
-                                Toast.LENGTH_LONG
-                            ).show();
+                    if (!response.success) {
+                        Toast.makeText(EmailVerificationActivity.this,
+                                       response.message,
+                                       Toast.LENGTH_LONG).show();
                         return;
                     }
                     log("Success verifying code.");
@@ -142,20 +143,18 @@ public class EmailVerificationActivity extends AppCompatActivity {
                     redirectToSuccessScreen();
                 });
             }
+
             @Override
             public void onError(String message) {
                 runOnUiThread(() -> {
                     log("Failed verifying code: " + message);
-                    Toast
-                        .makeText(
-                            EmailVerificationActivity.this,
-                            message,
-                            Toast.LENGTH_LONG
-                        ).show();
+                    Toast.makeText(EmailVerificationActivity.this, message, Toast.LENGTH_LONG)
+                         .show();
                 });
             }
         });
     }
+
     private void startTimer() {
         stopTimer();
         btnResend.setEnabled(false);
@@ -165,6 +164,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                 timerView.setText("00:00");
                 btnResend.setEnabled(true);
             }
+
             @Override
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
@@ -173,19 +173,24 @@ public class EmailVerificationActivity extends AppCompatActivity {
         };
         timer.start();
     }
+
     private void stopTimer() {
-        if (timer != null) timer.cancel();
+        if (timer != null)
+            timer.cancel();
     }
+
     private void redirectToLogin() {
         Intent intent = new Intent(EmailVerificationActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }
+
     private void redirectToSuccessScreen() {
         Intent intent = new Intent(EmailVerificationActivity.this, EmailVerifiedActivity.class);
         startActivity(intent);
         finish();
     }
+
     private void log(String message) {
         Log.d("EMAIL_VERIFICATION_ACTIVITY", message);
     }

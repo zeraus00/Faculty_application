@@ -1,11 +1,12 @@
-package com.example.faculty_app.core.auth;
+package com.example.faculty_app.auth.services;
 
 import androidx.annotation.Nullable;
 
+import com.example.faculty_app.auth.api.AuthenticationApi;
 import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
-import com.example.faculty_app.core.auth.models.RefreshTokensRequest;
-import com.example.faculty_app.core.auth.models.Tokens;
-import com.example.faculty_app.core.auth.models.TokensResponse;
+import com.example.faculty_app.auth.api.models.request.RefreshTokensRequest;
+import com.example.faculty_app.auth.api.models.response.Tokens;
+import com.example.faculty_app.auth.api.models.response.TokensResponse;
 
 import java.io.IOException;
 
@@ -42,7 +43,7 @@ public class TokenRefresher {
         }
 
         try {
-            var response = AuthenticationService.refreshTokens(request);
+            var response = AuthenticationApi.refreshTokens(request);
 
             if (!response.isSuccessful()) {
                 return null;
@@ -73,11 +74,12 @@ public class TokenRefresher {
             return;
         }
 
-        AuthenticationService.refreshTokensAsync(request, new HttpCallback<>() {
+        AuthenticationApi.refreshTokensAsync(request, new HttpCallback<>() {
             @Override
             public void onSuccess(TokensResponse response) {
                 if (!response.success || response.result == null) {
-                    callback.onFail(response.message != null ? response.message : "Refresh failed.");
+                    callback.onFail(
+                            response.message != null ? response.message : "Refresh failed.");
                     return;
                 }
 
@@ -112,6 +114,7 @@ public class TokenRefresher {
 
     public interface RefreshCallback {
         void onSuccess(Tokens tokens);
+
         void onFail(String message);
     }
 }

@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.auth.LoginActivity;
-import com.example.faculty_app.core.auth.SessionManager;
+import com.example.faculty_app.auth.services.SessionManager;
 import com.example.faculty_app.mainapp.classes.AllClassesFragment;
 import com.example.faculty_app.mainapp.classes.CurrentClassWithListFragment;
 import com.example.faculty_app.mainapp.misc.NotificationFragment;
@@ -106,9 +106,9 @@ public class HomePageActivity extends AppCompatActivity {
         btnNotification.setVisibility(visibility);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragment)
-                .addToBackStack(null)
-                .commit();
+                                   .replace(R.id.fragment_container, fragment)
+                                   .addToBackStack(null)
+                                   .commit();
     }
 
     private void setActiveTab(LinearLayout active) {
@@ -116,11 +116,13 @@ public class HomePageActivity extends AppCompatActivity {
         resetNavItem(navClass);
         resetNavItem(navProfile);
         resetNavItem(navLogout);
-        if (active != null) highlightNavItem(active);
+        if (active != null)
+            highlightNavItem(active);
     }
 
     private void resetNavItem(LinearLayout item) {
-        if (item == null || item.getChildCount() < 2) return;
+        if (item == null || item.getChildCount() < 2)
+            return;
         ImageView icon = (ImageView) item.getChildAt(0);
         TextView label = (TextView) item.getChildAt(1);
         icon.setColorFilter(getColor(R.color.blue));
@@ -129,7 +131,8 @@ public class HomePageActivity extends AppCompatActivity {
     }
 
     private void highlightNavItem(LinearLayout item) {
-        if (item == null || item.getChildCount() < 2) return;
+        if (item == null || item.getChildCount() < 2)
+            return;
         ImageView icon = (ImageView) item.getChildAt(0);
         TextView label = (TextView) item.getChildAt(1);
         icon.setColorFilter(getColor(R.color.white));

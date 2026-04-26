@@ -1,4 +1,4 @@
-package com.example.faculty_app.core.auth;
+package com.example.faculty_app.core;
 
 import com.example.faculty_app.BuildConfig;
 

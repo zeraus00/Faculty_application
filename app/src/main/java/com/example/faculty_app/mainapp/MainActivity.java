@@ -13,9 +13,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.auth.LoginActivity;
-import com.example.faculty_app.core.auth.SessionManager;
-import com.example.faculty_app.core.auth.TokenRefresher;
-import com.example.faculty_app.core.auth.models.Tokens;
+import com.example.faculty_app.auth.services.SessionManager;
+import com.example.faculty_app.auth.services.TokenRefresher;
+import com.example.faculty_app.auth.api.models.response.Tokens;
 import com.example.faculty_app.mainapp.home.HomePageActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (hasAccessToken) {
             redirectToHome();
-        } else {
+        }
+        else {
             refreshOnDemand();
         }
     }
@@ -50,10 +51,12 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 });
             }
+
             @Override
             public void onFail(String message) {
                 runOnUiThread(() -> {
-                    Toast.makeText(MainActivity.this, "Failed authentication", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Failed authentication", Toast.LENGTH_LONG)
+                         .show();
                     log(message);
                     redirectToLogIn();
                     finish();
@@ -72,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void log(String message){
+    private void log(String message) {
         Log.d("MAIN_ACTIVITY", message);
     }
 }

@@ -1,5 +1,10 @@
-package com.example.faculty_app.core.auth.models;
+package com.example.faculty_app.auth.api.models;
 
+import com.example.faculty_app.auth.api.models.request.RefreshTokensRequest;
+import com.example.faculty_app.auth.api.models.request.SignInCodeRequest;
+import com.example.faculty_app.auth.api.models.request.SignOutRequest;
+import com.example.faculty_app.auth.api.models.request.VerifyCodeRequest;
+import com.example.faculty_app.auth.api.models.response.TokensResponse;
 import com.example.faculty_app.core.api.rvaucms.dto.response.VoidResponse;
 
 import retrofit2.Call;

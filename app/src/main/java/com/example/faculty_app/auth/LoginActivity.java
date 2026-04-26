@@ -19,9 +19,9 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.faculty_app.R;
 import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
 import com.example.faculty_app.core.api.rvaucms.dto.response.VoidResponse;
-import com.example.faculty_app.core.auth.AuthenticationService;
-import com.example.faculty_app.core.auth.SessionManager;
-import com.example.faculty_app.core.auth.models.SignInCodeRequest;
+import com.example.faculty_app.auth.api.AuthenticationApi;
+import com.example.faculty_app.auth.services.SessionManager;
+import com.example.faculty_app.auth.api.models.request.SignInCodeRequest;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -48,12 +48,15 @@ public class LoginActivity extends AppCompatActivity {
         ImageView TogglePassword = findViewById(R.id.toggle_login_password);
 
         TogglePassword.setOnClickListener(v -> {
-            if(passwordView.getInputType() == (InputType.TYPE_CLASS_TEXT | InputType.TYPE_NUMBER_VARIATION_PASSWORD)) {
-                passwordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            if (passwordView.getInputType() ==
+                    (InputType.TYPE_CLASS_TEXT | InputType.TYPE_NUMBER_VARIATION_PASSWORD)) {
+                passwordView.setInputType(
+                        InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 TogglePassword.setImageResource(R.drawable.view);
             }
             else {
-                passwordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
+                passwordView.setInputType(
+                        InputType.TYPE_CLASS_TEXT | InputType.TYPE_NUMBER_VARIATION_PASSWORD);
                 TogglePassword.setImageResource(R.drawable.hide);
             }
 
@@ -67,12 +70,9 @@ public class LoginActivity extends AppCompatActivity {
             boolean rememberMe = rememberMeView.isChecked();
 
             if (email.isBlank() || password.isBlank()) {
-                Toast
-                    .makeText(
-                        LoginActivity.this,
-                        "Email and password cannot be empty.",
-                        Toast.LENGTH_LONG
-                    ).show();
+                Toast.makeText(LoginActivity.this,
+                               "Email and password cannot be empty.",
+                               Toast.LENGTH_LONG).show();
                 return;
             }
 
@@ -93,23 +93,26 @@ public class LoginActivity extends AppCompatActivity {
 
     private void requestSignInCode(SignInCodeRequest request) {
         log("Requesting code...");
-        AuthenticationService.requestSignInCode(request, new HttpCallback<VoidResponse>() {
+        AuthenticationApi.requestSignInCode(request, new HttpCallback<VoidResponse>() {
             @Override
             public void onSuccess(VoidResponse response) {
                 runOnUiThread(() -> {
-                    if(response.success) {
+                    if (response.success) {
                         log("Success requesting code.");
                         sessionManager.setEmail(request.identifier);
                         sessionManager.setRememberMe(request.isPersistentAuth);
-                    } else {
+                    }
+                    else {
                         log("Failed requesting code.");
-                        Toast.makeText(LoginActivity.this, response.message, Toast.LENGTH_LONG).show();
+                        Toast.makeText(LoginActivity.this, response.message, Toast.LENGTH_LONG)
+                             .show();
                         sessionManager.clear();
                         return;
                     }
 
                     try {
-                        Intent intent = new Intent(LoginActivity.this, EmailVerificationActivity.class);
+                        Intent intent = new Intent(LoginActivity.this,
+                                                   EmailVerificationActivity.class);
                         startActivity(intent);
                         finish();
                     } catch (Exception e) {

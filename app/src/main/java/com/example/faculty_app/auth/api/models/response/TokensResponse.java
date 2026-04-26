@@ -1,4 +1,4 @@
-package com.example.faculty_app.core.auth.models;
+package com.example.faculty_app.auth.api.models.response;
 
 import com.example.faculty_app.core.api.rvaucms.dto.response.ApiResponse;
 

@@ -1,4 +1,4 @@
-package com.example.faculty_app.core.auth;
+package com.example.faculty_app.auth.services;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,9 +19,11 @@ public class TokenAuthenticator implements Authenticator {
 
     @Nullable
     @Override
-    public Request authenticate(@Nullable Route route, @NonNull Response response) throws IOException {
+    public Request authenticate(@Nullable Route route,
+                                @NonNull Response response) throws IOException {
         synchronized (this) {
-            if (!isMarkedForInjection(response.request())) return null;
+            if (!isMarkedForInjection(response.request()))
+                return null;
 
             var currentAccessToken = sessionManager.getAccessToken();
             var refreshToken = sessionManager.getRefreshToken();
@@ -33,27 +35,30 @@ public class TokenAuthenticator implements Authenticator {
                 return buildNewRequest(response, currentAccessToken);
             }
 
-            if(refreshToken == null || refreshToken.isBlank()) return clearSession();
+            if (refreshToken == null || refreshToken.isBlank())
+                return clearSession();
 
             var tokens = TokenRefresher.getInstance().refresh();
 
-            if(tokens == null) return clearSession();
+            if (tokens == null)
+                return clearSession();
 
             return buildNewRequest(response, tokens.accessToken);
 
         }
     }
+
     private boolean isMarkedForInjection(Request request) {
         return request.header("X-Inject-Auth") != null;
     }
+
     private Request clearSession() {
         sessionManager.clear();
         return null;
     }
+
     private Request buildNewRequest(Response response, String token) {
-        return response.request().newBuilder()
-                .header("Authorization", "Bearer " + token)
-                .build();
+        return response.request().newBuilder().header("Authorization", "Bearer " + token).build();
     }
 
 }

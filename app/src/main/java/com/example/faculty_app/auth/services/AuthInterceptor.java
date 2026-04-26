@@ -1,4 +1,4 @@
-package com.example.faculty_app.core.auth;
+package com.example.faculty_app.auth.services;
 
 import androidx.annotation.NonNull;
 
@@ -26,8 +26,8 @@ public class AuthInterceptor implements Interceptor {
 
             if (token != null && !token.isBlank()) {
                 var newRequest = request.newBuilder()
-                        .addHeader("Authorization", "Bearer " + token)
-                        .build();
+                                        .addHeader("Authorization", "Bearer " + token)
+                                        .build();
                 return chain.proceed(newRequest);
             }
         }
