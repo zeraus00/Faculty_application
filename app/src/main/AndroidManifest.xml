@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Faculty_App">
         <activity
+            android:name=".mainapp.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".mainapp.home.HomePageActivity"
             android:exported="false"
             android:theme="@style/Theme.Faculty_App" />
@@ -33,12 +42,6 @@
             android:exported="false" />
         <activity
             android:name=".mainapp.forgotpassword.ForgotEmailVerificationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".email_verify"
-            android:exported="false" />
-        <activity
-            android:name=".home"
             android:exported="false" />
         <activity
             android:name=".auth.LoginActivity"
