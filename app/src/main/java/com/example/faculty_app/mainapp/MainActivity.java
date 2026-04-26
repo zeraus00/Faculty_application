@@ -14,7 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.faculty_app.R;
 import com.example.faculty_app.auth.LoginActivity;
 import com.example.faculty_app.core.auth.SessionManager;
-import com.example.faculty_app.core.auth.models.TokenRefresher;
+import com.example.faculty_app.core.auth.TokenRefresher;
 import com.example.faculty_app.core.auth.models.Tokens;
 import com.example.faculty_app.mainapp.home.HomePageActivity;
 

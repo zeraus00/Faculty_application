@@ -3,10 +3,6 @@ package com.example.faculty_app.core.auth;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.faculty_app.core.auth.models.RefreshTokensRequest;
-import com.example.faculty_app.core.auth.models.TokenRefresher;
-import com.example.faculty_app.core.auth.models.Tokens;
-
 import java.io.IOException;
 
 import okhttp3.Authenticator;

@@ -8,7 +8,7 @@ import com.example.faculty_app.core.api.rvaucms.RvaucMsService;
 import com.example.faculty_app.core.auth.AuthInterceptor;
 import com.example.faculty_app.core.auth.SessionManager;
 import com.example.faculty_app.core.auth.TokenAuthenticator;
-import com.example.faculty_app.core.auth.models.TokenRefresher;
+import com.example.faculty_app.core.auth.TokenRefresher;
 
 import okhttp3.Interceptor;
 

@@ -1,10 +1,11 @@
-package com.example.faculty_app.core.auth.models;
+package com.example.faculty_app.core.auth;
 
 import androidx.annotation.Nullable;
 
 import com.example.faculty_app.core.api.rvaucms.dto.HttpCallback;
-import com.example.faculty_app.core.auth.AuthenticationService;
-import com.example.faculty_app.core.auth.SessionManager;
+import com.example.faculty_app.core.auth.models.RefreshTokensRequest;
+import com.example.faculty_app.core.auth.models.Tokens;
+import com.example.faculty_app.core.auth.models.TokensResponse;
 
 import java.io.IOException;
 
