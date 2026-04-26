@@ -3,21 +3,17 @@ package com.example.faculty_app.mainapp.home;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.graphics.Insets;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.auth.LoginActivity;
@@ -26,9 +22,7 @@ import com.example.faculty_app.mainapp.classes.AllClassesFragment;
 import com.example.faculty_app.mainapp.classes.CurrentClassWithListFragment;
 import com.example.faculty_app.mainapp.misc.NotificationFragment;
 import com.example.faculty_app.mainapp.misc.ProfileFragment;
-import com.example.faculty_app.mainapp.attendance.ClassAttendanceFragment;
 import com.google.android.material.imageview.ShapeableImageView;
-import java.util.List;
 
 public class HomePageActivity extends AppCompatActivity {
 
@@ -141,49 +135,5 @@ public class HomePageActivity extends AppCompatActivity {
         icon.setColorFilter(getColor(R.color.white));
         label.setTextColor(getColor(R.color.white));
         item.setBackgroundColor(getColor(R.color.blue));
-    }
-
-    // --- Static Model & Adapter ---
-
-    public static class ClassModel {
-        public String code, name, details;
-        public ClassModel(String c, String n, String d) { this.code = c; this.name = n; this.details = d; }
-    }
-
-    public static class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> {
-        private final List<ClassModel> list;
-        public ClassAdapter(List<ClassModel> list) { this.list = list; }
-
-        @NonNull
-        @Override
-        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_class, parent, false);
-            return new ViewHolder(v);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            ClassModel m = list.get(position);
-            holder.c.setText(m.code);
-            holder.n.setText(m.name);
-            holder.d.setText(m.details);
-
-            holder.itemView.setOnClickListener(v -> {
-                HomePageActivity activity = (HomePageActivity) v.getContext();
-                activity.loadFragment(new ClassAttendanceFragment());
-            });
-        }
-
-        @Override public int getItemCount() { return list.size(); }
-
-        public static class ViewHolder extends RecyclerView.ViewHolder {
-            TextView c, n, d;
-            public ViewHolder(View itemView) {
-                super(itemView);
-                c = itemView.findViewById(R.id.ClassCode);
-                n = itemView.findViewById(R.id.ClasName);
-                d = itemView.findViewById(R.id.ClassDetails);
-            }
-        }
     }
 }
