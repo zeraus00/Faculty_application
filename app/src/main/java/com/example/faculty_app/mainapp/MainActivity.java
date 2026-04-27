@@ -12,13 +12,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.auth.data.repositories.callbacks.AuthRepositoryCallback;
 import com.example.faculty_app.auth.domain.AuthenticationException;
 import com.example.faculty_app.auth.ui.LoginActivity;
 import com.example.faculty_app.auth.data.local.SessionManager;
 import com.example.faculty_app.auth.data.repositories.AuthRepository;
 import com.example.faculty_app.auth.data.remote.models.response.Tokens;
 import com.example.faculty_app.mainapp.home.HomePageActivity;
+import com.example.faculty_app.shared.BaseCallback;
 import com.example.faculty_app.shared.BaseResult;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshOnDemand() {
-        AuthRepository.getInstance().refreshAsync(new AuthRepositoryCallback<Tokens>() {
+        AuthRepository.getInstance().refreshAsync(new BaseCallback<Tokens>() {
             @Override
             public void onResult(BaseResult<Tokens> result) {
                 runOnUiThread(() -> {

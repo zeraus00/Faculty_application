@@ -20,9 +20,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.auth.data.repositories.AuthRepository;
-import com.example.faculty_app.auth.data.repositories.callbacks.AuthRepositoryCallback;
 import com.example.faculty_app.auth.domain.AuthenticationException;
 import com.example.faculty_app.auth.data.local.SessionManager;
+import com.example.faculty_app.shared.BaseCallback;
 import com.example.faculty_app.shared.BaseResult;
 
 import java.util.ArrayList;
@@ -114,28 +114,26 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
     private void verifyCode(String email, String code, boolean rememberMe) {
         log("Verifying sign in request code.");
-        AuthRepository.getInstance()
-                      .verifyCode(email, code, rememberMe, new AuthRepositoryCallback<Void>() {
-                          @Override
-                          public void onResult(BaseResult<Void> result) {
-                              runOnUiThread(() -> {
-                                  if (result instanceof BaseResult.Fail) {
-                                      var fail =
-                                              (BaseResult.Fail<?, AuthenticationException>) result;
-                                      var exception = fail.getException();
+        AuthRepository.getInstance().verifyCode(email, code, rememberMe, new BaseCallback<Void>() {
+            @Override
+            public void onResult(BaseResult<Void> result) {
+                runOnUiThread(() -> {
+                    if (result instanceof BaseResult.Fail) {
+                        var fail = (BaseResult.Fail<?, AuthenticationException>) result;
+                        var exception = fail.getException();
 
-                                      log(exception.getMessage(), exception.getCause());
-                                      Toast.makeText(EmailVerificationActivity.this,
-                                                     exception.getMessage(),
-                                                     Toast.LENGTH_LONG).show();
-                                      return;
-                                  }
+                        log(exception.getMessage(), exception.getCause());
+                        Toast.makeText(EmailVerificationActivity.this,
+                                       exception.getMessage(),
+                                       Toast.LENGTH_LONG).show();
+                        return;
+                    }
 
-                                  log("Success verifying code.");
-                                  redirectToSuccessScreen();
-                              });
-                          }
-                      });
+                    log("Success verifying code.");
+                    redirectToSuccessScreen();
+                });
+            }
+        });
     }
 
     private void startTimer() {
@@ -151,7 +149,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
             @Override
             public void onTick(long millisUntilFinished) {
                 int seconds = (int) (millisUntilFinished / 1000);
-                timerView.setText("00:" + String.format("%02d", seconds));
+                timerView.setText(String.format("00:%s", String.format("%02d", seconds)));
             }
         };
         timer.start();

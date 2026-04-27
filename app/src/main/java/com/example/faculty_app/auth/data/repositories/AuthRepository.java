@@ -4,13 +4,13 @@ import com.example.faculty_app.auth.data.local.SessionManager;
 import com.example.faculty_app.auth.data.remote.api.AxisAuth;
 import com.example.faculty_app.auth.data.remote.models.request.SignInCodeRequest;
 import com.example.faculty_app.auth.data.remote.models.request.VerifyCodeRequest;
-import com.example.faculty_app.auth.data.repositories.callbacks.AuthRepositoryCallback;
 import com.example.faculty_app.auth.domain.AuthenticationException;
 import com.example.faculty_app.auth.domain.AuthenticationExceptionCode;
 import com.example.faculty_app.core.api.axis.dto.AxisCallback;
 import com.example.faculty_app.auth.data.remote.models.request.RefreshTokensRequest;
 import com.example.faculty_app.auth.data.remote.models.response.Tokens;
 import com.example.faculty_app.core.api.axis.dto.response.AxisResult;
+import com.example.faculty_app.shared.BaseCallback;
 import com.example.faculty_app.shared.BaseResult;
 
 import java.io.IOException;
@@ -40,7 +40,7 @@ public class AuthRepository {
     public void requestSignInCode(String email,
                                   String password,
                                   boolean rememberMe,
-                                  AuthRepositoryCallback<Void> callback) {
+                                  BaseCallback<Void> callback) {
         var request = new SignInCodeRequest();
         request.identifier = email;
         request.password = password;
@@ -72,7 +72,7 @@ public class AuthRepository {
     public void verifyCode(String email,
                            String code,
                            boolean rememberMe,
-                           AuthRepositoryCallback<Void> callback) {
+                           BaseCallback<Void> callback) {
         var request = new VerifyCodeRequest();
         request.email = email;
         request.code = code;
@@ -141,7 +141,7 @@ public class AuthRepository {
         }
     }
 
-    public void refreshAsync(AuthRepositoryCallback<Tokens> callback) {
+    public void refreshAsync(BaseCallback<Tokens> callback) {
         RefreshTokensRequest request;
 
         try {
