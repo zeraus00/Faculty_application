@@ -10,6 +10,7 @@ import com.example.faculty_app.core.api.axis.dto.response.ResultFail;
 import com.example.faculty_app.core.api.axis.dto.response.AxisResponse;
 import com.example.faculty_app.core.api.axis.dto.HttpCallback;
 import com.example.faculty_app.core.api.axis.dto.response.AxisResult;
+import com.example.faculty_app.core.api.axis.dto.response.ResultSuccess;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class AxisService {
     private static Retrofit retrofit;
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static <TResult, TResponse extends AxisResponse<TResult>> Callback<TResponse> axisCallback(
+    public static <TResult, TResponse extends ResultSuccess<TResult>> Callback<TResponse> axisCallback(
             AxisCallback<TResult> callback) {
         return new Callback<TResponse>() {
             @Override

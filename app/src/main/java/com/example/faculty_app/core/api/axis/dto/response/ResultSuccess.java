@@ -1,7 +1,7 @@
 package com.example.faculty_app.core.api.axis.dto.response;
 
 public class ResultSuccess<T> {
-    public boolean success;
+    public boolean success = true;
     public T result;
     public String message;
 
