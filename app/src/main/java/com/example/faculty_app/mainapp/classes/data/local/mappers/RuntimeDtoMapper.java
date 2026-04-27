@@ -21,7 +21,8 @@ public class RuntimeDtoMapper {
                               runtime.course.name,
                               schedule,
                               buildingAndRoom,
-                              runtime.offering.weekDay);
+                              runtime.offering.weekDay,
+                              runtime.session.runtimeStatus);
     }
 
     private static String formatSchedule(Offering offering) {
