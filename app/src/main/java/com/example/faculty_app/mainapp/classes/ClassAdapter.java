@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.mainapp.attendance.ClassAttendanceFragment;
-import com.example.faculty_app.mainapp.classes.domain.models.ClassDto;
+import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
 import com.example.faculty_app.mainapp.home.HomePageActivity;
 
 import java.util.List;
@@ -25,7 +25,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
     @NonNull
     @Override
     public ClassAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_class, parent, false);
+        View v = LayoutInflater.from(parent.getContext())
+                               .inflate(R.layout.item_class, parent, false);
         return new ClassAdapter.ViewHolder(v);
     }
 

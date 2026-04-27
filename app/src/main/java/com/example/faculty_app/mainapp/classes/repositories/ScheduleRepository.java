@@ -1,12 +1,12 @@
 package com.example.faculty_app.mainapp.classes.repositories;
 
-import static com.example.faculty_app.mainapp.classes.domain.mappers.ClassDtoMapper.fromApiClassList;
+import static com.example.faculty_app.mainapp.classes.data.local.mappers.ClassDtoMapper.fromApiClassList;
 
 import com.example.faculty_app.BuildConfig;
 import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.ClassList;
-import com.example.faculty_app.mainapp.classes.domain.models.ClassDto;
+import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
 import com.example.faculty_app.mainapp.classes.services.ScheduleService;
-import com.example.faculty_app.mainapp.classes.domain.models.ClassListCallback;
+import com.example.faculty_app.mainapp.classes.data.local.models.ClassListCallback;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.classes.domain.models;
+package com.example.faculty_app.mainapp.classes.data.local.models;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

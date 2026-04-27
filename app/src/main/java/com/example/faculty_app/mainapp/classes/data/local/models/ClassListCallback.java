@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.classes.domain.models;
+package com.example.faculty_app.mainapp.classes.data.local.models;
 
 import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.ClassList;
 
