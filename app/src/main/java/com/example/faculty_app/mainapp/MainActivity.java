@@ -3,20 +3,23 @@ package com.example.faculty_app.mainapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
+import com.example.faculty_app.auth.data.repositories.callbacks.AuthRepositoryCallback;
+import com.example.faculty_app.auth.domain.AuthenticationException;
 import com.example.faculty_app.auth.ui.LoginActivity;
 import com.example.faculty_app.auth.data.local.SessionManager;
 import com.example.faculty_app.auth.data.repositories.AuthRepository;
 import com.example.faculty_app.auth.data.remote.models.response.Tokens;
 import com.example.faculty_app.mainapp.home.HomePageActivity;
+import com.example.faculty_app.shared.BaseResult;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -43,22 +46,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshOnDemand() {
-        AuthRepository.getInstance().refreshTokensAsync(new AuthRepository.RefreshCallback() {
+        AuthRepository.getInstance().axisRefreshAsync(new AuthRepositoryCallback<Tokens>() {
             @Override
-            public void onSuccess(Tokens tokens) {
+            public void onResult(BaseResult<Tokens> result) {
                 runOnUiThread(() -> {
-                    redirectToHome();
-                    finish();
-                });
-            }
-
-            @Override
-            public void onFail(String message) {
-                runOnUiThread(() -> {
-                    Toast.makeText(MainActivity.this, "Failed authentication", Toast.LENGTH_LONG)
-                         .show();
-                    log(message);
-                    redirectToLogIn();
+                    if (result instanceof BaseResult.Success) {
+                        redirectToHome();
+                    }
+                    else if (result instanceof BaseResult.Fail) {
+                        var fail = (BaseResult.Fail<Tokens, AuthenticationException>) result;
+                        var message = fail.getException().getMessage();
+                        var cause = fail.getException().getCause();
+                        log(message, cause);
+                        redirectToLogIn();
+                    }
                     finish();
                 });
             }
@@ -77,5 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void log(String message) {
         Log.d("MAIN_ACTIVITY", message);
+    }
+
+    private void log(String message, @Nullable Throwable t) {
+        Log.d("MAIN_ACTIVITY", message, t);
     }
 }

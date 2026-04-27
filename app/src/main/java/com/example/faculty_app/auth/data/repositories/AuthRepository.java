@@ -4,10 +4,17 @@ import androidx.annotation.Nullable;
 
 import com.example.faculty_app.auth.data.remote.api.AuthApi;
 import com.example.faculty_app.auth.data.local.SessionManager;
+import com.example.faculty_app.auth.data.remote.api.AxisAuth;
+import com.example.faculty_app.auth.data.repositories.callbacks.AuthRepositoryCallback;
+import com.example.faculty_app.auth.domain.AuthenticationException;
+import com.example.faculty_app.auth.domain.AuthenticationExceptionCode;
+import com.example.faculty_app.core.api.axis.dto.AxisCallback;
 import com.example.faculty_app.core.api.axis.dto.HttpCallback;
 import com.example.faculty_app.auth.data.remote.models.request.RefreshTokensRequest;
 import com.example.faculty_app.auth.data.remote.models.response.Tokens;
 import com.example.faculty_app.auth.data.remote.models.response.TokensResponse;
+import com.example.faculty_app.core.api.axis.dto.response.AxisResult;
+import com.example.faculty_app.shared.BaseResult;
 
 import java.io.IOException;
 
@@ -33,69 +40,81 @@ public class AuthRepository {
         return instance;
     }
 
-    @Nullable
-    public Tokens refreshTokens() {
+    public BaseResult<Tokens> axisRefresh() {
         RefreshTokensRequest request;
 
         try {
             request = buildRequest();
         } catch (IllegalStateException e) {
-            return null;
+            return new BaseResult.Fail<>(new AuthenticationException(AuthenticationExceptionCode.REFRESH_EXCEPTION,
+                                                                     "Failed refreshing session.",
+                                                                     e));
         }
 
         try {
             var response = AuthApi.refreshTokens(request);
 
             if (!response.isSuccessful()) {
-                return null;
+                return new BaseResult.Fail<>(new AuthenticationException(AuthenticationExceptionCode.REFRESH_EXCEPTION,
+                                                                         "Failed refreshing " +
+                                                                                 "session."));
             }
 
             var body = response.body();
             if (body == null || !body.success || body.result == null) {
-                return null;
+                return new BaseResult.Fail<>(new AuthenticationException(AuthenticationExceptionCode.REFRESH_EXCEPTION,
+                                                                         "Failed refreshing " +
+                                                                                 "session."));
             }
 
             sessionManager.setAccessToken(body.result.accessToken);
             sessionManager.setRefreshToken(body.result.refreshToken);
 
-            return body.result;
+            return new BaseResult.Success<>(body.result);
 
         } catch (IOException e) {
-            return null;
+            return new BaseResult.Fail<>(new AuthenticationException(AuthenticationExceptionCode.REFRESH_EXCEPTION,
+                                                                     "Failed refreshing session.",
+                                                                     e));
         }
     }
 
-    public void refreshTokensAsync(RefreshCallback callback) {
+    public void axisRefreshAsync(AuthRepositoryCallback<Tokens> callback) {
         RefreshTokensRequest request;
 
         try {
             request = buildRequest();
         } catch (IllegalStateException e) {
-            callback.onFail(e.getMessage());
+            callback.onResult(new BaseResult.Fail<>(new AuthenticationException(
+                    AuthenticationExceptionCode.REFRESH_EXCEPTION,
+                    "Failed refreshing session.",
+                    e)));
             return;
         }
 
-        AuthApi.refreshTokensAsync(request, new HttpCallback<>() {
+        AxisAuth.refreshTokensAsync(request, new AxisCallback<Tokens>() {
             @Override
-            public void onSuccess(TokensResponse response) {
-                if (!response.success || response.result == null) {
-                    callback.onFail(
-                            response.message != null ? response.message : "Refresh failed.");
-                    return;
+            public void onResult(AxisResult<Tokens> result) {
+                if (result instanceof AxisResult.Success) {
+                    var tokens = ((AxisResult.Success<Tokens>) result).getData();
+                    sessionManager.setAccessToken(tokens.accessToken);
+                    sessionManager.setRefreshToken(tokens.refreshToken);
+
+                    callback.onResult(new BaseResult.Success<>(tokens));
                 }
+                else if (result instanceof AxisResult.Fail) {
+                    var fail = (AxisResult.Fail<Tokens>) result;
 
-                var tokens = response.result;
+                    var code = fail.code;
 
-                sessionManager.setAccessToken(tokens.accessToken);
-                sessionManager.setRefreshToken(tokens.refreshToken);
+                    if (code != null && code == 401)
+                        sessionManager.clear();
 
-                callback.onSuccess(tokens);
-            }
-
-            @Override
-            public void onError(String message) {
-
-                callback.onFail(message);
+                    callback.onResult(new BaseResult.Fail<>(new AuthenticationException(
+                            AuthenticationExceptionCode.REFRESH_EXCEPTION,
+                            fail.message,
+                            fail.throwable)));
+                }
             }
         });
     }
@@ -111,11 +130,5 @@ public class AuthRepository {
         request.refreshToken = refreshToken;
 
         return request;
-    }
-
-    public interface RefreshCallback {
-        void onSuccess(Tokens tokens);
-
-        void onFail(String message);
     }
 }

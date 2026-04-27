@@ -3,8 +3,10 @@ package com.example.faculty_app.auth.infrastructure.network;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.example.faculty_app.auth.data.remote.models.response.Tokens;
 import com.example.faculty_app.auth.data.repositories.AuthRepository;
 import com.example.faculty_app.auth.data.local.SessionManager;
+import com.example.faculty_app.shared.BaseResult;
 
 import java.io.IOException;
 
@@ -41,13 +43,13 @@ public class TokenAuthenticator implements Authenticator {
             if (refreshToken == null || refreshToken.isBlank())
                 return clearSession();
 
-            var tokens = AuthRepository.getInstance().refreshTokens();
+            var result = AuthRepository.getInstance().axisRefresh();
 
-            if (tokens == null)
-                return clearSession();
-
-            return buildNewRequest(response, tokens.accessToken);
-
+            if (result instanceof BaseResult.Success) {
+                var tokens = ((BaseResult.Success<Tokens>) result).getData();
+                return buildNewRequest(response, tokens.accessToken);
+            }
+            return null;
         }
     }
 
