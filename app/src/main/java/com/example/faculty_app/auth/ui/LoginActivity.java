@@ -20,8 +20,8 @@ import com.example.faculty_app.R;
 import com.example.faculty_app.auth.data.repositories.AuthRepository;
 import com.example.faculty_app.auth.domain.AuthenticationException;
 import com.example.faculty_app.auth.data.local.SessionManager;
-import com.example.faculty_app.shared.BaseCallback;
-import com.example.faculty_app.shared.BaseResult;
+import com.example.faculty_app.shared.RepositoryCallback;
+import com.example.faculty_app.shared.RepositoryResult;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -84,29 +84,33 @@ public class LoginActivity extends AppCompatActivity {
     private void requestSignInCode(String email, String password, boolean rememberMe) {
         log("Requesting code...");
         AuthRepository.getInstance()
-                      .requestSignInCode(email, password, rememberMe, new BaseCallback<Void>() {
-                          @Override
-                          public void onResult(BaseResult<Void> result) {
-                              runOnUiThread(() -> {
-                                  if (result instanceof BaseResult.Fail) {
-                                      var fail =
-                                              (BaseResult.Fail<?, AuthenticationException>) result;
-                                      var exception = fail.getException();
-                                      Toast.makeText(LoginActivity.this,
-                                                     exception.getMessage(),
-                                                     Toast.LENGTH_LONG).show();
-                                      log(exception.getMessage(), (Exception) exception.getCause());
-                                      return;
-                                  }
+                      .requestSignInCode(email,
+                                         password,
+                                         rememberMe,
+                                         new RepositoryCallback<Void>() {
+                                             @Override
+                                             public void onResult(RepositoryResult<Void> result) {
+                                                 runOnUiThread(() -> {
+                                                     if (result instanceof RepositoryResult.Fail) {
+                                                         var fail = (RepositoryResult.Fail<?,
+                                                                 AuthenticationException>) result;
+                                                         var exception = fail.getException();
+                                                         Toast.makeText(LoginActivity.this,
+                                                                        exception.getMessage(),
+                                                                        Toast.LENGTH_LONG).show();
+                                                         log(exception.getMessage(),
+                                                             (Exception) exception.getCause());
+                                                         return;
+                                                     }
 
-                                  log("Success requesting code.");
-                                  Intent intent = new Intent(LoginActivity.this,
-                                                             EmailVerificationActivity.class);
-                                  startActivity(intent);
-                                  finish();
-                              });
-                          }
-                      });
+                                                     log("Success requesting code.");
+                                                     Intent intent = new Intent(LoginActivity.this,
+                                                                                EmailVerificationActivity.class);
+                                                     startActivity(intent);
+                                                     finish();
+                                                 });
+                                             }
+                                         });
     }
 
     private void log(String message) {

@@ -10,8 +10,8 @@ import com.example.faculty_app.core.api.axis.dto.AxisCallback;
 import com.example.faculty_app.auth.data.remote.models.request.RefreshTokensRequest;
 import com.example.faculty_app.auth.data.remote.models.response.Tokens;
 import com.example.faculty_app.core.api.axis.dto.response.AxisResult;
-import com.example.faculty_app.shared.BaseCallback;
-import com.example.faculty_app.shared.BaseResult;
+import com.example.faculty_app.shared.RepositoryCallback;
+import com.example.faculty_app.shared.RepositoryResult;
 
 import java.io.IOException;
 
@@ -40,7 +40,7 @@ public class AuthRepository {
     public void requestSignInCode(String email,
                                   String password,
                                   boolean rememberMe,
-                                  BaseCallback<Void> callback) {
+                                  RepositoryCallback<Void> callback) {
         var request = new SignInCodeRequest();
         request.identifier = email;
         request.password = password;
@@ -53,14 +53,14 @@ public class AuthRepository {
                     sessionManager.setEmail(request.identifier);
                     sessionManager.setRememberMe(request.isPersistentAuth);
 
-                    callback.onResult(new BaseResult.Success<Void>(null));
+                    callback.onResult(new RepositoryResult.Success<Void>(null));
                 }
                 else if (result instanceof AxisResult.Fail) {
                     var fail = (AxisResult.Fail<Void>) result;
                     var code = fail.code;
                     var message = fail.message;
 
-                    callback.onResult(new BaseResult.Fail<>(new AuthenticationException(
+                    callback.onResult(new RepositoryResult.Fail<>(new AuthenticationException(
                             code != null && code == 401 ?
                             AuthenticationExceptionCode.IDENTITY_VERIFICATION_EXCEPTION :
                             AuthenticationExceptionCode.CODE_REQUEST_EXCEPTION, message)));
@@ -72,7 +72,7 @@ public class AuthRepository {
     public void verifyCode(String email,
                            String code,
                            boolean rememberMe,
-                           BaseCallback<Void> callback) {
+                           RepositoryCallback<Void> callback) {
         var request = new VerifyCodeRequest();
         request.email = email;
         request.code = code;
@@ -86,12 +86,12 @@ public class AuthRepository {
                     sessionManager.setAccessToken(tokens.accessToken);
                     sessionManager.setRefreshToken(tokens.refreshToken);
 
-                    callback.onResult(new BaseResult.Success<>(null));
+                    callback.onResult(new RepositoryResult.Success<>(null));
                 }
                 else if (result instanceof AxisResult.Fail) {
                     var fail = (AxisResult.Fail<Tokens>) result;
                     var code = fail.code;
-                    callback.onResult(new BaseResult.Fail<Void, AuthenticationException>(new AuthenticationException(
+                    callback.onResult(new RepositoryResult.Fail<Void, AuthenticationException>(new AuthenticationException(
                             code != null && code == 401 ?
                             AuthenticationExceptionCode.IDENTITY_VERIFICATION_EXCEPTION :
                             AuthenticationExceptionCode.CODE_VERIFICATION_EXCEPTION,
@@ -102,52 +102,54 @@ public class AuthRepository {
         });
     }
 
-    public BaseResult<Tokens> refresh() {
+    public RepositoryResult<Tokens> refresh() {
         RefreshTokensRequest request;
 
         try {
             request = buildRefreshRequest();
         } catch (IllegalStateException e) {
-            return new BaseResult.Fail<>(new AuthenticationException(AuthenticationExceptionCode.REFRESH_EXCEPTION,
-                                                                     "Failed refreshing session.",
-                                                                     e));
+            return new RepositoryResult.Fail<>(new AuthenticationException(
+                    AuthenticationExceptionCode.REFRESH_EXCEPTION,
+                    "Failed refreshing session.",
+                    e));
         }
 
         try {
             var response = AxisAuth.refreshTokens(request);
 
             if (!response.isSuccessful()) {
-                return new BaseResult.Fail<>(new AuthenticationException(AuthenticationExceptionCode.REFRESH_EXCEPTION,
-                                                                         "Failed refreshing " +
-                                                                                 "session."));
+                return new RepositoryResult.Fail<>(new AuthenticationException(
+                        AuthenticationExceptionCode.REFRESH_EXCEPTION,
+                        "Failed refreshing " + "session."));
             }
 
             var body = response.body();
             if (body == null || !body.success || body.result == null) {
-                return new BaseResult.Fail<>(new AuthenticationException(AuthenticationExceptionCode.REFRESH_EXCEPTION,
-                                                                         "Failed refreshing " +
-                                                                                 "session."));
+                return new RepositoryResult.Fail<>(new AuthenticationException(
+                        AuthenticationExceptionCode.REFRESH_EXCEPTION,
+                        "Failed refreshing " + "session."));
             }
 
             sessionManager.setAccessToken(body.result.accessToken);
             sessionManager.setRefreshToken(body.result.refreshToken);
 
-            return new BaseResult.Success<>(body.result);
+            return new RepositoryResult.Success<>(body.result);
 
         } catch (IOException e) {
-            return new BaseResult.Fail<>(new AuthenticationException(AuthenticationExceptionCode.REFRESH_EXCEPTION,
-                                                                     "Failed refreshing session.",
-                                                                     e));
+            return new RepositoryResult.Fail<>(new AuthenticationException(
+                    AuthenticationExceptionCode.REFRESH_EXCEPTION,
+                    "Failed refreshing session.",
+                    e));
         }
     }
 
-    public void refreshAsync(BaseCallback<Tokens> callback) {
+    public void refreshAsync(RepositoryCallback<Tokens> callback) {
         RefreshTokensRequest request;
 
         try {
             request = buildRefreshRequest();
         } catch (IllegalStateException e) {
-            callback.onResult(new BaseResult.Fail<>(new AuthenticationException(
+            callback.onResult(new RepositoryResult.Fail<>(new AuthenticationException(
                     AuthenticationExceptionCode.REFRESH_EXCEPTION,
                     "Failed refreshing session.",
                     e)));
@@ -162,7 +164,7 @@ public class AuthRepository {
                     sessionManager.setAccessToken(tokens.accessToken);
                     sessionManager.setRefreshToken(tokens.refreshToken);
 
-                    callback.onResult(new BaseResult.Success<>(tokens));
+                    callback.onResult(new RepositoryResult.Success<>(tokens));
                 }
                 else if (result instanceof AxisResult.Fail) {
                     var fail = (AxisResult.Fail<Tokens>) result;
@@ -172,7 +174,7 @@ public class AuthRepository {
                     if (code != null && code == 401)
                         sessionManager.clear();
 
-                    callback.onResult(new BaseResult.Fail<>(new AuthenticationException(
+                    callback.onResult(new RepositoryResult.Fail<>(new AuthenticationException(
                             AuthenticationExceptionCode.REFRESH_EXCEPTION,
                             fail.message,
                             fail.throwable)));

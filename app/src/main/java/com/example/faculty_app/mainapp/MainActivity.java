@@ -18,8 +18,8 @@ import com.example.faculty_app.auth.data.local.SessionManager;
 import com.example.faculty_app.auth.data.repositories.AuthRepository;
 import com.example.faculty_app.auth.data.remote.models.response.Tokens;
 import com.example.faculty_app.mainapp.home.HomePageActivity;
-import com.example.faculty_app.shared.BaseCallback;
-import com.example.faculty_app.shared.BaseResult;
+import com.example.faculty_app.shared.RepositoryCallback;
+import com.example.faculty_app.shared.RepositoryResult;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -46,15 +46,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshOnDemand() {
-        AuthRepository.getInstance().refreshAsync(new BaseCallback<Tokens>() {
+        AuthRepository.getInstance().refreshAsync(new RepositoryCallback<Tokens>() {
             @Override
-            public void onResult(BaseResult<Tokens> result) {
+            public void onResult(RepositoryResult<Tokens> result) {
                 runOnUiThread(() -> {
-                    if (result instanceof BaseResult.Success) {
+                    if (result instanceof RepositoryResult.Success) {
                         redirectToHome();
                     }
-                    else if (result instanceof BaseResult.Fail) {
-                        var fail = (BaseResult.Fail<Tokens, AuthenticationException>) result;
+                    else if (result instanceof RepositoryResult.Fail) {
+                        var fail = (RepositoryResult.Fail<Tokens, AuthenticationException>) result;
                         var message = fail.getException().getMessage();
                         var cause = fail.getException().getCause();
                         log(message, cause);

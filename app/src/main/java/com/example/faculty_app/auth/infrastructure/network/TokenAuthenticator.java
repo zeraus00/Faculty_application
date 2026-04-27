@@ -6,7 +6,7 @@ import androidx.annotation.Nullable;
 import com.example.faculty_app.auth.data.remote.models.response.Tokens;
 import com.example.faculty_app.auth.data.repositories.AuthRepository;
 import com.example.faculty_app.auth.data.local.SessionManager;
-import com.example.faculty_app.shared.BaseResult;
+import com.example.faculty_app.shared.RepositoryResult;
 
 import java.io.IOException;
 
@@ -45,8 +45,8 @@ public class TokenAuthenticator implements Authenticator {
 
             var result = AuthRepository.getInstance().refresh();
 
-            if (result instanceof BaseResult.Success) {
-                var tokens = ((BaseResult.Success<Tokens>) result).getData();
+            if (result instanceof RepositoryResult.Success) {
+                var tokens = ((RepositoryResult.Success<Tokens>) result).getData();
                 return buildNewRequest(response, tokens.accessToken);
             }
             return null;

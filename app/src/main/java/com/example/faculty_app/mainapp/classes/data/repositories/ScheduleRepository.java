@@ -7,40 +7,41 @@ import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.Cl
 import com.example.faculty_app.mainapp.classes.data.remote.response.classruntime.ClassRuntime;
 import com.example.faculty_app.mainapp.classes.domain.ClassException;
 import com.example.faculty_app.mainapp.classes.domain.ClassExceptionCode;
-import com.example.faculty_app.shared.BaseCallback;
-import com.example.faculty_app.shared.BaseResult;
+import com.example.faculty_app.shared.RepositoryCallback;
+import com.example.faculty_app.shared.RepositoryResult;
 
 public class ScheduleRepository {
-    public static void fetchClassList(BaseCallback<ClassList> callback) {
+    public static void fetchClassList(RepositoryCallback<ClassList> callback) {
         AxisSchedule.getClassList(new AxisCallback<ClassList>() {
             @Override
             public void onResult(AxisResult<ClassList> result) {
                 if (result instanceof AxisResult.Success) {
                     var classList = ((AxisResult.Success<ClassList>) result).getData();
-                    callback.onResult(new BaseResult.Success<>(classList));
+                    callback.onResult(new RepositoryResult.Success<>(classList));
                 }
                 else if (result instanceof AxisResult.Fail) {
                     var fail = (AxisResult.Fail<ClassList>) result;
-                    callback.onResult(new BaseResult.Fail<>(new ClassException(ClassExceptionCode.API_ERROR,
-                                                                               fail.message,
-                                                                               fail.throwable)));
+                    callback.onResult(new RepositoryResult.Fail<>(new ClassException(
+                            ClassExceptionCode.API_ERROR,
+                            fail.message,
+                            fail.throwable)));
                 }
             }
         });
     }
 
-    public static void fetchCurrentOrNext(BaseCallback<ClassRuntime> callback) {
+    public static void fetchCurrentOrNext(RepositoryCallback<ClassRuntime> callback) {
         AxisSchedule.getCurrentOrNext(new AxisCallback<ClassRuntime>() {
             @Override
             public void onResult(AxisResult<ClassRuntime> result) {
                 if (result instanceof AxisResult.Success) {
                     var classRuntime = ((AxisResult.Success<ClassRuntime>) result).getData();
-                    callback.onResult(new BaseResult.Success<>(classRuntime));
+                    callback.onResult(new RepositoryResult.Success<>(classRuntime));
                 }
                 else if (result instanceof AxisResult.Fail) {
                     var fail = (AxisResult.Fail<ClassRuntime>) result;
                     var code = fail.code;
-                    callback.onResult(new BaseResult.Fail<>(new ClassException(
+                    callback.onResult(new RepositoryResult.Fail<>(new ClassException(
                             code != null && code == 404 ?
                             ClassExceptionCode.NOT_FOUND :
                             ClassExceptionCode.API_ERROR, fail.message, fail.throwable)));

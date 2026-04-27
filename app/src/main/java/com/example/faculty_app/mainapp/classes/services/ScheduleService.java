@@ -9,22 +9,23 @@ import com.example.faculty_app.mainapp.classes.data.remote.response.classruntime
 import com.example.faculty_app.mainapp.classes.data.repositories.ScheduleRepository;
 import com.example.faculty_app.mainapp.classes.domain.ClassException;
 import com.example.faculty_app.mainapp.classes.domain.ClassExceptionCode;
-import com.example.faculty_app.shared.BaseCallback;
-import com.example.faculty_app.shared.BaseResult;
+import com.example.faculty_app.shared.RepositoryCallback;
+import com.example.faculty_app.shared.RepositoryResult;
 
 import java.util.ArrayList;
 
 public class ScheduleService {
-    public static void getCurrentOrNextClass(BaseCallback<ClassRuntime> callback) {
-        ScheduleRepository.fetchCurrentOrNext(new BaseCallback<ClassRuntime>() {
+    public static void getCurrentOrNextClass(RepositoryCallback<ClassRuntime> callback) {
+        ScheduleRepository.fetchCurrentOrNext(new RepositoryCallback<ClassRuntime>() {
             @Override
-            public void onResult(BaseResult<ClassRuntime> result) {
-                if (result instanceof BaseResult.Success) {
-                    var runtime = ((BaseResult.Success<ClassRuntime>) result).getData();
-                    callback.onResult(new BaseResult.Success<>(runtime));
+            public void onResult(RepositoryResult<ClassRuntime> result) {
+                if (result instanceof RepositoryResult.Success) {
+                    var runtime = ((RepositoryResult.Success<ClassRuntime>) result).getData();
+                    callback.onResult(new RepositoryResult.Success<>(runtime));
                 }
-                else if (result instanceof BaseResult.Fail) {
-                    var exception = ((BaseResult.Fail<?, ClassException>) result).getException();
+                else if (result instanceof RepositoryResult.Fail) {
+                    var exception =
+                            ((RepositoryResult.Fail<?, ClassException>) result).getException();
                     var code = exception.getCode();
                     if (code == ClassExceptionCode.NOT_FOUND) {
                         //  todo: return consistent result object.
@@ -34,20 +35,21 @@ public class ScheduleService {
         });
     }
 
-    public static void getClassList(BaseCallback<ArrayList<ClassDto>> callback) {
-        ScheduleRepository.fetchClassList(new BaseCallback<ClassList>() {
+    public static void getClassList(RepositoryCallback<ArrayList<ClassDto>> callback) {
+        ScheduleRepository.fetchClassList(new RepositoryCallback<ClassList>() {
             @Override
-            public void onResult(BaseResult<ClassList> result) {
-                if (result instanceof BaseResult.Success) {
-                    var classList = ((BaseResult.Success<ClassList>) result).getData();
-                    callback.onResult(new BaseResult.Success<>(fromApiClassList(classList)));
+            public void onResult(RepositoryResult<ClassList> result) {
+                if (result instanceof RepositoryResult.Success) {
+                    var classList = ((RepositoryResult.Success<ClassList>) result).getData();
+                    callback.onResult(new RepositoryResult.Success<>(fromApiClassList(classList)));
                 }
-                else if (result instanceof BaseResult.Fail) {
+                else if (result instanceof RepositoryResult.Fail) {
                     if (BuildConfig.DEBUG && BuildConfig.USE_MOCK_AUTH) {
-                        callback.onResult(new BaseResult.Success<>(getMockClasses()));
+                        callback.onResult(new RepositoryResult.Success<>(getMockClasses()));
                         return;
                     }
-                    callback.onResult(new BaseResult.Fail<>(((BaseResult.Fail<?, ClassException>) result).getException()));
+                    callback.onResult(new RepositoryResult.Fail<>(((RepositoryResult.Fail<?,
+                            ClassException>) result).getException()));
                 }
             }
         });

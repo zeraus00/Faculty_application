@@ -2,8 +2,8 @@ package com.example.faculty_app.shared;
 
 import androidx.annotation.NonNull;
 
-public abstract class BaseResult<TData> {
-    public final static class Success<TData> extends BaseResult<TData> {
+public abstract class RepositoryResult<TData> {
+    public final static class Success<TData> extends RepositoryResult<TData> {
         private final TData data;
 
         public Success(TData data) {
@@ -15,7 +15,7 @@ public abstract class BaseResult<TData> {
         }
     }
 
-    public final static class Fail<TData, TException extends BaseException<?>> extends BaseResult<TData> {
+    public final static class Fail<TData, TException extends BaseException<?>> extends RepositoryResult<TData> {
         @NonNull
         private final TException exception;
 
