@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshOnDemand() {
-        AuthRepository.getInstance().axisRefreshAsync(new AuthRepositoryCallback<Tokens>() {
+        AuthRepository.getInstance().refreshAsync(new AuthRepositoryCallback<Tokens>() {
             @Override
             public void onResult(BaseResult<Tokens> result) {
                 runOnUiThread(() -> {

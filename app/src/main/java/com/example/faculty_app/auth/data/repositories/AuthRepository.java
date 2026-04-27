@@ -1,7 +1,5 @@
 package com.example.faculty_app.auth.data.repositories;
 
-import androidx.annotation.Nullable;
-
 import com.example.faculty_app.auth.data.remote.api.AuthApi;
 import com.example.faculty_app.auth.data.local.SessionManager;
 import com.example.faculty_app.auth.data.remote.api.AxisAuth;
@@ -9,10 +7,8 @@ import com.example.faculty_app.auth.data.repositories.callbacks.AuthRepositoryCa
 import com.example.faculty_app.auth.domain.AuthenticationException;
 import com.example.faculty_app.auth.domain.AuthenticationExceptionCode;
 import com.example.faculty_app.core.api.axis.dto.AxisCallback;
-import com.example.faculty_app.core.api.axis.dto.HttpCallback;
 import com.example.faculty_app.auth.data.remote.models.request.RefreshTokensRequest;
 import com.example.faculty_app.auth.data.remote.models.response.Tokens;
-import com.example.faculty_app.auth.data.remote.models.response.TokensResponse;
 import com.example.faculty_app.core.api.axis.dto.response.AxisResult;
 import com.example.faculty_app.shared.BaseResult;
 
@@ -40,11 +36,11 @@ public class AuthRepository {
         return instance;
     }
 
-    public BaseResult<Tokens> axisRefresh() {
+    public BaseResult<Tokens> refresh() {
         RefreshTokensRequest request;
 
         try {
-            request = buildRequest();
+            request = buildRefreshRequest();
         } catch (IllegalStateException e) {
             return new BaseResult.Fail<>(new AuthenticationException(AuthenticationExceptionCode.REFRESH_EXCEPTION,
                                                                      "Failed refreshing session.",
@@ -79,11 +75,11 @@ public class AuthRepository {
         }
     }
 
-    public void axisRefreshAsync(AuthRepositoryCallback<Tokens> callback) {
+    public void refreshAsync(AuthRepositoryCallback<Tokens> callback) {
         RefreshTokensRequest request;
 
         try {
-            request = buildRequest();
+            request = buildRefreshRequest();
         } catch (IllegalStateException e) {
             callback.onResult(new BaseResult.Fail<>(new AuthenticationException(
                     AuthenticationExceptionCode.REFRESH_EXCEPTION,
@@ -119,7 +115,7 @@ public class AuthRepository {
         });
     }
 
-    private RefreshTokensRequest buildRequest() {
+    private RefreshTokensRequest buildRefreshRequest() {
         String refreshToken = sessionManager.getRefreshToken();
 
         if (refreshToken == null || refreshToken.isBlank()) {
