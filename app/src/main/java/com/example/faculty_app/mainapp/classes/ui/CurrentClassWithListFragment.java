@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.classes;
+package com.example.faculty_app.mainapp.classes.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
+import com.example.faculty_app.mainapp.classes.ClassAdapter;
 import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
 import com.example.faculty_app.mainapp.classes.data.local.ClassesViewModel;
 import com.example.faculty_app.mainapp.classes.data.repositories.ScheduleRepositoryCallback;
