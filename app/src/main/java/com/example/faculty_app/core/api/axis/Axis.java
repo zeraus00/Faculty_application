@@ -6,11 +6,11 @@ import androidx.annotation.NonNull;
 
 import com.example.faculty_app.BuildConfig;
 import com.example.faculty_app.core.api.axis.dto.AxisCallback;
-import com.example.faculty_app.core.api.axis.dto.response.ResultFail;
-import com.example.faculty_app.core.api.axis.dto.response.AxisResponse;
+import com.example.faculty_app.core.api.axis.dto.response.ApiFail;
+import com.example.faculty_app.core.api.axis.dto.response.ApiResponse;
 import com.example.faculty_app.core.api.axis.dto.HttpCallback;
 import com.example.faculty_app.core.api.axis.dto.response.AxisResult;
-import com.example.faculty_app.core.api.axis.dto.response.ResultSuccess;
+import com.example.faculty_app.core.api.axis.dto.response.ApiSuccess;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class Axis {
     private static Retrofit retrofit;
     private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static <TResult, TResponse extends ResultSuccess<TResult>> Callback<TResponse> axisCallback(
+    public static <TResult, TResponse extends ApiSuccess<TResult>> Callback<TResponse> axisCallback(
             AxisCallback<TResult> callback) {
         return new Callback<TResponse>() {
             @Override
@@ -41,7 +41,7 @@ public class Axis {
                     try (var errorBody = response.errorBody()) {
                         if (errorBody != null) {
                             var json = errorBody.string();
-                            var mapped = mapper.readValue(json, ResultFail.class);
+                            var mapped = mapper.readValue(json, ApiFail.class);
 
                             message = mapped.message;
                         }
@@ -75,7 +75,7 @@ public class Axis {
         };
     }
 
-    public static <R, T extends AxisResponse<R>> Callback<T> rvaucMsCallback(HttpCallback<T> callback) {
+    public static <R, T extends ApiResponse<R>> Callback<T> rvaucMsCallback(HttpCallback<T> callback) {
         return new Callback<T>() {
             @Override
             public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
@@ -91,7 +91,7 @@ public class Axis {
                             if (errorBody != null) {
                                 var json = errorBody.string();
 
-                                var mapped = mapper.readValue(json, ResultFail.class);
+                                var mapped = mapper.readValue(json, ApiFail.class);
 
                                 message = mapped.message;
                             }
