@@ -7,7 +7,7 @@ import android.util.Log;
 
 
 import com.example.faculty_app.auth.data.repositories.AuthRepository;
-import com.example.faculty_app.core.api.axis.AxisService;
+import com.example.faculty_app.core.api.axis.Axis;
 import com.example.faculty_app.auth.infrastructure.network.AuthInterceptor;
 import com.example.faculty_app.auth.data.local.SessionManager;
 import com.example.faculty_app.auth.infrastructure.network.TokenAuthenticator;
@@ -21,9 +21,9 @@ public class AxisFacultyApplication extends Application {
 
         SessionManager.init(this);
         AuthRepository.init(SessionManager.getInstance());
-        AxisService.init(new Interceptor[]{new AuthInterceptor(() -> SessionManager.getInstance()
-                                                                                   .getAccessToken())},
-                         new TokenAuthenticator());
+        Axis.init(new Interceptor[]{new AuthInterceptor(() -> SessionManager.getInstance()
+                                                                            .getAccessToken())},
+                  new TokenAuthenticator());
 
         if (isMockAuth())
             enableDevSession();

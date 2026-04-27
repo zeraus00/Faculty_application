@@ -24,7 +24,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 
-public class AxisService {
+public class Axis {
     private static Retrofit retrofit;
     private static final ObjectMapper mapper = new ObjectMapper();
 

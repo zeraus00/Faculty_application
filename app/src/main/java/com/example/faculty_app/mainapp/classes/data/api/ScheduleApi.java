@@ -1,8 +1,8 @@
 package com.example.faculty_app.mainapp.classes.data.api;
 
-import static com.example.faculty_app.core.api.axis.AxisService.rvaucMsCallback;
+import static com.example.faculty_app.core.api.axis.Axis.rvaucMsCallback;
 
-import com.example.faculty_app.core.api.axis.AxisService;
+import com.example.faculty_app.core.api.axis.Axis;
 import com.example.faculty_app.core.api.axis.dto.HttpCallback;
 import com.example.faculty_app.mainapp.classes.data.response.classlist.ClassListResponse;
 import com.example.faculty_app.mainapp.classes.data.response.classruntime.ClassRuntimeResponse;
@@ -20,7 +20,7 @@ public class ScheduleApi {
 
     public static Client getClient() {
         if (client == null)
-            client = AxisService.createService(Client.class);
+            client = Axis.createService(Client.class);
         return client;
     }
 }

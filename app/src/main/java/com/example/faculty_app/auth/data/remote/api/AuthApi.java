@@ -1,10 +1,10 @@
 package com.example.faculty_app.auth.data.remote.api;
 
-import static com.example.faculty_app.core.api.axis.AxisService.rvaucMsCallback;
+import static com.example.faculty_app.core.api.axis.Axis.rvaucMsCallback;
 
 import com.example.faculty_app.core.api.axis.dto.HttpCallback;
 import com.example.faculty_app.core.api.axis.dto.response.VoidResponse;
-import com.example.faculty_app.core.api.axis.AxisService;
+import com.example.faculty_app.core.api.axis.Axis;
 import com.example.faculty_app.auth.data.remote.models.request.RefreshTokensRequest;
 import com.example.faculty_app.auth.data.remote.models.request.SignInCodeRequest;
 import com.example.faculty_app.auth.data.remote.models.request.SignOutRequest;
@@ -47,7 +47,7 @@ public class AuthApi {
 
     private static AuthenticationClient getAuthenticationClient() {
         if (authenticationClient == null)
-            authenticationClient = AxisService.createService(AuthenticationClient.class);
+            authenticationClient = Axis.createService(AuthenticationClient.class);
         return authenticationClient;
     }
 }
