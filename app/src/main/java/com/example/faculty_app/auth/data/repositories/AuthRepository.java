@@ -34,7 +34,7 @@ public class AuthRepository {
     }
 
     @Nullable
-    public Tokens refresh() {
+    public Tokens refreshTokens() {
         RefreshTokensRequest request;
 
         try {
@@ -65,7 +65,7 @@ public class AuthRepository {
         }
     }
 
-    public void refreshAsync(RefreshCallback callback) {
+    public void refreshTokensAsync(RefreshCallback callback) {
         RefreshTokensRequest request;
 
         try {

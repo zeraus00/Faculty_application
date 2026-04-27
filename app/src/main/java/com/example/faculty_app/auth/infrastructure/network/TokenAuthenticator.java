@@ -41,7 +41,7 @@ public class TokenAuthenticator implements Authenticator {
             if (refreshToken == null || refreshToken.isBlank())
                 return clearSession();
 
-            var tokens = AuthRepository.getInstance().refresh();
+            var tokens = AuthRepository.getInstance().refreshTokens();
 
             if (tokens == null)
                 return clearSession();
