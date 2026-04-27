@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.classes.repositories;
+package com.example.faculty_app.mainapp.classes.data.repositories;
 
 import static com.example.faculty_app.mainapp.classes.data.local.mappers.ClassDtoMapper.fromApiClassList;
 
