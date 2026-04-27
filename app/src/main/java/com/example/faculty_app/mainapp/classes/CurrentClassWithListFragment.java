@@ -17,8 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.faculty_app.R;
 import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
 import com.example.faculty_app.mainapp.classes.data.local.ClassesViewModel;
-import com.example.faculty_app.mainapp.classes.data.repositories.ClassDtoListCallback;
-import com.example.faculty_app.mainapp.classes.data.repositories.ScheduleRepository;
+import com.example.faculty_app.mainapp.classes.data.repositories.ScheduleRepositoryCallback;
+import com.example.faculty_app.mainapp.classes.services.ScheduleService;
+import com.example.faculty_app.shared.BaseResult;
 
 import java.util.ArrayList;
 
@@ -82,17 +83,18 @@ public class CurrentClassWithListFragment extends Fragment {
     }
 
     private void loadClasses() {
-        ScheduleRepository.fetchClassDtoList(new ClassDtoListCallback() {
+        ScheduleService.getClassList(new ScheduleRepositoryCallback<ArrayList<ClassDto>>() {
             @Override
-            public void onSuccess(ArrayList<ClassDto> dto) {
+            public void onResult(BaseResult<ArrayList<ClassDto>> result) {
                 if (!isAdded())
                     return;
-                viewModel.setClassList(dto);
-            }
 
-            @Override
-            public void onFail(String message) {
-                Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show();
+                if (result instanceof BaseResult.Success)
+                    viewModel.setClassList(((BaseResult.Success<ArrayList<ClassDto>>) result).getData());
+                else if (result instanceof BaseResult.Fail) {
+                    var message = ((BaseResult.Fail<?, ?>) result).getException().getMessage();
+                    Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

@@ -1,66 +1,30 @@
 package com.example.faculty_app.mainapp.classes.data.repositories;
 
-import static com.example.faculty_app.mainapp.classes.data.local.mappers.ClassDtoMapper.fromApiClassList;
-
-import com.example.faculty_app.BuildConfig;
+import com.example.faculty_app.core.api.axis.dto.AxisCallback;
+import com.example.faculty_app.core.api.axis.dto.response.AxisResult;
+import com.example.faculty_app.mainapp.classes.data.remote.api.AxisSchedule;
 import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.ClassList;
-import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
-import com.example.faculty_app.mainapp.classes.services.ScheduleService;
-import com.example.faculty_app.mainapp.classes.data.local.models.ClassListCallback;
-
-import java.util.ArrayList;
+import com.example.faculty_app.mainapp.classes.domain.ClassException;
+import com.example.faculty_app.mainapp.classes.domain.ClassExceptionCode;
+import com.example.faculty_app.shared.BaseResult;
 
 public class ScheduleRepository {
-    public static void fetchClassDtoList(ClassDtoListCallback callback) {
-        ScheduleService.fetchClassList(new ClassListCallback() {
+    public static void fetchClassList(ScheduleRepositoryCallback<ClassList> callback) {
+        AxisSchedule.getClassList(new AxisCallback<ClassList>() {
             @Override
-            public void onSuccess(ClassList classList) {
-                callback.onSuccess(fromApiClassList(classList));
-            }
-
-            @Override
-            public void onFail(String message) {
-                if (BuildConfig.USE_MOCK_AUTH) {
-                    callback.onSuccess(getMockClasses());
+            public void onResult(AxisResult<ClassList> result) {
+                if (result instanceof AxisResult.Success) {
+                    var classList = ((AxisResult.Success<ClassList>) result).getData();
+                    callback.onResult(new BaseResult.Success<>(classList));
                 }
-                callback.onFail(message);
+                else if (result instanceof AxisResult.Fail) {
+                    var fail = (AxisResult.Fail<ClassList>) result;
+                    callback.onResult(new BaseResult.Fail<>(new ClassException(ClassExceptionCode.API_ERROR,
+                                                                               fail.message,
+                                                                               fail.throwable)));
+                }
             }
         });
     }
 
-    private static ArrayList<ClassDto> getMockClasses() {
-        ArrayList<ClassDto> mockClasses = new ArrayList<>();
-
-        mockClasses.add(new ClassDto("#606 · DS-3202",
-                                     "Machine Learning",
-                                     "7:00 AM - 9:00 AM | AV 308b",
-                                     "Mon",
-                                     1));
-        mockClasses.add(new ClassDto("#607 · CS-301",
-                                     "Automata Theory",
-                                     "10:00 AM - 12:00 PM | RM 402",
-                                     "Mon",
-                                     1));
-        mockClasses.add(new ClassDto("#608 · OS-101",
-                                     "Operating Systems",
-                                     "1:00 PM - 3:00 PM | LB 204",
-                                     "Mon",
-                                     1));
-        mockClasses.add(new ClassDto("#609 · DS-3203",
-                                     "Data Science",
-                                     "3:00 PM - 5:00 PM | AV 308b",
-                                     "Mon",
-                                     1));
-        mockClasses.add(new ClassDto("#610 · IT-402",
-                                     "Network Security",
-                                     "8:00 AM - 10:00 AM | Lab 1",
-                                     "Mon",
-                                     1));
-        mockClasses.add(new ClassDto("#611 · CS-202",
-                                     "Data Structures",
-                                     "10:00 AM - 12:00 PM | RM 302",
-                                     "Mon",
-                                     1));
-        return mockClasses;
-    }
 }
