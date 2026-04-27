@@ -1,6 +1,7 @@
 package com.example.faculty_app.mainapp.classes.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +20,8 @@ import com.example.faculty_app.mainapp.classes.ClassAdapter;
 import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
 import com.example.faculty_app.mainapp.classes.data.local.ClassesViewModel;
 import com.example.faculty_app.mainapp.classes.services.ScheduleService;
-import com.example.faculty_app.shared.RepositoryCallback;
-import com.example.faculty_app.shared.RepositoryResult;
+import com.example.faculty_app.shared.ServiceCallback;
+import com.example.faculty_app.shared.ServiceResult;
 
 import java.util.ArrayList;
 
@@ -84,19 +85,23 @@ public class CurrentClassWithListFragment extends Fragment {
     }
 
     private void loadClasses() {
-        ScheduleService.getClassList(new RepositoryCallback<ArrayList<ClassDto>>() {
+        ScheduleService.getClassList(new ServiceCallback<ArrayList<ClassDto>>() {
             @Override
-            public void onResult(RepositoryResult<ArrayList<ClassDto>> result) {
+            public void onResult(ServiceResult<ArrayList<ClassDto>> result) {
                 if (!isAdded())
                     return;
 
-                if (result instanceof RepositoryResult.Success)
-                    viewModel.setClassList(((RepositoryResult.Success<ArrayList<ClassDto>>) result).getData());
-                else if (result instanceof RepositoryResult.Fail) {
-                    var message = ((RepositoryResult.Fail<?, ?>) result).getException()
-                                                                        .getMessage();
-                    Toast.makeText(requireActivity(), message, Toast.LENGTH_LONG).show();
+                boolean success = result.getSuccess();
+                ArrayList<ClassDto> data = result.getData();
+
+                if (!success) {
+                    Toast.makeText(requireActivity(), result.getMessage(), Toast.LENGTH_LONG)
+                         .show();
+                    return;
                 }
+
+                Log.d("CURRENT_CLASS_WITH_LIST_FRAGMENT", "Success retrieving classes.");
+                viewModel.setClassList(data);
             }
         });
     }

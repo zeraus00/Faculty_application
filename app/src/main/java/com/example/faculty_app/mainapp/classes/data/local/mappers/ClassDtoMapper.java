@@ -1,11 +1,11 @@
 package com.example.faculty_app.mainapp.classes.data.local.mappers;
 
+import static com.example.faculty_app.mainapp.classes.data.local.mappers.Shared.formatBuildingAndRoom;
+import static com.example.faculty_app.mainapp.classes.data.local.mappers.Shared.formatClassInfo;
+
 import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.ClassList;
 import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.ClassListElement;
 import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.Offering;
-import com.example.faculty_app.mainapp.classes.data.remote.response.shared.Cls;
-import com.example.faculty_app.mainapp.classes.data.remote.response.shared.Course;
-import com.example.faculty_app.mainapp.classes.data.remote.response.shared.Room;
 import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
 
 import java.util.ArrayList;
@@ -29,12 +29,6 @@ public class ClassDtoMapper {
         return dto;
     }
 
-    private static String formatClassInfo(Cls cls, Course course) {
-        var classNumber = "#" + cls.classNumber;
-        var courseCode = course.code;
-        return classNumber + " · " + courseCode;
-    }
-
     private static String formatSchedule(Offering offering) {
         String scheduleInfo = "";
 
@@ -46,28 +40,6 @@ public class ClassDtoMapper {
         }
 
         return scheduleInfo;
-    }
-
-    private static String formatBuildingAndRoom(Room room) {
-        String roomDetails = "N/A";
-
-        if (room != null) {
-            roomDetails = room.name;
-            String building = room.building;
-            if (building != null) {
-                StringBuilder sb = new StringBuilder();
-
-                for (String word : building.trim().split("\\s+")) {
-                    if (!word.isEmpty()) {
-                        sb.append(word.charAt(0));
-                    }
-                }
-
-                roomDetails = sb + " " + roomDetails;
-            }
-        }
-
-        return roomDetails;
     }
 
 }
