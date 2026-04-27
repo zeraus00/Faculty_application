@@ -18,8 +18,8 @@ import com.example.faculty_app.R;
 import com.example.faculty_app.mainapp.classes.ClassAdapter;
 import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
 import com.example.faculty_app.mainapp.classes.data.local.ClassesViewModel;
-import com.example.faculty_app.mainapp.classes.data.repositories.ScheduleRepositoryCallback;
 import com.example.faculty_app.mainapp.classes.services.ScheduleService;
+import com.example.faculty_app.shared.BaseCallback;
 import com.example.faculty_app.shared.BaseResult;
 
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ public class CurrentClassWithListFragment extends Fragment {
     }
 
     private void loadClasses() {
-        ScheduleService.getClassList(new ScheduleRepositoryCallback<ArrayList<ClassDto>>() {
+        ScheduleService.getClassList(new BaseCallback<ArrayList<ClassDto>>() {
             @Override
             public void onResult(BaseResult<ArrayList<ClassDto>> result) {
                 if (!isAdded())

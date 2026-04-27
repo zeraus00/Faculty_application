@@ -6,15 +6,15 @@ import com.example.faculty_app.BuildConfig;
 import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
 import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.ClassList;
 import com.example.faculty_app.mainapp.classes.data.repositories.ScheduleRepository;
-import com.example.faculty_app.mainapp.classes.data.repositories.ScheduleRepositoryCallback;
 import com.example.faculty_app.mainapp.classes.domain.ClassException;
+import com.example.faculty_app.shared.BaseCallback;
 import com.example.faculty_app.shared.BaseResult;
 
 import java.util.ArrayList;
 
 public class ScheduleService {
-    public static void getClassList(ScheduleRepositoryCallback<ArrayList<ClassDto>> callback) {
-        ScheduleRepository.fetchClassList(new ScheduleRepositoryCallback<ClassList>() {
+    public static void getClassList(BaseCallback<ArrayList<ClassDto>> callback) {
+        ScheduleRepository.fetchClassList(new BaseCallback<ClassList>() {
             @Override
             public void onResult(BaseResult<ClassList> result) {
                 if (result instanceof BaseResult.Success) {
