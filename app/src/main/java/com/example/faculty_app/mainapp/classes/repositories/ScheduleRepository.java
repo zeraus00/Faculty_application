@@ -3,7 +3,7 @@ package com.example.faculty_app.mainapp.classes.repositories;
 import static com.example.faculty_app.mainapp.classes.domain.mappers.ClassDtoMapper.fromApiClassList;
 
 import com.example.faculty_app.BuildConfig;
-import com.example.faculty_app.mainapp.classes.data.response.classlist.ClassList;
+import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.ClassList;
 import com.example.faculty_app.mainapp.classes.domain.models.ClassDto;
 import com.example.faculty_app.mainapp.classes.services.ScheduleService;
 import com.example.faculty_app.mainapp.classes.domain.models.ClassListCallback;

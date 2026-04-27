@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.classes.data.response.shared;
+package com.example.faculty_app.mainapp.classes.data.remote.response.shared;
 
 import androidx.annotation.Nullable;
 
@@ -7,5 +7,6 @@ public class Room {
     @Nullable
     public String building;
 
-    public Room() {}
+    public Room() {
+    }
 }

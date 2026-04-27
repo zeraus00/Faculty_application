@@ -1,11 +1,11 @@
 package com.example.faculty_app.mainapp.classes.domain.mappers;
 
-import com.example.faculty_app.mainapp.classes.data.response.classlist.ClassList;
-import com.example.faculty_app.mainapp.classes.data.response.classlist.ClassListElement;
-import com.example.faculty_app.mainapp.classes.data.response.classlist.Offering;
-import com.example.faculty_app.mainapp.classes.data.response.shared.Cls;
-import com.example.faculty_app.mainapp.classes.data.response.shared.Course;
-import com.example.faculty_app.mainapp.classes.data.response.shared.Room;
+import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.ClassList;
+import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.ClassListElement;
+import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.Offering;
+import com.example.faculty_app.mainapp.classes.data.remote.response.shared.Cls;
+import com.example.faculty_app.mainapp.classes.data.remote.response.shared.Course;
+import com.example.faculty_app.mainapp.classes.data.remote.response.shared.Room;
 import com.example.faculty_app.mainapp.classes.domain.models.ClassDto;
 
 import java.util.ArrayList;

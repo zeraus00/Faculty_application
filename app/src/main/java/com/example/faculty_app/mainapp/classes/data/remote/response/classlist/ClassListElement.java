@@ -1,9 +1,9 @@
-package com.example.faculty_app.mainapp.classes.data.response.classlist;
+package com.example.faculty_app.mainapp.classes.data.remote.response.classlist;
 
 import androidx.annotation.Nullable;
 
-import com.example.faculty_app.mainapp.classes.data.response.shared.Cls;
-import com.example.faculty_app.mainapp.classes.data.response.shared.Course;
+import com.example.faculty_app.mainapp.classes.data.remote.response.shared.Cls;
+import com.example.faculty_app.mainapp.classes.data.remote.response.shared.Course;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ClassListElement {

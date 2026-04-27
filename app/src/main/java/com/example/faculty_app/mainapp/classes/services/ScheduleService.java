@@ -1,8 +1,8 @@
 package com.example.faculty_app.mainapp.classes.services;
 
 import com.example.faculty_app.core.api.axis.dto.HttpCallback;
-import com.example.faculty_app.mainapp.classes.data.api.ScheduleApi;
-import com.example.faculty_app.mainapp.classes.data.response.classlist.ClassListResponse;
+import com.example.faculty_app.mainapp.classes.data.remote.api.ScheduleApi;
+import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.ClassListResponse;
 import com.example.faculty_app.mainapp.classes.domain.models.ClassListCallback;
 
 public class ScheduleService {

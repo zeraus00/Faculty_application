@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.classes.data.response.classruntime;
+package com.example.faculty_app.mainapp.classes.data.remote.response.classruntime;
 
 import androidx.annotation.Nullable;
 
@@ -9,5 +9,6 @@ public class SessionRuntime {
     @Nullable
     public String runtimeStatus;
 
-    public SessionRuntime() {}
+    public SessionRuntime() {
+    }
 }
