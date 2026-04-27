@@ -33,11 +33,15 @@ public class ScheduleService {
                 else if (result instanceof RepositoryResult.Fail) {
                     var exception =
                             ((RepositoryResult.Fail<?, ClassException>) result).getException();
+                    var code = exception.getCode();
                     var message = exception.getMessage();
 
                     callback.onResult(new ServiceResult<>(false,
                                                           new RuntimeDto("",
-                                                                         "No classes today.",
+                                                                         code ==
+                                                                                 ClassExceptionCode.NOT_FOUND ?
+                                                                         "No classes today." :
+                                                                         "Something went wrong.",
                                                                          "",
                                                                          "",
                                                                          ""),
