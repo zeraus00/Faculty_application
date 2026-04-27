@@ -6,11 +6,11 @@ import android.app.Application;
 import android.util.Log;
 
 
+import com.example.faculty_app.auth.services.TokenRefresher;
 import com.example.faculty_app.core.api.axis.AxisService;
 import com.example.faculty_app.auth.services.AuthInterceptor;
 import com.example.faculty_app.auth.services.SessionManager;
 import com.example.faculty_app.auth.services.TokenAuthenticator;
-import com.example.faculty_app.auth.services.TokenRefresher;
 
 import okhttp3.Interceptor;
 
