@@ -1,8 +1,10 @@
-package com.example.faculty_app.mainapp.classes.data.local.models;
+package com.example.faculty_app.mainapp.classes.data.local;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

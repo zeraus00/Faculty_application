@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
-import com.example.faculty_app.mainapp.classes.data.local.models.ClassesViewModel;
+import com.example.faculty_app.mainapp.classes.data.local.ClassesViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
