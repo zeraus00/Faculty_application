@@ -14,8 +14,8 @@ public class AxisSchedule {
         getClient().getClassList().enqueue(axisCallback(callback));
     }
 
-    public static void getClassRuntime(AxisCallback<ClassRuntime> callback) {
-        getClient().getClassRuntime().enqueue(axisCallback(callback));
+    public static void getCurrentOrNext(AxisCallback<ClassRuntime> callback) {
+        getClient().getCurrentOrNext().enqueue(axisCallback(callback));
     }
 
     public static AxisScheduleClient getClient() {

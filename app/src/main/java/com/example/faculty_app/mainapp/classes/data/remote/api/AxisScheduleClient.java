@@ -14,5 +14,5 @@ public interface AxisScheduleClient {
 
     @Headers("X-Inject-Auth: true")
     @GET("/enrollments/schedule/current-or-next")
-    Call<AxisClassRuntime> getClassRuntime();
+    Call<AxisClassRuntime> getCurrentOrNext();
 }

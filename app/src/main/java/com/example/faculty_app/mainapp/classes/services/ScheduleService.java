@@ -5,14 +5,35 @@ import static com.example.faculty_app.mainapp.classes.data.local.mappers.ClassDt
 import com.example.faculty_app.BuildConfig;
 import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
 import com.example.faculty_app.mainapp.classes.data.remote.response.classlist.ClassList;
+import com.example.faculty_app.mainapp.classes.data.remote.response.classruntime.ClassRuntime;
 import com.example.faculty_app.mainapp.classes.data.repositories.ScheduleRepository;
 import com.example.faculty_app.mainapp.classes.domain.ClassException;
+import com.example.faculty_app.mainapp.classes.domain.ClassExceptionCode;
 import com.example.faculty_app.shared.BaseCallback;
 import com.example.faculty_app.shared.BaseResult;
 
 import java.util.ArrayList;
 
 public class ScheduleService {
+    public static void getCurrentOrNextClass(BaseCallback<ClassRuntime> callback) {
+        ScheduleRepository.fetchCurrentOrNext(new BaseCallback<ClassRuntime>() {
+            @Override
+            public void onResult(BaseResult<ClassRuntime> result) {
+                if (result instanceof BaseResult.Success) {
+                    var runtime = ((BaseResult.Success<ClassRuntime>) result).getData();
+                    callback.onResult(new BaseResult.Success<>(runtime));
+                }
+                else if (result instanceof BaseResult.Fail) {
+                    var exception = ((BaseResult.Fail<?, ClassException>) result).getException();
+                    var code = exception.getCode();
+                    if (code == ClassExceptionCode.NOT_FOUND) {
+                        //  todo: return consistent result object.
+                    }
+                }
+            }
+        });
+    }
+
     public static void getClassList(BaseCallback<ArrayList<ClassDto>> callback) {
         ScheduleRepository.fetchClassList(new BaseCallback<ClassList>() {
             @Override
