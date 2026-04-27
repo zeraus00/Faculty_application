@@ -1,7 +1,10 @@
-package com.example.faculty_app.auth.services;
+package com.example.faculty_app.auth.infrastructure.network;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.faculty_app.auth.data.repositories.AuthRepository;
+import com.example.faculty_app.auth.data.local.SessionManager;
 
 import java.io.IOException;
 
@@ -38,7 +41,7 @@ public class TokenAuthenticator implements Authenticator {
             if (refreshToken == null || refreshToken.isBlank())
                 return clearSession();
 
-            var tokens = TokenRefresher.getInstance().refresh();
+            var tokens = AuthRepository.getInstance().refresh();
 
             if (tokens == null)
                 return clearSession();

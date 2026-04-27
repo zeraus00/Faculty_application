@@ -1,4 +1,4 @@
-package com.example.faculty_app.auth.api.models.request;
+package com.example.faculty_app.auth.data.remote.models.request;
 
 public class SignOutRequest {
     public String refreshToken;

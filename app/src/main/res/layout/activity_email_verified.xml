@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/facultybg1"
-    tools:context=".auth.EmailVerifiedActivity">
+    tools:context=".auth.ui.EmailVerifiedActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideTop"
@@ -76,14 +76,14 @@
             android:textColor="@color/white"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:gravity="center"/>
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/txtEmailVerificationDesc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your Email has been successfully Verified"
-            android:textColor="@color/white"/>
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
@@ -110,7 +110,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/guideImageBottom"
-        app:layout_constraintBottom_toTopOf="@+id/guideLogoBottom"/>
+        app:layout_constraintBottom_toTopOf="@+id/guideLogoBottom" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_email_verified_login"

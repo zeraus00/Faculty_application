@@ -16,8 +16,8 @@ import androidx.core.graphics.Insets;
 import androidx.fragment.app.Fragment;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.auth.LoginActivity;
-import com.example.faculty_app.auth.services.SessionManager;
+import com.example.faculty_app.auth.ui.LoginActivity;
+import com.example.faculty_app.auth.data.local.SessionManager;
 import com.example.faculty_app.mainapp.classes.AllClassesFragment;
 import com.example.faculty_app.mainapp.classes.CurrentClassWithListFragment;
 import com.example.faculty_app.mainapp.misc.NotificationFragment;

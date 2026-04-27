@@ -1,4 +1,4 @@
-package com.example.faculty_app.auth.domain;
+package com.example.faculty_app.auth.data.local;
 
 public class Payload {
     private final Integer id;

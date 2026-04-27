@@ -1,10 +1,10 @@
-package com.example.faculty_app.auth.api.models;
+package com.example.faculty_app.auth.data.remote.api;
 
-import com.example.faculty_app.auth.api.models.request.RefreshTokensRequest;
-import com.example.faculty_app.auth.api.models.request.SignInCodeRequest;
-import com.example.faculty_app.auth.api.models.request.SignOutRequest;
-import com.example.faculty_app.auth.api.models.request.VerifyCodeRequest;
-import com.example.faculty_app.auth.api.models.response.TokensResponse;
+import com.example.faculty_app.auth.data.remote.models.request.RefreshTokensRequest;
+import com.example.faculty_app.auth.data.remote.models.request.SignInCodeRequest;
+import com.example.faculty_app.auth.data.remote.models.request.SignOutRequest;
+import com.example.faculty_app.auth.data.remote.models.request.VerifyCodeRequest;
+import com.example.faculty_app.auth.data.remote.models.response.TokensResponse;
 import com.example.faculty_app.core.api.axis.dto.response.VoidResponse;
 
 import retrofit2.Call;

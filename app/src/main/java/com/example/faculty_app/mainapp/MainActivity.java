@@ -12,10 +12,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.auth.LoginActivity;
-import com.example.faculty_app.auth.services.SessionManager;
-import com.example.faculty_app.auth.services.TokenRefresher;
-import com.example.faculty_app.auth.api.models.response.Tokens;
+import com.example.faculty_app.auth.ui.LoginActivity;
+import com.example.faculty_app.auth.data.local.SessionManager;
+import com.example.faculty_app.auth.data.repositories.AuthRepository;
+import com.example.faculty_app.auth.data.remote.models.response.Tokens;
 import com.example.faculty_app.mainapp.home.HomePageActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void refreshOnDemand() {
-        TokenRefresher.getInstance().refreshAsync(new TokenRefresher.RefreshCallback() {
+        AuthRepository.getInstance().refreshAsync(new AuthRepository.RefreshCallback() {
             @Override
             public void onSuccess(Tokens tokens) {
                 runOnUiThread(() -> {

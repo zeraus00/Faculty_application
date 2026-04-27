@@ -1,4 +1,4 @@
-package com.example.faculty_app.auth;
+package com.example.faculty_app.auth.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,11 +19,11 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.core.api.axis.dto.HttpCallback;
-import com.example.faculty_app.auth.api.AuthenticationApi;
-import com.example.faculty_app.auth.services.SessionManager;
-import com.example.faculty_app.auth.api.models.response.Tokens;
-import com.example.faculty_app.auth.api.models.response.TokensResponse;
-import com.example.faculty_app.auth.api.models.request.VerifyCodeRequest;
+import com.example.faculty_app.auth.data.remote.api.AuthApi;
+import com.example.faculty_app.auth.data.local.SessionManager;
+import com.example.faculty_app.auth.data.remote.models.response.Tokens;
+import com.example.faculty_app.auth.data.remote.models.response.TokensResponse;
+import com.example.faculty_app.auth.data.remote.models.request.VerifyCodeRequest;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -125,7 +125,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
     private void verifyCode(VerifyCodeRequest request) {
         log("Verifying sign in request code.");
-        AuthenticationApi.verifyCode(request, new HttpCallback<TokensResponse>() {
+        AuthApi.verifyCode(request, new HttpCallback<TokensResponse>() {
             @Override
             public void onSuccess(TokensResponse response) {
                 runOnUiThread(() -> {

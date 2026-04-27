@@ -1,4 +1,4 @@
-package com.example.faculty_app.auth.services;
+package com.example.faculty_app.auth.infrastructure.network;
 
 import androidx.annotation.NonNull;
 

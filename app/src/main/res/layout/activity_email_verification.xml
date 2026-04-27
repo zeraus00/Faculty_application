@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/facultybg1"
-    tools:context=".auth.EmailVerificationActivity">
+    tools:context=".auth.ui.EmailVerificationActivity">
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -14,28 +14,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.12"/>
+        app:layout_constraintGuide_percent="0.12" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideHeaderBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.45"/>
+        app:layout_constraintGuide_percent="0.45" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLogoBottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.52"/>
+        app:layout_constraintGuide_percent="0.52" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_bottom_anchor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.95"/>
+        app:layout_constraintGuide_percent="0.95" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_margin_start"
@@ -90,7 +90,7 @@
             android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="12dp" />
 
         <TextView
             android:id="@+id/textView13"
@@ -100,7 +100,7 @@
             android:text="We sent you a 6 digit code to verify your email address"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/txt_email_verification_email"
@@ -216,6 +216,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1" />
+
             <EditText
                 android:id="@+id/et_email_verification_digit_2"
                 android:layout_width="0dp"
@@ -226,6 +227,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1" />
+
             <EditText
                 android:id="@+id/et_email_verification_digit_3"
                 android:layout_width="0dp"
@@ -236,6 +238,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1" />
+
             <EditText
                 android:id="@+id/et_email_verification_digit_4"
                 android:layout_width="0dp"
@@ -246,6 +249,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1" />
+
             <EditText
                 android:id="@+id/et_email_verification_digit_5"
                 android:layout_width="0dp"
@@ -256,6 +260,7 @@
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1" />
+
             <EditText
                 android:id="@+id/et_email_verification_digit_6"
                 android:layout_width="0dp"

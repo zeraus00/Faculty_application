@@ -1,10 +1,10 @@
-package com.example.faculty_app.auth.services;
+package com.example.faculty_app.auth.data.remote.jwt;
 
 import android.util.Log;
 
 import com.auth0.android.jwt.DecodeException;
 import com.auth0.android.jwt.JWT;
-import com.example.faculty_app.auth.domain.Payload;
+import com.example.faculty_app.auth.data.local.Payload;
 
 public class JwtDecoder {
     public static Payload decodeJwt(String token) {

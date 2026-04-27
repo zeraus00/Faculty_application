@@ -6,11 +6,11 @@ import android.app.Application;
 import android.util.Log;
 
 
-import com.example.faculty_app.auth.services.TokenRefresher;
+import com.example.faculty_app.auth.data.repositories.AuthRepository;
 import com.example.faculty_app.core.api.axis.AxisService;
-import com.example.faculty_app.auth.services.AuthInterceptor;
-import com.example.faculty_app.auth.services.SessionManager;
-import com.example.faculty_app.auth.services.TokenAuthenticator;
+import com.example.faculty_app.auth.infrastructure.network.AuthInterceptor;
+import com.example.faculty_app.auth.data.local.SessionManager;
+import com.example.faculty_app.auth.infrastructure.network.TokenAuthenticator;
 
 import okhttp3.Interceptor;
 
@@ -20,7 +20,7 @@ public class AxisFacultyApplication extends Application {
         super.onCreate();
 
         SessionManager.init(this);
-        TokenRefresher.init(SessionManager.getInstance());
+        AuthRepository.init(SessionManager.getInstance());
         AxisService.init(new Interceptor[]{new AuthInterceptor(() -> SessionManager.getInstance()
                                                                                    .getAccessToken())},
                          new TokenAuthenticator());

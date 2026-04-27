@@ -1,4 +1,4 @@
-package com.example.faculty_app.auth;
+package com.example.faculty_app.auth.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,9 +19,9 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.faculty_app.R;
 import com.example.faculty_app.core.api.axis.dto.HttpCallback;
 import com.example.faculty_app.core.api.axis.dto.response.VoidResponse;
-import com.example.faculty_app.auth.api.AuthenticationApi;
-import com.example.faculty_app.auth.services.SessionManager;
-import com.example.faculty_app.auth.api.models.request.SignInCodeRequest;
+import com.example.faculty_app.auth.data.remote.api.AuthApi;
+import com.example.faculty_app.auth.data.local.SessionManager;
+import com.example.faculty_app.auth.data.remote.models.request.SignInCodeRequest;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -93,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void requestSignInCode(SignInCodeRequest request) {
         log("Requesting code...");
-        AuthenticationApi.requestSignInCode(request, new HttpCallback<VoidResponse>() {
+        AuthApi.requestSignInCode(request, new HttpCallback<VoidResponse>() {
             @Override
             public void onSuccess(VoidResponse response) {
                 runOnUiThread(() -> {

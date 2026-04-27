@@ -1,4 +1,4 @@
-package com.example.faculty_app.auth;
+package com.example.faculty_app.auth.ui;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,31 +1,32 @@
-package com.example.faculty_app.auth.services;
+package com.example.faculty_app.auth.data.repositories;
 
 import androidx.annotation.Nullable;
 
-import com.example.faculty_app.auth.api.AuthenticationApi;
+import com.example.faculty_app.auth.data.remote.api.AuthApi;
+import com.example.faculty_app.auth.data.local.SessionManager;
 import com.example.faculty_app.core.api.axis.dto.HttpCallback;
-import com.example.faculty_app.auth.api.models.request.RefreshTokensRequest;
-import com.example.faculty_app.auth.api.models.response.Tokens;
-import com.example.faculty_app.auth.api.models.response.TokensResponse;
+import com.example.faculty_app.auth.data.remote.models.request.RefreshTokensRequest;
+import com.example.faculty_app.auth.data.remote.models.response.Tokens;
+import com.example.faculty_app.auth.data.remote.models.response.TokensResponse;
 
 import java.io.IOException;
 
-public class TokenRefresher {
+public class AuthRepository {
 
-    private static TokenRefresher instance;
+    private static AuthRepository instance;
     private final SessionManager sessionManager;
 
-    public TokenRefresher(SessionManager sessionManager) {
+    public AuthRepository(SessionManager sessionManager) {
         this.sessionManager = sessionManager;
     }
 
     public static synchronized void init(SessionManager sessionManager) {
         if (instance == null) {
-            instance = new TokenRefresher(sessionManager);
+            instance = new AuthRepository(sessionManager);
         }
     }
 
-    public static synchronized TokenRefresher getInstance() {
+    public static synchronized AuthRepository getInstance() {
         if (instance == null) {
             throw new RuntimeException("TokenRefresher is not initialized.");
         }
@@ -43,7 +44,7 @@ public class TokenRefresher {
         }
 
         try {
-            var response = AuthenticationApi.refreshTokens(request);
+            var response = AuthApi.refreshTokens(request);
 
             if (!response.isSuccessful()) {
                 return null;
@@ -74,7 +75,7 @@ public class TokenRefresher {
             return;
         }
 
-        AuthenticationApi.refreshTokensAsync(request, new HttpCallback<>() {
+        AuthApi.refreshTokensAsync(request, new HttpCallback<>() {
             @Override
             public void onSuccess(TokensResponse response) {
                 if (!response.success || response.result == null) {

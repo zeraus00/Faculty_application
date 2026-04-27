@@ -36,16 +36,16 @@
             android:name=".mainapp.forgotpassword.ForgotVerifyEmailActivity"
             android:exported="false" />
         <activity
-            android:name=".auth.EmailVerificationActivity"
+            android:name=".auth.ui.EmailVerificationActivity"
             android:exported="false" />
         <activity
-            android:name=".auth.EmailVerifiedActivity"
+            android:name=".auth.ui.EmailVerifiedActivity"
             android:exported="false" />
         <activity
             android:name=".mainapp.forgotpassword.ForgotEmailVerificationActivity"
             android:exported="false" />
         <activity
-            android:name=".auth.LoginActivity"
+            android:name=".auth.ui.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
