@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
@@ -18,12 +19,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.core.api.axis.dto.HttpCallback;
-import com.example.faculty_app.auth.data.remote.api.AuthApi;
+import com.example.faculty_app.auth.data.repositories.AuthRepository;
+import com.example.faculty_app.auth.data.repositories.callbacks.AuthRepositoryCallback;
+import com.example.faculty_app.auth.domain.AuthenticationException;
 import com.example.faculty_app.auth.data.local.SessionManager;
-import com.example.faculty_app.auth.data.remote.models.response.Tokens;
-import com.example.faculty_app.auth.data.remote.models.response.TokensResponse;
-import com.example.faculty_app.auth.data.remote.models.request.VerifyCodeRequest;
+import com.example.faculty_app.shared.BaseResult;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,8 +81,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
                                                                      digit6)));
 
             boolean rememberMe = sessionManager.getRememberMe();
-            VerifyCodeRequest request = assembleVerifyCodeRequest(email, code, rememberMe);
-            verifyCode(request);
+            verifyCode(email, code, rememberMe);
         });
 
         btnResend.setOnClickListener((view) -> {
@@ -113,46 +112,30 @@ public class EmailVerificationActivity extends AppCompatActivity {
         return code.toString();
     }
 
-    private VerifyCodeRequest assembleVerifyCodeRequest(String email,
-                                                        String code,
-                                                        boolean rememberMe) {
-        var request = new VerifyCodeRequest();
-        request.email = email;
-        request.code = code;
-        request.isPersistentAuth = rememberMe;
-        return request;
-    }
-
-    private void verifyCode(VerifyCodeRequest request) {
+    private void verifyCode(String email, String code, boolean rememberMe) {
         log("Verifying sign in request code.");
-        AuthApi.verifyCode(request, new HttpCallback<TokensResponse>() {
-            @Override
-            public void onSuccess(TokensResponse response) {
-                runOnUiThread(() -> {
-                    if (!response.success) {
-                        Toast.makeText(EmailVerificationActivity.this,
-                                       response.message,
-                                       Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    log("Success verifying code.");
-                    Tokens tokens = response.result;
-                    sessionManager.setRefreshToken(tokens.refreshToken);
-                    sessionManager.setAccessToken(tokens.accessToken);
+        AuthRepository.getInstance()
+                      .verifyCode(email, code, rememberMe, new AuthRepositoryCallback<Void>() {
+                          @Override
+                          public void onResult(BaseResult<Void> result) {
+                              runOnUiThread(() -> {
+                                  if (result instanceof BaseResult.Fail) {
+                                      var fail =
+                                              (BaseResult.Fail<?, AuthenticationException>) result;
+                                      var exception = fail.getException();
 
-                    redirectToSuccessScreen();
-                });
-            }
+                                      log(exception.getMessage(), exception.getCause());
+                                      Toast.makeText(EmailVerificationActivity.this,
+                                                     exception.getMessage(),
+                                                     Toast.LENGTH_LONG).show();
+                                      return;
+                                  }
 
-            @Override
-            public void onError(String message) {
-                runOnUiThread(() -> {
-                    log("Failed verifying code: " + message);
-                    Toast.makeText(EmailVerificationActivity.this, message, Toast.LENGTH_LONG)
-                         .show();
-                });
-            }
-        });
+                                  log("Success verifying code.");
+                                  redirectToSuccessScreen();
+                              });
+                          }
+                      });
     }
 
     private void startTimer() {
@@ -193,5 +176,9 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
     private void log(String message) {
         Log.d("EMAIL_VERIFICATION_ACTIVITY", message);
+    }
+
+    private void log(String message, @Nullable Throwable t) {
+        Log.e("EMAIL_VERIFICATION_ACTIVITY", message, t);
     }
 }

@@ -17,11 +17,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.core.api.axis.dto.HttpCallback;
-import com.example.faculty_app.core.api.axis.dto.response.VoidResponse;
-import com.example.faculty_app.auth.data.remote.api.AuthApi;
+import com.example.faculty_app.auth.data.repositories.AuthRepository;
+import com.example.faculty_app.auth.data.repositories.callbacks.AuthRepositoryCallback;
+import com.example.faculty_app.auth.domain.AuthenticationException;
 import com.example.faculty_app.auth.data.local.SessionManager;
-import com.example.faculty_app.auth.data.remote.models.request.SignInCodeRequest;
+import com.example.faculty_app.shared.BaseResult;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -76,67 +76,48 @@ public class LoginActivity extends AppCompatActivity {
                 return;
             }
 
-            var request = assembleRequest(email, password, rememberMe);
-            requestSignInCode(request);
+            requestSignInCode(email, password, rememberMe);
         });
 
     }
 
-    private SignInCodeRequest assembleRequest(String email, String password, boolean rememberMe) {
-        var request = new SignInCodeRequest();
-        request.identifier = email;
-        request.password = password;
-        request.isPersistentAuth = rememberMe;
-
-        return request;
-    }
-
-    private void requestSignInCode(SignInCodeRequest request) {
+    private void requestSignInCode(String email, String password, boolean rememberMe) {
         log("Requesting code...");
-        AuthApi.requestSignInCode(request, new HttpCallback<VoidResponse>() {
-            @Override
-            public void onSuccess(VoidResponse response) {
-                runOnUiThread(() -> {
-                    if (response.success) {
-                        log("Success requesting code.");
-                        sessionManager.setEmail(request.identifier);
-                        sessionManager.setRememberMe(request.isPersistentAuth);
-                    }
-                    else {
-                        log("Failed requesting code.");
-                        Toast.makeText(LoginActivity.this, response.message, Toast.LENGTH_LONG)
-                             .show();
-                        sessionManager.clear();
-                        return;
-                    }
+        AuthRepository.getInstance()
+                      .requestSignInCode(email,
+                                         password,
+                                         rememberMe,
+                                         new AuthRepositoryCallback<Void>() {
+                                             @Override
+                                             public void onResult(BaseResult<Void> result) {
+                                                 runOnUiThread(() -> {
+                                                     if (result instanceof BaseResult.Fail) {
+                                                         var fail = (BaseResult.Fail<?,
+                                                                 AuthenticationException>) result;
+                                                         var exception = fail.getException();
+                                                         Toast.makeText(LoginActivity.this,
+                                                                        exception.getMessage(),
+                                                                        Toast.LENGTH_LONG).show();
+                                                         log(exception.getMessage(),
+                                                             (Exception) exception.getCause());
+                                                         return;
+                                                     }
 
-                    try {
-                        Intent intent = new Intent(LoginActivity.this,
-                                                   EmailVerificationActivity.class);
-                        startActivity(intent);
-                        finish();
-                    } catch (Exception e) {
-                        logError("Failed opening email verification screen.", e);
-                        throw new RuntimeException(e);
-                    }
-                });
-            }
-
-            @Override
-            public void onError(String message) {
-                runOnUiThread(() -> {
-                    log("Request failed:" + message);
-                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
-                });
-            }
-        });
+                                                     log("Success requesting code.");
+                                                     Intent intent = new Intent(LoginActivity.this,
+                                                                                EmailVerificationActivity.class);
+                                                     startActivity(intent);
+                                                     finish();
+                                                 });
+                                             }
+                                         });
     }
 
     private void log(String message) {
         Log.d("LOGIN_ACTIVITY", message);
     }
 
-    private void logError(String message, Exception e) {
+    private void log(String message, Exception e) {
         Log.e("LOGIN_ACTIVITY", message, e);
     }
 }
