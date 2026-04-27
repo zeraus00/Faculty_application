@@ -42,12 +42,8 @@ public abstract class AxisResult<T> {
             this.throwable = throwable;
         }
 
-        public Fail(@Nullable Integer code,
-                    @NonNull String message,
-                    @Nullable Throwable throwable) {
-            this.code = code;
-            this.message = message;
-            this.throwable = throwable;
+        public boolean hasThrowable() {
+            return throwable != null;
         }
     }
 }
