@@ -1,4 +1,4 @@
-package com.example.faculty_app.mainapp.attendance.models;
+package com.example.faculty_app.mainapp.attendance.data.local.models;
 
 public class PresentHistoryModel {
 

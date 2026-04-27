@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.mainapp.attendance.models.PresentHistoryModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.PresentHistoryModel;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public class PresentHistoryAdapter extends RecyclerView.Adapter<PresentHistoryAd
     @Override
     public PresentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_present_history, parent, false);
+                                  .inflate(R.layout.item_present_history, parent, false);
         return new PresentViewHolder(view);
     }
 

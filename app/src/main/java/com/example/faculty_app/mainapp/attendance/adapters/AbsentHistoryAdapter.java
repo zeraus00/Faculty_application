@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
-import com.example.faculty_app.mainapp.attendance.models.AbsentHistoryModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.AbsentHistoryModel;
 
 import java.util.List;
 
@@ -18,13 +18,15 @@ public class AbsentHistoryAdapter extends RecyclerView.Adapter<AbsentHistoryAdap
 
     public interface OnAbsentActionListener {
         void onApproveClicked(AbsentHistoryModel item, int position);
+
         void onDenyClicked(AbsentHistoryModel item, int position);
     }
 
     private final List<AbsentHistoryModel> absentList;
     private final OnAbsentActionListener listener;
 
-    public AbsentHistoryAdapter(List<AbsentHistoryModel> absentList, OnAbsentActionListener listener) {
+    public AbsentHistoryAdapter(List<AbsentHistoryModel> absentList,
+                                OnAbsentActionListener listener) {
         this.absentList = absentList;
         this.listener = listener;
     }
@@ -33,7 +35,7 @@ public class AbsentHistoryAdapter extends RecyclerView.Adapter<AbsentHistoryAdap
     @Override
     public AbsentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_absent_history, parent, false);
+                                  .inflate(R.layout.item_absent_history, parent, false);
         return new AbsentViewHolder(view);
     }
 
@@ -52,19 +54,22 @@ public class AbsentHistoryAdapter extends RecyclerView.Adapter<AbsentHistoryAdap
             holder.txtStatusBadge.setTextColor(Color.parseColor("#D08A41"));
             holder.layoutActionButtons.setVisibility(View.VISIBLE);
 
-        } else if ("UNEXCUSED".equalsIgnoreCase(status)) {
+        }
+        else if ("UNEXCUSED".equalsIgnoreCase(status)) {
             holder.txtStatusBadge.setText("UNEXCUSED");
             holder.txtStatusBadge.setBackgroundResource(R.drawable.bg_absent_status_unexcused);
             holder.txtStatusBadge.setTextColor(Color.parseColor("#D65C5C"));
             holder.layoutActionButtons.setVisibility(View.GONE);
 
-        } else if ("APPROVED".equalsIgnoreCase(status)) {
+        }
+        else if ("APPROVED".equalsIgnoreCase(status)) {
             holder.txtStatusBadge.setText("APPROVED");
             holder.txtStatusBadge.setBackgroundResource(R.drawable.bg_absent_status_approved);
             holder.txtStatusBadge.setTextColor(Color.parseColor("#2FA84F"));
             holder.layoutActionButtons.setVisibility(View.GONE);
 
-        } else {
+        }
+        else {
             holder.txtStatusBadge.setText(status);
             holder.layoutActionButtons.setVisibility(View.GONE);
         }

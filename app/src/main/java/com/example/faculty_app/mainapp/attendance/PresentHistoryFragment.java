@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.mainapp.attendance.adapters.PresentHistoryAdapter;
-import com.example.faculty_app.mainapp.attendance.models.PresentHistoryModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.PresentHistoryModel;
 import com.example.faculty_app.mainapp.violations.ViolationHistoryFragment;
 
 import java.util.ArrayList;
@@ -64,37 +64,36 @@ public class PresentHistoryFragment extends Fragment {
             AbsentHistoryFragment absentFragment = new AbsentHistoryFragment();
             absentFragment.setArguments(copyArgs());
 
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, absentFragment)
-                    .addToBackStack(null)
-                    .commit();
+            getParentFragmentManager().beginTransaction()
+                                      .replace(R.id.fragment_container, absentFragment)
+                                      .addToBackStack(null)
+                                      .commit();
         });
 
         violation.setOnClickListener(v -> {
             ViolationHistoryFragment violationFragment = new ViolationHistoryFragment();
             violationFragment.setArguments(copyArgs());
 
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, violationFragment)
-                    .addToBackStack(null)
-                    .commit();
+            getParentFragmentManager().beginTransaction()
+                                      .replace(R.id.fragment_container, violationFragment)
+                                      .addToBackStack(null)
+                                      .commit();
         });
     }
 
     private void bindStudentData() {
         Bundle bundle = getArguments();
-        if (bundle == null) return;
+        if (bundle == null)
+            return;
 
         String name = bundle.getString("student_name", "");
         String id = bundle.getString("student_id", "");
         boolean isPresent = bundle.getBoolean("student_present", true);
         String studentViolation = bundle.getString("student_violation", "").trim();
 
-        boolean hasViolation = !studentViolation.isEmpty()
-                && !studentViolation.equalsIgnoreCase("NO VIOLATION")
-                && !studentViolation.equalsIgnoreCase("NONE");
+        boolean hasViolation =
+                !studentViolation.isEmpty() && !studentViolation.equalsIgnoreCase("NO VIOLATION") &&
+                        !studentViolation.equalsIgnoreCase("NONE");
 
         txtStudentName.setText(name);
         txtStudentId.setText(id);
@@ -114,14 +113,13 @@ public class PresentHistoryFragment extends Fragment {
 
             if (isPresent) {
                 String presentDate = args.getString("present_date", "Mar 10, 2026");
-                String presentDescription = args.getString("present_description", "Marked Present in Class");
+                String presentDescription = args.getString("present_description",
+                                                           "Marked Present in Class");
                 String presentStatus = args.getString("present_status", "PRESENT");
 
-                historyList.add(new PresentHistoryModel(
-                        presentDate,
-                        presentDescription,
-                        presentStatus
-                ));
+                historyList.add(new PresentHistoryModel(presentDate,
+                                                        presentDescription,
+                                                        presentStatus));
             }
         }
 
@@ -140,11 +138,13 @@ public class PresentHistoryFragment extends Fragment {
             data.putString("student_violation", old.getString("student_violation", "NO VIOLATION"));
 
             data.putString("present_date", old.getString("present_date", "Mar 10, 2026"));
-            data.putString("present_description", old.getString("present_description", "Marked Present in Class"));
+            data.putString("present_description",
+                           old.getString("present_description", "Marked Present in Class"));
             data.putString("present_status", old.getString("present_status", "PRESENT"));
 
             data.putString("absent_date", old.getString("absent_date", "Mar 9, 2026"));
-            data.putString("absent_description", old.getString("absent_description", "Marked Absent in Class"));
+            data.putString("absent_description",
+                           old.getString("absent_description", "Marked Absent in Class"));
             data.putString("absent_status", old.getString("absent_status", "UNEXCUSED"));
         }
 

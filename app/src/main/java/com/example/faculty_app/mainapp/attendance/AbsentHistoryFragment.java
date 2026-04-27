@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.mainapp.attendance.adapters.AbsentHistoryAdapter;
-import com.example.faculty_app.mainapp.attendance.models.AbsentHistoryModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.AbsentHistoryModel;
 import com.example.faculty_app.mainapp.violations.ViolationHistoryFragment;
 
 import java.util.ArrayList;
@@ -63,37 +63,36 @@ public class AbsentHistoryFragment extends Fragment {
             PresentHistoryFragment fragment = new PresentHistoryFragment();
             fragment.setArguments(copyArgs());
 
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
-                    .commit();
+            getParentFragmentManager().beginTransaction()
+                                      .replace(R.id.fragment_container, fragment)
+                                      .addToBackStack(null)
+                                      .commit();
         });
 
         violation.setOnClickListener(v -> {
             ViolationHistoryFragment fragment = new ViolationHistoryFragment();
             fragment.setArguments(copyArgs());
 
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
-                    .commit();
+            getParentFragmentManager().beginTransaction()
+                                      .replace(R.id.fragment_container, fragment)
+                                      .addToBackStack(null)
+                                      .commit();
         });
     }
 
     private void bindStudentData() {
         Bundle bundle = getArguments();
-        if (bundle == null) return;
+        if (bundle == null)
+            return;
 
         String name = bundle.getString("student_name", "");
         String id = bundle.getString("student_id", "");
         boolean isPresent = bundle.getBoolean("student_present", false);
         String studentViolation = bundle.getString("student_violation", "").trim();
 
-        boolean hasViolation = !studentViolation.isEmpty()
-                && !studentViolation.equalsIgnoreCase("NO VIOLATION")
-                && !studentViolation.equalsIgnoreCase("NONE");
+        boolean hasViolation =
+                !studentViolation.isEmpty() && !studentViolation.equalsIgnoreCase("NO VIOLATION") &&
+                        !studentViolation.equalsIgnoreCase("NONE");
 
         txtStudentName.setText(name);
         txtStudentId.setText(id);
@@ -112,39 +111,37 @@ public class AbsentHistoryFragment extends Fragment {
             boolean isPresent = args.getBoolean("student_present", false);
 
             String absentDate = args.getString("absent_date", "Mar 9, 2026");
-            String absentDescription = args.getString("absent_description", "Marked Absent in Class");
+            String absentDescription = args.getString("absent_description",
+                                                      "Marked Absent in Class");
             String absentStatus = args.getString("absent_status", "UNEXCUSED");
 
             if (!isPresent) {
-                absentList.add(new AbsentHistoryModel(
-                        absentDate,
-                        absentDescription,
-                        absentStatus
-                ));
+                absentList.add(new AbsentHistoryModel(absentDate, absentDescription, absentStatus));
             }
         }
 
-        absentAdapter = new AbsentHistoryAdapter(absentList, new AbsentHistoryAdapter.OnAbsentActionListener() {
-            @Override
-            public void onApproveClicked(AbsentHistoryModel item, int position) {
-                absentList.set(position, new AbsentHistoryModel(
-                        item.getDate(),
-                        item.getDescription(),
-                        "APPROVED"
-                ));
-                absentAdapter.notifyItemChanged(position);
-            }
+        absentAdapter = new AbsentHistoryAdapter(absentList,
+                                                 new AbsentHistoryAdapter.OnAbsentActionListener() {
+                                                     @Override
+                                                     public void onApproveClicked(AbsentHistoryModel item,
+                                                                                  int position) {
+                                                         absentList.set(position,
+                                                                        new AbsentHistoryModel(item.getDate(),
+                                                                                               item.getDescription(),
+                                                                                               "APPROVED"));
+                                                         absentAdapter.notifyItemChanged(position);
+                                                     }
 
-            @Override
-            public void onDenyClicked(AbsentHistoryModel item, int position) {
-                absentList.set(position, new AbsentHistoryModel(
-                        item.getDate(),
-                        item.getDescription(),
-                        "UNEXCUSED"
-                ));
-                absentAdapter.notifyItemChanged(position);
-            }
-        });
+                                                     @Override
+                                                     public void onDenyClicked(AbsentHistoryModel item,
+                                                                               int position) {
+                                                         absentList.set(position,
+                                                                        new AbsentHistoryModel(item.getDate(),
+                                                                                               item.getDescription(),
+                                                                                               "UNEXCUSED"));
+                                                         absentAdapter.notifyItemChanged(position);
+                                                     }
+                                                 });
 
         absentRecyclerView.setAdapter(absentAdapter);
     }
@@ -160,7 +157,8 @@ public class AbsentHistoryFragment extends Fragment {
             data.putString("student_violation", old.getString("student_violation", "NO VIOLATION"));
 
             data.putString("absent_date", old.getString("absent_date", "Mar 9, 2026"));
-            data.putString("absent_description", old.getString("absent_description", "Marked Absent in Class"));
+            data.putString("absent_description",
+                           old.getString("absent_description", "Marked Absent in Class"));
             data.putString("absent_status", old.getString("absent_status", "UNEXCUSED"));
         }
 
