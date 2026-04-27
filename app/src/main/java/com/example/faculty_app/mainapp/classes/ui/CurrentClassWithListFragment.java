@@ -19,6 +19,7 @@ import com.example.faculty_app.R;
 import com.example.faculty_app.mainapp.classes.ClassAdapter;
 import com.example.faculty_app.mainapp.classes.data.local.models.ClassDto;
 import com.example.faculty_app.mainapp.classes.data.local.ClassesViewModel;
+import com.example.faculty_app.mainapp.classes.data.local.models.RuntimeDto;
 import com.example.faculty_app.mainapp.classes.services.ScheduleService;
 import com.example.faculty_app.shared.ServiceCallback;
 import com.example.faculty_app.shared.ServiceResult;
@@ -26,6 +27,12 @@ import com.example.faculty_app.shared.ServiceResult;
 import java.util.ArrayList;
 
 public class CurrentClassWithListFragment extends Fragment {
+    TextView runtimeStatus;
+    TextView runtimeName;
+    TextView runtimeCode;
+    TextView runtimeSchedule;
+    TextView runtimeRoom;
+    TextView seeAll;
     private ClassesViewModel viewModel;
     private final ArrayList<ClassDto> classList = new ArrayList<>();
     private ClassAdapter adapter;
@@ -47,19 +54,8 @@ public class CurrentClassWithListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        loadViews(view);
 
-        viewModel = new ViewModelProvider(requireActivity()).get(ClassesViewModel.class);
-
-        RecyclerView recyclerView = view.findViewById(R.id.classesRecyclerView);
-        if (getContext() != null) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        }
-
-        adapter = new ClassAdapter(classList);
-        recyclerView.setAdapter(adapter);
-
-        // Handle the See All Click
-        TextView seeAll = view.findViewById(R.id.seeAll);
         seeAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +71,7 @@ public class CurrentClassWithListFragment extends Fragment {
         });
 
         viewModel.getClassesToday().observe(getViewLifecycleOwner(), (this::updateClassList));
+        viewModel.getRuntime().observe(getViewLifecycleOwner(), (this::updateRuntime));
 
         boolean mustRefresh = viewModel.getClassList().getValue() == null ||
                 viewModel.getClassList().getValue().isEmpty();
@@ -82,6 +79,65 @@ public class CurrentClassWithListFragment extends Fragment {
         if (mustRefresh) {
             loadClasses();
         }
+
+        boolean mustRefreshRuntime = viewModel.getRuntime().getValue() == null ||
+                viewModel.getRuntime().getValue().runtimeStatus.equals("offline");
+
+        if (mustRefreshRuntime) {
+            loadRuntime();
+        }
+    }
+
+    private void loadViews(View view) {
+        runtimeStatus = view.findViewById(R.id.txt_runtime_status);
+        runtimeName = view.findViewById(R.id.txt_runtime_name);
+        runtimeCode = view.findViewById(R.id.txt_runtime_code);
+        runtimeSchedule = view.findViewById(R.id.txt_runtime_schedule);
+        runtimeRoom = view.findViewById(R.id.txt_runtime_room);
+
+        viewModel = new ViewModelProvider(requireActivity()).get(ClassesViewModel.class);
+
+        RecyclerView recyclerView = view.findViewById(R.id.classesRecyclerView);
+        if (getContext() != null) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        }
+
+        adapter = new ClassAdapter(classList);
+        recyclerView.setAdapter(adapter);
+
+        seeAll = view.findViewById(R.id.seeAll);
+    }
+
+    private void loadRuntime() {
+        ScheduleService.getCurrentOrNextClass(new ServiceCallback<RuntimeDto>() {
+            @Override
+            public void onResult(ServiceResult<RuntimeDto> result) {
+                if (!isAdded())
+                    return;
+
+                if (!result.getSuccess()) {
+                    Toast.makeText(requireActivity(), result.getMessage(), Toast.LENGTH_LONG)
+                         .show();
+                    Log.e("CURRENT_CLASS_WITH_LIST_FRAGMENT",
+                          "Failed retrieving runtime: " + result.getMessage(),
+                          result.getCause());
+                }
+
+                var runtime = result.getData();
+
+                viewModel.setRuntime(runtime);
+            }
+        });
+    }
+
+    private void updateRuntime(RuntimeDto runtime) {
+        requireActivity().runOnUiThread(() -> {
+            runtimeStatus.setText(runtime.runtimeStatus);
+            runtimeName.setText(runtime.name);
+            runtimeCode.setText(runtime.code);
+            runtimeSchedule.setText(runtime.time);
+            runtimeRoom.setText(runtime.room);
+        });
     }
 
     private void loadClasses() {

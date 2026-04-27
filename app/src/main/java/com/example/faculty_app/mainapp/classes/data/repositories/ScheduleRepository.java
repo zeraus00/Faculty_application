@@ -1,5 +1,7 @@
 package com.example.faculty_app.mainapp.classes.data.repositories;
 
+import android.util.Log;
+
 import com.example.faculty_app.core.api.axis.dto.AxisCallback;
 import com.example.faculty_app.core.api.axis.dto.response.AxisResult;
 import com.example.faculty_app.mainapp.classes.data.remote.api.AxisSchedule;
@@ -21,10 +23,12 @@ public class ScheduleRepository {
                 }
                 else if (result instanceof AxisResult.Fail) {
                     var fail = (AxisResult.Fail<ClassList>) result;
-                    callback.onResult(new RepositoryResult.Fail<>(new ClassException(
-                            ClassExceptionCode.API_ERROR,
-                            fail.message,
-                            fail.throwable)));
+                    var code = fail.code;
+                    callback.onResult(new RepositoryResult.Fail<>(new ClassException(code == null ?
+                                                                                     ClassExceptionCode.API_DISCONNECTED :
+                                                                                     ClassExceptionCode.API_EXCEPTION,
+                                                                                     fail.message,
+                                                                                     fail.throwable)));
                 }
             }
         });
@@ -41,10 +45,13 @@ public class ScheduleRepository {
                 else if (result instanceof AxisResult.Fail) {
                     var fail = (AxisResult.Fail<ClassRuntime>) result;
                     var code = fail.code;
-                    callback.onResult(new RepositoryResult.Fail<>(new ClassException(
-                            code != null && code == 404 ?
-                            ClassExceptionCode.NOT_FOUND :
-                            ClassExceptionCode.API_ERROR, fail.message, fail.throwable)));
+                    callback.onResult(new RepositoryResult.Fail<>(new ClassException(code == null ?
+                                                                                     ClassExceptionCode.API_DISCONNECTED :
+                                                                                     code == 404 ?
+                                                                                     ClassExceptionCode.NOT_FOUND :
+                                                                                     ClassExceptionCode.API_EXCEPTION,
+                                                                                     fail.message,
+                                                                                     fail.throwable)));
                 }
             }
         });

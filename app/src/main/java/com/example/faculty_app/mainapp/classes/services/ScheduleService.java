@@ -34,19 +34,34 @@ public class ScheduleService {
                     var exception =
                             ((RepositoryResult.Fail<?, ClassException>) result).getException();
                     var code = exception.getCode();
+
+                    if (code == ClassExceptionCode.API_DISCONNECTED && BuildConfig.USE_MOCK_AUTH) {
+                        callback.onResult(new ServiceResult<>(true,
+                                                              new RuntimeDto("CS-301",
+                                                                             "Automata Theory",
+                                                                             "10:00 A.M.",
+                                                                             "ROOM 402",
+                                                                             "MON",
+                                                                             "Next Class (MOCK " +
+                                                                                     "DATA)"),
+                                                              "Success mocking runtime."));
+                        return;
+                    }
+
+                    var notFound = code == ClassExceptionCode.NOT_FOUND;
                     var message = exception.getMessage();
 
-                    callback.onResult(new ServiceResult<>(false,
+                    callback.onResult(new ServiceResult<>(notFound,
                                                           new RuntimeDto("",
-                                                                         code ==
-                                                                                 ClassExceptionCode.NOT_FOUND ?
-                                                                         "No classes today." :
-                                                                         "Something went wrong.",
+                                                                         notFound ?
+                                                                         "No classes today" :
+                                                                         "Something went wrong",
                                                                          "",
                                                                          "",
                                                                          "",
                                                                          ""),
-                                                          message));
+                                                          message,
+                                                          exception.getCause()));
                 }
             }
         });
@@ -73,7 +88,8 @@ public class ScheduleService {
                 else if (result instanceof RepositoryResult.Fail) {
                     var exception = ((RepositoryResult.Fail<?, ?>) result).getException();
                     var code = exception.getCode();
-                    if (code == null && BuildConfig.DEBUG && BuildConfig.USE_MOCK_AUTH) {
+                    if (code == ClassExceptionCode.API_DISCONNECTED && BuildConfig.DEBUG &&
+                            BuildConfig.USE_MOCK_AUTH) {
                         callback.onResult(new ServiceResult<>(true,
                                                               getMockClasses(),
                                                               "Success mocking classes."));
