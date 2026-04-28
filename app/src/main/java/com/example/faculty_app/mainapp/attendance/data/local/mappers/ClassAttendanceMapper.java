@@ -1,8 +1,8 @@
 package com.example.faculty_app.mainapp.attendance.data.local.mappers;
 
-import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.ClassAttendanceViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.AttendanceItemViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.SummaryViewModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.ClassAttendanceModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.AttendanceItemModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.SummaryModel;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessionattendance.AttendanceItemResponse;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessionattendance.SessionAttendanceResponse;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessionattendance.StudentResponse;
@@ -12,45 +12,41 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ClassAttendanceMapper {
-    public static ClassAttendanceViewModel fromApi(SessionAttendanceResponse sessionAttendance) {
-        ArrayList<AttendanceItemViewModel> attendance = fromAttendanceRecordsResponse(
-                sessionAttendance.attendanceRecords);
+    public static ClassAttendanceModel fromApi(SessionAttendanceResponse sessionAttendance) {
+        ArrayList<AttendanceItemModel> attendance =
+                fromAttendanceRecordsResponse(sessionAttendance.attendanceRecords);
 
-        SummaryViewModel summary = fromApiSummary(sessionAttendance.summary);
+        SummaryModel summary = fromApiSummary(sessionAttendance.summary);
 
-        return new ClassAttendanceViewModel(attendance, summary);
+        return new ClassAttendanceModel(attendance, summary);
     }
 
-    public static ClassAttendanceViewModel fromRepositoryFailure() {
-        return new ClassAttendanceViewModel(new ArrayList<>(), new SummaryViewModel(0, 0, 0));
+    public static ClassAttendanceModel fromRepositoryFailure() {
+        return new ClassAttendanceModel(new ArrayList<>(), new SummaryModel(0, 0, 0));
     }
 
-    public static ClassAttendanceViewModel fromMock() {
-        ArrayList<AttendanceItemViewModel> attendanceList = new ArrayList<>(Arrays.asList(
-                new AttendanceItemViewModel(1, "Alice Johnson", "211-442", "present", "NONE"),
-                new AttendanceItemViewModel(2, "Bob Smith", "211-445", "present", "NO ID"),
-                new AttendanceItemViewModel(3, "Charlie Brown", "211-448", "present", "NONE"),
-                new AttendanceItemViewModel(4, "Diana Prince", "211-450", "present", "NONE"),
-                new AttendanceItemViewModel(
+    public static ClassAttendanceModel fromMock() {
+        ArrayList<AttendanceItemModel> attendanceList = new ArrayList<>(Arrays.asList(
+                new AttendanceItemModel(1, "Alice Johnson", "211-442", "present", "NONE"),
+                new AttendanceItemModel(2, "Bob Smith", "211-445", "present", "NO ID"),
+                new AttendanceItemModel(3, "Charlie Brown", "211-448", "present", "NONE"),
+                new AttendanceItemModel(4, "Diana Prince", "211-450", "present", "NONE"),
+                new AttendanceItemModel(
                         5,
                         "Edward Norton",
                         "211-455",
                         "present",
                         "IMPROPER UNIFORM"
                 )
-                                                                                         ));
+                                                                                     ));
 
-        SummaryViewModel summary = new SummaryViewModel(
-                attendanceList.size(),
-                attendanceList.size(),
-                0
-        );
+        SummaryModel summary = new SummaryModel(attendanceList.size(), attendanceList.size(), 0);
 
-        return new ClassAttendanceViewModel(attendanceList, summary);
+        return new ClassAttendanceModel(attendanceList, summary);
     }
 
-    private static ArrayList<AttendanceItemViewModel> fromAttendanceRecordsResponse(ArrayList<AttendanceItemResponse> attendance) {
-        ArrayList<AttendanceItemViewModel> dto = new ArrayList<>();
+    private static ArrayList<AttendanceItemModel> fromAttendanceRecordsResponse(ArrayList<AttendanceItemResponse> attendance) {
+        ArrayList<AttendanceItemModel> dto = new ArrayList<>();
 
         for (AttendanceItemResponse i : attendance) {
             var enrollment = i.enrollment;
@@ -59,7 +55,7 @@ public class ClassAttendanceMapper {
             String fullName = formatName(student);
             String studentNumber = student.studentNumber;
 
-            dto.add(new AttendanceItemViewModel(
+            dto.add(new AttendanceItemModel(
                     enrollment.id,
                     fullName,
                     studentNumber,
@@ -72,12 +68,12 @@ public class ClassAttendanceMapper {
         return dto;
     }
 
-    private static SummaryViewModel fromApiSummary(SummaryResponse summary) {
+    private static SummaryModel fromApiSummary(SummaryResponse summary) {
         int total = summary.totalEnrollments;
         int present = summary.present + summary.late;
         int absent = summary.absent + summary.missingRecords;
 
-        return new SummaryViewModel(total, present, absent);
+        return new SummaryModel(total, present, absent);
     }
 
     private static String formatName(StudentResponse student) {

@@ -5,11 +5,9 @@ import com.example.faculty_app.BuildConfig;
 import com.example.faculty_app.mainapp.attendance.data.local.mappers.ClassAttendanceMapper;
 import com.example.faculty_app.mainapp.attendance.data.local.mappers.SessionsMapper;
 import com.example.faculty_app.mainapp.attendance.data.local.mappers.StudentAttendanceMapper;
-import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.AttendanceItemViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.ClassAttendanceViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.SummaryViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionsViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.StudentAttendanceViewModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.ClassAttendanceModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionsModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.StudentAttendanceModel;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessionattendance.SessionAttendanceResponse;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessions.SessionsResponse;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.studentattendance.StudentAttendance;
@@ -21,11 +19,8 @@ import com.example.faculty_app.shared.RepositoryResult;
 import com.example.faculty_app.shared.ServiceCallback;
 import com.example.faculty_app.shared.ServiceResult;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class AttendanceService {
-    public static void getClassSessions(int classId, ServiceCallback<SessionsViewModel> callback) {
+    public static void getClassSessions(int classId, ServiceCallback<SessionsModel> callback) {
         AttendanceRepository.fetchSessions(
                 classId, new RepositoryCallback<SessionsResponse>() {
                     @Override
@@ -65,7 +60,7 @@ public class AttendanceService {
     }
 
     public static void getClassAttendance(int classSessionId,
-                                          ServiceCallback<ClassAttendanceViewModel> callback) {
+                                          ServiceCallback<ClassAttendanceModel> callback) {
         AttendanceRepository.fetchSessionAttendance(
                 classSessionId, new RepositoryCallback<SessionAttendanceResponse>() {
                     @Override
@@ -108,7 +103,7 @@ public class AttendanceService {
     }
 
     public static void getStudentAttendance(int enrollmentId,
-                                            ServiceCallback<StudentAttendanceViewModel> callback) {
+                                            ServiceCallback<StudentAttendanceModel> callback) {
         AttendanceRepository.fetchStudentAttendance(
                 enrollmentId, new RepositoryCallback<StudentAttendance>() {
                     @Override

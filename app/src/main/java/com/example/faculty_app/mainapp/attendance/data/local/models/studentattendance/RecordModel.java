@@ -2,13 +2,13 @@ package com.example.faculty_app.mainapp.attendance.data.local.models.studentatte
 
 import androidx.annotation.Nullable;
 
-public class RecordViewModel {
+public class RecordModel {
     @Nullable
     Integer id;
     String status;
     String time;
 
-    public RecordViewModel(@Nullable Integer id, String status, String time) {
+    public RecordModel(@Nullable Integer id, String status, String time) {
         this.id = id;
         this.status = status;
         this.time = time;

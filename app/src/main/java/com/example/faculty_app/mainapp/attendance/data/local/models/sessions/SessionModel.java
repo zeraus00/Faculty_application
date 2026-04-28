@@ -2,7 +2,7 @@ package com.example.faculty_app.mainapp.attendance.data.local.models.sessions;
 
 import androidx.annotation.NonNull;
 
-public class SessionViewModel {
+public class SessionModel {
     public int id;
     public int classOffering;
     @NonNull
@@ -12,12 +12,12 @@ public class SessionViewModel {
     public int startTimeMs;
     public int getStartTimeMs;
 
-    public SessionViewModel(int id,
-                            int classOffering,
-                            @NonNull String status,
-                            @NonNull String date,
-                            int startTimeMs,
-                            int getStartTimeMs) {
+    public SessionModel(int id,
+                        int classOffering,
+                        @NonNull String status,
+                        @NonNull String date,
+                        int startTimeMs,
+                        int getStartTimeMs) {
         this.id = id;
         this.classOffering = classOffering;
         this.status = status;

@@ -1,6 +1,6 @@
 package com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance;
 
-public class StudentViewModel {
+public class StudentModel {
     int enrollmentId;
     String enrollmentStatus;
     int studentId;
@@ -10,14 +10,14 @@ public class StudentViewModel {
     String middleName;
     String fullName;
 
-    public StudentViewModel(int enrollmentId,
-                            String enrollmentStatus,
-                            int studentId,
-                            String studentNumber,
-                            String surname,
-                            String firstName,
-                            String middleName,
-                            String fullName) {
+    public StudentModel(int enrollmentId,
+                        String enrollmentStatus,
+                        int studentId,
+                        String studentNumber,
+                        String surname,
+                        String firstName,
+                        String middleName,
+                        String fullName) {
         this.enrollmentId = enrollmentId;
         this.enrollmentStatus = enrollmentStatus;
         this.studentId = studentId;

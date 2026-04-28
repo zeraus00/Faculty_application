@@ -1,11 +1,11 @@
 package com.example.faculty_app.mainapp.attendance.data.local.mappers;
 
-import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.HistoryItemViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.RecordViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.SessionViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.StudentAttendanceViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.StudentViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.SummaryViewModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.HistoryItemModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.RecordModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.SessionModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.StudentAttendanceModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.StudentModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.SummaryModel;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.studentattendance.HistoryItemResponse;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.studentattendance.StudentResponse;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.studentattendance.StudentAttendance;
@@ -13,13 +13,13 @@ import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.stud
 import java.util.ArrayList;
 
 public class StudentAttendanceMapper {
-    public static StudentAttendanceViewModel fromApi(StudentAttendance data) {
+    public static StudentAttendanceModel fromApi(StudentAttendance data) {
         var enrollment = data.enrollment;
         var student = data.student;
         var history = data.history;
         var summary = data.summary;
 
-        StudentViewModel studentViewModel = new StudentViewModel(
+        StudentModel studentViewModel = new StudentModel(
                 enrollment.id,
                 enrollment.status,
                 student.id,
@@ -30,19 +30,19 @@ public class StudentAttendanceMapper {
                 formatName(student)
         );
 
-        ArrayList<HistoryItemViewModel> historyViewModel = fromApiHistory(history);
+        ArrayList<HistoryItemModel> historyViewModel = fromApiHistory(history);
 
-        SummaryViewModel summaryViewModel = new SummaryViewModel(
+        SummaryModel summaryViewModel = new SummaryModel(
                 summary.totalSessions,
                 summary.present + summary.late,
                 summary.absent + summary.missingRecords
         );
 
-        return new StudentAttendanceViewModel(studentViewModel, historyViewModel, summaryViewModel);
+        return new StudentAttendanceModel(studentViewModel, historyViewModel, summaryViewModel);
     }
 
-    public static StudentAttendanceViewModel fromRepositoryFailure(String failureMessage) {
-        StudentViewModel studentViewModel = new StudentViewModel(
+    public static StudentAttendanceModel fromRepositoryFailure(String failureMessage) {
+        StudentModel studentViewModel = new StudentModel(
                 -1,
                 "",
                 -1,
@@ -53,22 +53,26 @@ public class StudentAttendanceMapper {
                 failureMessage
         );
 
-        ArrayList<HistoryItemViewModel> historyViewModel = new ArrayList<>();
+        ArrayList<HistoryItemModel> historyViewModel = new ArrayList<>();
 
-        SummaryViewModel summaryViewModel = new SummaryViewModel(0, 0, 0);
+        SummaryModel summaryViewModel = new SummaryModel(0, 0, 0);
 
-        return new StudentAttendanceViewModel(studentViewModel, historyViewModel, summaryViewModel);
+        return new StudentAttendanceModel(studentViewModel, historyViewModel, summaryViewModel);
     }
 
-    private static ArrayList<HistoryItemViewModel> fromApiHistory(ArrayList<HistoryItemResponse> data) {
-        ArrayList<HistoryItemViewModel> historyViewModel = new ArrayList<>();
+    private static ArrayList<HistoryItemModel> fromApiHistory(ArrayList<HistoryItemResponse> data) {
+        ArrayList<HistoryItemModel> historyViewModel = new ArrayList<>();
 
         for (HistoryItemResponse item : data) {
             var record = item.record;
             var session = item.session;
-            historyViewModel.add(new HistoryItemViewModel(
-                    new RecordViewModel(record.id, record.status, record.time),
-                    new SessionViewModel(session.id, session.status, session.date)
+            historyViewModel.add(new HistoryItemModel(
+                    new RecordModel(
+                            record.id,
+                            record.status,
+                            record.time
+                    ),
+                    new SessionModel(session.id, session.status, session.date)
             ));
         }
 

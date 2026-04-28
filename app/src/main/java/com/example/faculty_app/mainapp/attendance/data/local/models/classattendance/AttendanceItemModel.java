@@ -2,7 +2,7 @@ package com.example.faculty_app.mainapp.attendance.data.local.models.classattend
 
 import androidx.annotation.NonNull;
 
-public class AttendanceItemViewModel {
+public class AttendanceItemModel {
     private int enrollmentId;
     @NonNull
     private String name;
@@ -13,11 +13,11 @@ public class AttendanceItemViewModel {
     @NonNull
     private String violation;
 
-    public AttendanceItemViewModel(int enrollmentId,
-                                   @NonNull String name,
-                                   @NonNull String studentNumber,
-                                   @NonNull String status,
-                                   @NonNull String violation) {
+    public AttendanceItemModel(int enrollmentId,
+                               @NonNull String name,
+                               @NonNull String studentNumber,
+                               @NonNull String status,
+                               @NonNull String violation) {
         this.enrollmentId = enrollmentId;
         this.name = name;
         this.studentNumber = studentNumber;

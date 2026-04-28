@@ -1,17 +1,17 @@
 package com.example.faculty_app.mainapp.attendance.data.local.mappers;
 
-import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionViewModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionsViewModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionsModel;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessions.SessionResponse;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessions.SessionsResponse;
 
 import java.util.ArrayList;
 
 public class SessionsMapper {
-    public static SessionsViewModel fromApi(SessionsResponse data) {
-        ArrayList<SessionViewModel> sessionModels = new ArrayList<>();
+    public static SessionsModel fromApi(SessionsResponse data) {
+        ArrayList<SessionModel> sessionModels = new ArrayList<>();
         for (SessionResponse session : data.sessions) {
-            sessionModels.add(new SessionViewModel(
+            sessionModels.add(new SessionModel(
                     session.id,
                     session.classOfferingId,
                     session.status,
@@ -21,10 +21,10 @@ public class SessionsMapper {
             ));
         }
 
-        return new SessionsViewModel(sessionModels);
+        return new SessionsModel(sessionModels);
     }
 
-    public static SessionsViewModel fromRepositoryFailure() {
-        return new SessionsViewModel(new ArrayList<>());
+    public static SessionsModel fromRepositoryFailure() {
+        return new SessionsModel(new ArrayList<>());
     }
 }
