@@ -38,7 +38,9 @@ public class ClassAttendanceMapper {
                     enrollment.id,
                     fullName,
                     studentNumber,
-                    record.status
+                    record.status,
+                    ""
+                    // todo: replace this
             ));
         }
 
