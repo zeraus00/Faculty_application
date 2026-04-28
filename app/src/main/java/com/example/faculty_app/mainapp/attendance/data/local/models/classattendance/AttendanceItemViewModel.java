@@ -52,4 +52,8 @@ public class AttendanceItemViewModel {
     public void setStatus(@NonNull String status) {
         this.status = status;
     }
+
+    public void setViolation(@NonNull String violation) {
+        this.violation = violation;
+    }
 }
