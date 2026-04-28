@@ -5,7 +5,9 @@ import com.example.faculty_app.BuildConfig;
 import com.example.faculty_app.mainapp.attendance.data.local.mappers.ClassAttendanceMapper;
 import com.example.faculty_app.mainapp.attendance.data.local.mappers.SessionsMapper;
 import com.example.faculty_app.mainapp.attendance.data.local.mappers.StudentAttendanceMapper;
+import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.AttendanceItemViewModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.ClassAttendanceViewModel;
+import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.SummaryViewModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionsViewModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.StudentAttendanceViewModel;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessionattendance.SessionAttendanceResponse;
@@ -18,6 +20,9 @@ import com.example.faculty_app.shared.RepositoryCallback;
 import com.example.faculty_app.shared.RepositoryResult;
 import com.example.faculty_app.shared.ServiceCallback;
 import com.example.faculty_app.shared.ServiceResult;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class AttendanceService {
     public static void getClassSessions(int classId, ServiceCallback<SessionsViewModel> callback) {
@@ -81,7 +86,11 @@ public class AttendanceService {
 
                             if (code == AttendanceExceptionCode.API_DISCONNECTED &&
                                     BuildConfig.USE_MOCK_AUTH) {
-                                //  todo: mock here
+                                callback.onResult(new ServiceResult<>(
+                                        true,
+                                        ClassAttendanceMapper.fromMock(),
+                                        "Success mocking class attendance."
+                                ));
                             }
 
                             var message = exception.getMessage();

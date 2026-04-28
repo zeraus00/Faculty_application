@@ -9,6 +9,7 @@ import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sess
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessionattendance.SummaryResponse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ClassAttendanceMapper {
     public static ClassAttendanceViewModel fromApi(SessionAttendanceResponse sessionAttendance) {
@@ -22,6 +23,30 @@ public class ClassAttendanceMapper {
 
     public static ClassAttendanceViewModel fromRepositoryFailure() {
         return new ClassAttendanceViewModel(new ArrayList<>(), new SummaryViewModel(0, 0, 0));
+    }
+
+    public static ClassAttendanceViewModel fromMock() {
+        ArrayList<AttendanceItemViewModel> attendanceList = new ArrayList<>(Arrays.asList(
+                new AttendanceItemViewModel(1, "Alice Johnson", "211-442", "present", "NONE"),
+                new AttendanceItemViewModel(2, "Bob Smith", "211-445", "present", "NO ID"),
+                new AttendanceItemViewModel(3, "Charlie Brown", "211-448", "present", "NONE"),
+                new AttendanceItemViewModel(4, "Diana Prince", "211-450", "present", "NONE"),
+                new AttendanceItemViewModel(
+                        5,
+                        "Edward Norton",
+                        "211-455",
+                        "present",
+                        "IMPROPER UNIFORM"
+                )
+                                                                                         ));
+
+        SummaryViewModel summary = new SummaryViewModel(
+                attendanceList.size(),
+                attendanceList.size(),
+                0
+        );
+
+        return new ClassAttendanceViewModel(attendanceList, summary);
     }
 
     private static ArrayList<AttendanceItemViewModel> fromAttendanceRecordsResponse(ArrayList<AttendanceItemResponse> attendance) {
