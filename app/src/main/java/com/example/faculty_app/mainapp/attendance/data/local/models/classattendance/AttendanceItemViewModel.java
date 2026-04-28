@@ -3,15 +3,15 @@ package com.example.faculty_app.mainapp.attendance.data.local.models.classattend
 import androidx.annotation.NonNull;
 
 public class AttendanceItemViewModel {
-    public int enrollmentId;
+    private int enrollmentId;
     @NonNull
-    public String name;
+    private String name;
     @NonNull
-    public String studentNumber;
+    private String studentNumber;
     @NonNull
-    public String status;
+    private String status;
     @NonNull
-    public String violation;
+    private String violation;
 
     public AttendanceItemViewModel(int enrollmentId,
                                    @NonNull String name,
@@ -23,5 +23,33 @@ public class AttendanceItemViewModel {
         this.studentNumber = studentNumber;
         this.status = status;
         this.violation = violation;
+    }
+
+    public int getEnrollmentId() {
+        return enrollmentId;
+    }
+
+    @NonNull
+    public String getName() {
+        return name;
+    }
+
+    @NonNull
+    public String getStudentNumber() {
+        return studentNumber;
+    }
+
+    @NonNull
+    public String getStatus() {
+        return status;
+    }
+
+    @NonNull
+    public String getViolation() {
+        return violation;
+    }
+
+    public void setStatus(@NonNull String status) {
+        this.status = status;
     }
 }

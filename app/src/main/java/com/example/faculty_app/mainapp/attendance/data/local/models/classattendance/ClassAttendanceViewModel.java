@@ -3,12 +3,20 @@ package com.example.faculty_app.mainapp.attendance.data.local.models.classattend
 import java.util.ArrayList;
 
 public class ClassAttendanceViewModel {
-    public ArrayList<AttendanceItemViewModel> attendance;
-    public SummaryViewModel summary;
+    private ArrayList<AttendanceItemViewModel> attendance;
+    private SummaryViewModel summary;
 
     public ClassAttendanceViewModel(ArrayList<AttendanceItemViewModel> attendance,
                                     SummaryViewModel summary) {
         this.attendance = attendance;
         this.summary = summary;
+    }
+
+    public ArrayList<AttendanceItemViewModel> getAttendance() {
+        return attendance;
+    }
+
+    public SummaryViewModel getSummary() {
+        return summary;
     }
 }
