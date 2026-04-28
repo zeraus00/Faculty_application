@@ -1,6 +1,6 @@
 package com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessionattendance;
 
-public class Student {
+public class StudentResponse {
     public int id;
     public String studentNumber;
     public String surname;

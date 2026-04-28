@@ -6,8 +6,8 @@ import com.example.faculty_app.mainapp.attendance.data.local.models.studentatten
 import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.StudentAttendanceViewModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.StudentViewModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.SummaryViewModel;
-import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.studentattendance.HistoryItem;
-import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.studentattendance.Student;
+import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.studentattendance.HistoryItemResponse;
+import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.studentattendance.StudentResponse;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.studentattendance.StudentAttendance;
 
 import java.util.ArrayList;
@@ -60,18 +60,14 @@ public class StudentAttendanceMapper {
         return new StudentAttendanceViewModel(studentViewModel, historyViewModel, summaryViewModel);
     }
 
-    private static ArrayList<HistoryItemViewModel> fromApiHistory(ArrayList<HistoryItem> data) {
+    private static ArrayList<HistoryItemViewModel> fromApiHistory(ArrayList<HistoryItemResponse> data) {
         ArrayList<HistoryItemViewModel> historyViewModel = new ArrayList<>();
 
-        for (HistoryItem item : data) {
+        for (HistoryItemResponse item : data) {
             var record = item.record;
             var session = item.session;
             historyViewModel.add(new HistoryItemViewModel(
-                    new RecordViewModel(
-                            record.id,
-                            record.status,
-                            record.time
-                    ),
+                    new RecordViewModel(record.id, record.status, record.time),
                     new SessionViewModel(session.id, session.status, session.date)
             ));
         }
@@ -79,7 +75,7 @@ public class StudentAttendanceMapper {
         return historyViewModel;
     }
 
-    private static String formatName(Student student) {
+    private static String formatName(StudentResponse student) {
         String surname = student.surname;
         String firstName = student.firstName;
         String middleName = student.middleName;

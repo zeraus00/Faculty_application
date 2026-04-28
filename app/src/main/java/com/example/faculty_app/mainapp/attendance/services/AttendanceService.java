@@ -8,8 +8,8 @@ import com.example.faculty_app.mainapp.attendance.data.local.mappers.StudentAtte
 import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.ClassAttendanceViewModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionsViewModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.studentattendance.StudentAttendanceViewModel;
-import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessionattendance.SessionAttendance;
-import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessions.Sessions;
+import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessionattendance.SessionAttendanceResponse;
+import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessions.SessionsResponse;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.studentattendance.StudentAttendance;
 import com.example.faculty_app.mainapp.attendance.data.repositories.AttendanceRepository;
 import com.example.faculty_app.mainapp.attendance.domain.AttendanceException;
@@ -19,16 +19,15 @@ import com.example.faculty_app.shared.RepositoryResult;
 import com.example.faculty_app.shared.ServiceCallback;
 import com.example.faculty_app.shared.ServiceResult;
 
-import java.util.ArrayList;
-
 public class AttendanceService {
     public static void getClassSessions(int classId, ServiceCallback<SessionsViewModel> callback) {
         AttendanceRepository.fetchSessions(
-                classId, new RepositoryCallback<Sessions>() {
+                classId, new RepositoryCallback<SessionsResponse>() {
                     @Override
-                    public void onResult(RepositoryResult<Sessions> result) {
+                    public void onResult(RepositoryResult<SessionsResponse> result) {
                         if (result instanceof RepositoryResult.Success) {
-                            var data = ((RepositoryResult.Success<Sessions>) result).getData();
+                            var data =
+                                    ((RepositoryResult.Success<SessionsResponse>) result).getData();
                             callback.onResult(new ServiceResult<>(
                                     true,
                                     SessionsMapper.fromApi(data),
@@ -63,12 +62,12 @@ public class AttendanceService {
     public static void getClassAttendance(int classSessionId,
                                           ServiceCallback<ClassAttendanceViewModel> callback) {
         AttendanceRepository.fetchSessionAttendance(
-                classSessionId, new RepositoryCallback<SessionAttendance>() {
+                classSessionId, new RepositoryCallback<SessionAttendanceResponse>() {
                     @Override
-                    public void onResult(RepositoryResult<SessionAttendance> result) {
+                    public void onResult(RepositoryResult<SessionAttendanceResponse> result) {
                         if (result instanceof RepositoryResult.Success) {
                             var data =
-                                    ((RepositoryResult.Success<SessionAttendance>) result).getData();
+                                    ((RepositoryResult.Success<SessionAttendanceResponse>) result).getData();
                             callback.onResult(new ServiceResult<>(
                                     true,
                                     ClassAttendanceMapper.fromApi(data),

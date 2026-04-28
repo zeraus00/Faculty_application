@@ -3,8 +3,8 @@ package com.example.faculty_app.mainapp.attendance.data.remote.response.axis.stu
 import java.util.ArrayList;
 
 public class StudentAttendance {
-    public Enrollment enrollment;
-    public Student student;
-    public ArrayList<HistoryItem> history;
-    public Summary summary;
+    public EnrollmentResponse enrollment;
+    public StudentResponse student;
+    public ArrayList<HistoryItemResponse> history;
+    public SummaryResponse summary;
 }

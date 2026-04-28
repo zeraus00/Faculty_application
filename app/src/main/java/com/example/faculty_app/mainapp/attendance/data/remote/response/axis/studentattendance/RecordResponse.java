@@ -2,12 +2,12 @@ package com.example.faculty_app.mainapp.attendance.data.remote.response.axis.stu
 
 import androidx.annotation.Nullable;
 
-public class Record {
+public class RecordResponse {
     @Nullable
     public Integer id;
     public String status;
     public String time;
 
-    public Record() {
+    public RecordResponse() {
     }
 }

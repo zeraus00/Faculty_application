@@ -4,19 +4,19 @@ import static com.example.faculty_app.core.api.axis.Axis.axisCallback;
 
 import com.example.faculty_app.core.api.axis.Axis;
 import com.example.faculty_app.core.api.axis.dto.AxisCallback;
-import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessionattendance.SessionAttendance;
-import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessions.Sessions;
+import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessionattendance.SessionAttendanceResponse;
+import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessions.SessionsResponse;
 import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.studentattendance.StudentAttendance;
 
 public class AxisAttendance {
     private static AxisAttendanceClient client;
 
-    public static void getSessions(int classId, AxisCallback<Sessions> callback) {
+    public static void getSessions(int classId, AxisCallback<SessionsResponse> callback) {
         getClient().getSessions(classId).enqueue(axisCallback(callback));
     }
 
     public static void getSessionAttendance(int classSessionId,
-                                            AxisCallback<SessionAttendance> callback) {
+                                            AxisCallback<SessionAttendanceResponse> callback) {
         getClient().getSessionAttendance(classSessionId).enqueue(axisCallback(callback));
     }
 

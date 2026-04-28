@@ -2,15 +2,15 @@ package com.example.faculty_app.mainapp.attendance.data.local.mappers;
 
 import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionViewModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionsViewModel;
-import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessions.Session;
-import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessions.Sessions;
+import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessions.SessionResponse;
+import com.example.faculty_app.mainapp.attendance.data.remote.response.axis.sessions.SessionsResponse;
 
 import java.util.ArrayList;
 
 public class SessionsMapper {
-    public static SessionsViewModel fromApi(Sessions data) {
+    public static SessionsViewModel fromApi(SessionsResponse data) {
         ArrayList<SessionViewModel> sessionModels = new ArrayList<>();
-        for (Session session : data.sessions) {
+        for (SessionResponse session : data.sessions) {
             sessionModels.add(new SessionViewModel(
                     session.id,
                     session.classOfferingId,
