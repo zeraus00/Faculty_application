@@ -3,8 +3,8 @@ package com.example.faculty_app.mainapp.attendance.data.local.models.classattend
 import java.util.ArrayList;
 
 public class ClassAttendanceModel {
-    private ArrayList<AttendanceItemModel> attendance;
-    private SummaryModel summary;
+    private final ArrayList<AttendanceItemModel> attendance;
+    private final SummaryModel summary;
 
     public ClassAttendanceModel(ArrayList<AttendanceItemModel> attendance, SummaryModel summary) {
         this.attendance = attendance;

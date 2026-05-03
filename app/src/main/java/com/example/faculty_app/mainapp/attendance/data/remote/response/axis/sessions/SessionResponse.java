@@ -5,8 +5,8 @@ public class SessionResponse {
     public int classOfferingId;
     public String status;
     public String datePh;
-    public int startTimeMs;
-    public int endTimeMs;
+    public long startTimeMs;
+    public long endTimeMs;
 
     public SessionResponse() {
     }

@@ -15,7 +15,7 @@ public interface AxisAttendanceClient {
     Call<AxisSessions> getSessions(@Path("classId") int classId);
 
     @Headers("X-Inject-Auth: true")
-    @GET("/enrollments/attendance/class/offering/session/{classSessionId}")
+    @GET("/enrollments/attendance/records/class/offering/session/{classSessionId}")
     Call<AxisSessionAttendance> getSessionAttendance(@Path("classSessionId") int classSessionId);
 
     @Headers("X-Inject-Auth: true")

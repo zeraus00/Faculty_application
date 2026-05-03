@@ -16,16 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.mainapp.attendance.PresentHistoryFragment;
+import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.AttendanceItemModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.ClassAttendanceModel;
 
+import java.util.ArrayList;
+
 public class ClassAttendanceAdapter extends RecyclerView.Adapter<ClassAttendanceAdapter.ViewHolder> {
-    private final ClassAttendanceModel classAttendance;
+    private final ArrayList<AttendanceItemModel> attendance;
     private final Fragment fragment;
     private boolean isEditMode = false;
 
-    public ClassAttendanceAdapter(Fragment fragment, ClassAttendanceModel classAttendance) {
+    public ClassAttendanceAdapter(Fragment fragment, ArrayList<AttendanceItemModel> attendance) {
         this.fragment = fragment;
-        this.classAttendance = classAttendance;
+        this.attendance = attendance;
     }
 
     @NonNull
@@ -39,7 +42,7 @@ public class ClassAttendanceAdapter extends RecyclerView.Adapter<ClassAttendance
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        var attendanceItem = classAttendance.getAttendance().get(position);
+        var attendanceItem = attendance.get(position);
         var isPresent = attendanceItem.getStatus().equalsIgnoreCase("present");
 
         holder.name.setText(attendanceItem.getName());
@@ -134,7 +137,7 @@ public class ClassAttendanceAdapter extends RecyclerView.Adapter<ClassAttendance
 
     @Override
     public int getItemCount() {
-        return classAttendance.getAttendance().size();
+        return attendance.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

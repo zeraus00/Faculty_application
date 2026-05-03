@@ -3,6 +3,6 @@ package com.example.faculty_app.mainapp.attendance.data.remote.response.axis.ses
 public class OfferingResponse {
     public int id;
     public String weekDay;
-    public int startTime;
-    public int endTime;
+    public String startTime;
+    public String endTime;
 }

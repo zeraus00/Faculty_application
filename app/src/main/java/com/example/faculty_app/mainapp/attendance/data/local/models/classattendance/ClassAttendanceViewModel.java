@@ -4,12 +4,20 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionsModel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClassAttendanceViewModel extends ViewModel {
 
-    private MutableLiveData<ClassAttendanceModel> classAttendance;
-    private MutableLiveData<SessionsModel> sessions;
+    private final MutableLiveData<ClassAttendanceModel> classAttendance =
+            new MutableLiveData<>(new ClassAttendanceModel(new ArrayList<>(),
+            new SummaryModel(0, 0, 0)
+    ));
+    private final MutableLiveData<SessionsModel> sessions = new MutableLiveData<>(new SessionsModel(
+            new ArrayList<>()));
 
     public void setClassAttendance(@NonNull ClassAttendanceModel classAttendance) {
         this.classAttendance.setValue(classAttendance);

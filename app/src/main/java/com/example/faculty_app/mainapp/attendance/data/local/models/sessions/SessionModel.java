@@ -9,15 +9,15 @@ public class SessionModel {
     public String status;
     @NonNull
     public String date;
-    public int startTimeMs;
-    public int getStartTimeMs;
+    public long startTimeMs;
+    public long getStartTimeMs;
 
     public SessionModel(int id,
                         int classOffering,
                         @NonNull String status,
                         @NonNull String date,
-                        int startTimeMs,
-                        int getStartTimeMs) {
+                        long startTimeMs,
+                        long getStartTimeMs) {
         this.id = id;
         this.classOffering = classOffering;
         this.status = status;

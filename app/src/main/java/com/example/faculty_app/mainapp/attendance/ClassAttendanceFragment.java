@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
 import com.example.faculty_app.mainapp.attendance.adapters.ClassAttendanceAdapter;
+import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.AttendanceItemModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.ClassAttendanceModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.ClassAttendanceViewModel;
 import com.example.faculty_app.mainapp.attendance.data.local.models.sessions.SessionsModel;
@@ -29,13 +30,15 @@ import com.example.faculty_app.mainapp.attendance.services.AttendanceService;
 import com.example.faculty_app.shared.ServiceCallback;
 import com.example.faculty_app.shared.ServiceResult;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class ClassAttendanceFragment extends Fragment {
     private int classId;
     private ClassAttendanceAdapter adapter;
     private ClassAttendanceViewModel viewModel;
-    private ClassAttendanceModel classAttendance;
+    private final ArrayList<AttendanceItemModel> attendance = new ArrayList<>();
     private TextView txtTotal, txtPresent, txtAbsent, btnEdit;
     private boolean isEditMode = false;
 
@@ -121,7 +124,7 @@ public class ClassAttendanceFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.studentRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new ClassAttendanceAdapter(this, classAttendance);
+        adapter = new ClassAttendanceAdapter(this, attendance);
         recyclerView.setAdapter(adapter);
     }
 
@@ -142,7 +145,7 @@ public class ClassAttendanceFragment extends Fragment {
                                  .show();
                             Log.e(
                                     "CLASS_ATTENDANCE_FRAGMENT",
-                                    "Failed retrieving class attendance: " + result.getMessage(),
+                                    "Failed retrieving class sessions: " + result.getMessage(),
                                     result.getCause()
                                  );
                         }
@@ -156,9 +159,15 @@ public class ClassAttendanceFragment extends Fragment {
     }
 
     private void updateSessions(SessionsModel data) {
-        var recentId = data.sessions.getLast().id;
+        try {
+            Log.d("CLASS_ATTENDANCE_FRAGMENT", data.sessions.toString());
 
-        loadClassAttendance(recentId);
+            var recentId = data.sessions.getLast().id;
+
+            loadClassAttendance(recentId);
+        } catch (NoSuchElementException e) {
+            Log.e("CLASS_ATTENDANCE_FRAGMENT", "No sessions found.", e);
+        }
     }
 
     private void loadClassAttendance(int sessionId) {
@@ -193,12 +202,15 @@ public class ClassAttendanceFragment extends Fragment {
 
     private void updateClassAttendance(ClassAttendanceModel data) {
         requireActivity().runOnUiThread(() -> {
-            classAttendance = data;
+            attendance.clear();
+            attendance.addAll(data.getAttendance());
+            adapter.notifyDataSetChanged();
+
             var summary = data.getSummary();
 
-            txtTotal.setText(summary.getTotal());
-            txtPresent.setText(summary.getPresent());
-            txtAbsent.setText(summary.getAbsent());
+            txtTotal.setText("" + summary.getTotal());
+            txtPresent.setText("" + summary.getPresent());
+            txtAbsent.setText("" + summary.getAbsent());
         });
     }
 }

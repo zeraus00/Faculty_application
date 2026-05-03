@@ -27,13 +27,6 @@ public class SessionsMapper {
     }
 
     public static SessionsModel fromRepositoryFailure() {
-        return new SessionsModel(new ArrayList<>(List.of(new SessionModel(
-                -1,
-                -1,
-                "Something went wrong.",
-                "",
-                0,
-                0
-        ))));
+        return new SessionsModel(new ArrayList<>());
     }
 }
