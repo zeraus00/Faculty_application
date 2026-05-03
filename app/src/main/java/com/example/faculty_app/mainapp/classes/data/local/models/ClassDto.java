@@ -3,15 +3,18 @@ package com.example.faculty_app.mainapp.classes.data.local.models;
 import androidx.annotation.Nullable;
 
 public class ClassDto {
-    public String code, name, details, weekDay;
+    public final int id;
+    public final String code, name, details, weekDay;
     @Nullable
-    public Integer weekDayNumeric;
+    public final Integer weekDayNumeric;
 
-    public ClassDto(String c,
+    public ClassDto(int id,
+                    String c,
                     String n,
                     String d,
                     String weekDay,
                     @Nullable Integer weekDayNumeric) {
+        this.id = id;
         this.code = c;
         this.name = n;
         this.details = d;

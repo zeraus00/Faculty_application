@@ -43,7 +43,7 @@
                     android:background="@drawable/profile_background"
                     android:outlineProvider="background"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/img"/>
+                    android:src="@drawable/img" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -61,14 +61,13 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:id="@+id/txtStudentId"
+                        android:id="@+id/txtStudentNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
                         android:text="211-442"
                         android:textColor="#7A7A7A"
                         android:textSize="14sp" />
-
 
 
                     <TextView

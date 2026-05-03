@@ -44,7 +44,7 @@ public class PresentHistoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         txtStudentName = view.findViewById(R.id.txtStudentName);
-        txtStudentId = view.findViewById(R.id.txtStudentId);
+        txtStudentId = view.findViewById(R.id.txtStudentNumber);
         txtStatus = view.findViewById(R.id.txtStatus);
         txtPresentCount = view.findViewById(R.id.txtPresentCount);
         txtAbsentCount = view.findViewById(R.id.txtAbsentCount);
@@ -113,13 +113,17 @@ public class PresentHistoryFragment extends Fragment {
 
             if (isPresent) {
                 String presentDate = args.getString("present_date", "Mar 10, 2026");
-                String presentDescription = args.getString("present_description",
-                                                           "Marked Present in Class");
+                String presentDescription = args.getString(
+                        "present_description",
+                        "Marked Present in Class"
+                                                          );
                 String presentStatus = args.getString("present_status", "PRESENT");
 
-                historyList.add(new PresentHistoryModel(presentDate,
-                                                        presentDescription,
-                                                        presentStatus));
+                historyList.add(new PresentHistoryModel(
+                        presentDate,
+                        presentDescription,
+                        presentStatus
+                ));
             }
         }
 
@@ -138,13 +142,17 @@ public class PresentHistoryFragment extends Fragment {
             data.putString("student_violation", old.getString("student_violation", "NO VIOLATION"));
 
             data.putString("present_date", old.getString("present_date", "Mar 10, 2026"));
-            data.putString("present_description",
-                           old.getString("present_description", "Marked Present in Class"));
+            data.putString(
+                    "present_description",
+                    old.getString("present_description", "Marked Present in Class")
+                          );
             data.putString("present_status", old.getString("present_status", "PRESENT"));
 
             data.putString("absent_date", old.getString("absent_date", "Mar 9, 2026"));
-            data.putString("absent_description",
-                           old.getString("absent_description", "Marked Absent in Class"));
+            data.putString(
+                    "absent_description",
+                    old.getString("absent_description", "Marked Absent in Class")
+                          );
             data.putString("absent_status", old.getString("absent_status", "UNEXCUSED"));
         }
 

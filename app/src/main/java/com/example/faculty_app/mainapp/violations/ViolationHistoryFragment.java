@@ -43,7 +43,7 @@ public class ViolationHistoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         txtStudentName = view.findViewById(R.id.txtStudentName);
-        txtStudentId = view.findViewById(R.id.txtStudentId);
+        txtStudentId = view.findViewById(R.id.txtStudentNumber);
         txtStatus = view.findViewById(R.id.txtStatus);
         txtPresentCount = view.findViewById(R.id.txtPresentCount);
         txtAbsentCount = view.findViewById(R.id.txtAbsentCount);
@@ -63,37 +63,36 @@ public class ViolationHistoryFragment extends Fragment {
             AbsentHistoryFragment absentFragment = new AbsentHistoryFragment();
             absentFragment.setArguments(copyArgs());
 
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, absentFragment)
-                    .addToBackStack(null)
-                    .commit();
+            getParentFragmentManager().beginTransaction()
+                                      .replace(R.id.fragment_container, absentFragment)
+                                      .addToBackStack(null)
+                                      .commit();
         });
 
         present.setOnClickListener(v -> {
             PresentHistoryFragment recordFragment = new PresentHistoryFragment();
             recordFragment.setArguments(copyArgs());
 
-            getParentFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, recordFragment)
-                    .addToBackStack(null)
-                    .commit();
+            getParentFragmentManager().beginTransaction()
+                                      .replace(R.id.fragment_container, recordFragment)
+                                      .addToBackStack(null)
+                                      .commit();
         });
     }
 
     private void bindStudentData() {
         Bundle args = getArguments();
-        if (args == null) return;
+        if (args == null)
+            return;
 
         String name = args.getString("student_name", "");
         String id = args.getString("student_id", "");
         boolean isPresent = args.getBoolean("student_present", false);
         String studentViolation = args.getString("student_violation", "").trim();
 
-        boolean hasViolation = !studentViolation.isEmpty()
-                && !studentViolation.equalsIgnoreCase("NO VIOLATION")
-                && !studentViolation.equalsIgnoreCase("NONE");
+        boolean hasViolation =
+                !studentViolation.isEmpty() && !studentViolation.equalsIgnoreCase("NO VIOLATION") &&
+                        !studentViolation.equalsIgnoreCase("NONE");
 
         txtStudentName.setText(name);
         txtStudentId.setText(id);
@@ -111,9 +110,9 @@ public class ViolationHistoryFragment extends Fragment {
         if (args != null) {
             String studentViolation = args.getString("student_violation", "").trim();
 
-            boolean hasViolation = !studentViolation.isEmpty()
-                    && !studentViolation.equalsIgnoreCase("NO VIOLATION")
-                    && !studentViolation.equalsIgnoreCase("NONE");
+            boolean hasViolation = !studentViolation.isEmpty() &&
+                    !studentViolation.equalsIgnoreCase("NO VIOLATION") &&
+                    !studentViolation.equalsIgnoreCase("NONE");
 
             if (hasViolation) {
                 violationList.add(new ViolationRecordModel(
@@ -125,18 +124,16 @@ public class ViolationHistoryFragment extends Fragment {
         }
 
         violationAdapter = new ViolationRecordAdapter(
-                violationList,
-                new ViolationRecordAdapter.OnViolationActionListener() {
-                    @Override
-                    public void onMarkSettledClicked(ViolationRecordModel item, int position) {
-                        violationList.set(position, new ViolationRecordModel(
-                                item.getTitle(),
-                                item.getDate(),
-                                "SETTLED"
-                        ));
-                        violationAdapter.notifyItemChanged(position);
-                    }
-                }
+                violationList, new ViolationRecordAdapter.OnViolationActionListener() {
+            @Override
+            public void onMarkSettledClicked(ViolationRecordModel item, int position) {
+                violationList.set(
+                        position,
+                        new ViolationRecordModel(item.getTitle(), item.getDate(), "SETTLED")
+                                 );
+                violationAdapter.notifyItemChanged(position);
+            }
+        }
         );
 
         violationRecyclerView.setAdapter(violationAdapter);

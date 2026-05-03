@@ -23,7 +23,14 @@ public class ClassDtoMapper {
             String weekDay = offering != null ? offering.weekDay : "";
             Integer weekDayNumeric = offering == null ? null : offering.weekDayNumeric;
 
-            dto.add(new ClassDto(classInfo, courseName, schedule, weekDay, weekDayNumeric));
+            dto.add(new ClassDto(
+                    element.cls.id,
+                    classInfo,
+                    courseName,
+                    schedule,
+                    weekDay,
+                    weekDayNumeric
+            ));
         }
 
         return dto;

@@ -25,10 +25,11 @@ public class ScheduleService {
             public void onResult(RepositoryResult<ClassRuntime> result) {
                 if (result instanceof RepositoryResult.Success) {
                     var runtime = ((RepositoryResult.Success<ClassRuntime>) result).getData();
-                    callback.onResult(new ServiceResult<>(true,
-                                                          fromApiRuntime(runtime),
-                                                          "Success retrieving current or next " +
-                                                                  "class."));
+                    callback.onResult(new ServiceResult<>(
+                            true,
+                            fromApiRuntime(runtime),
+                            "Success retrieving current or next " + "class."
+                    ));
                 }
                 else if (result instanceof RepositoryResult.Fail) {
                     var exception =
@@ -36,32 +37,32 @@ public class ScheduleService {
                     var code = exception.getCode();
 
                     if (code == ClassExceptionCode.API_DISCONNECTED && BuildConfig.USE_MOCK_AUTH) {
-                        callback.onResult(new ServiceResult<>(true,
-                                                              new RuntimeDto("CS-301",
-                                                                             "Automata Theory",
-                                                                             "10:00 A.M.",
-                                                                             "ROOM 402",
-                                                                             "MON",
-                                                                             "Next Class (MOCK " +
-                                                                                     "DATA)"),
-                                                              "Success mocking runtime."));
+                        callback.onResult(new ServiceResult<>(
+                                true, new RuntimeDto(
+                                "CS-301",
+                                "Automata Theory",
+                                "10:00 A.M.",
+                                "ROOM 402",
+                                "MON",
+                                "Next Class (MOCK " + "DATA)"
+                        ), "Success mocking runtime."
+                        ));
                         return;
                     }
 
                     var notFound = code == ClassExceptionCode.NOT_FOUND;
                     var message = exception.getMessage();
 
-                    callback.onResult(new ServiceResult<>(notFound,
-                                                          new RuntimeDto("",
-                                                                         notFound ?
-                                                                         "No classes today" :
-                                                                         "Something went wrong",
-                                                                         "",
-                                                                         "",
-                                                                         "",
-                                                                         ""),
-                                                          message,
-                                                          exception.getCause()));
+                    callback.onResult(new ServiceResult<>(
+                            notFound, new RuntimeDto(
+                            "",
+                            notFound ? "No classes today" : "Something went wrong",
+                            "",
+                            "",
+                            "",
+                            ""
+                    ), message, exception.getCause()
+                    ));
                 }
             }
         });
@@ -75,24 +76,30 @@ public class ScheduleService {
                     var classList = ((RepositoryResult.Success<ClassList>) result).getData();
 
                     if (classList == null) {
-                        callback.onResult(new ServiceResult<>(false,
-                                                              null,
-                                                              "Failed retrieving classes."));
+                        callback.onResult(new ServiceResult<>(
+                                false,
+                                null,
+                                "Failed retrieving classes."
+                        ));
                         return;
                     }
 
-                    callback.onResult(new ServiceResult<>(true,
-                                                          fromApiClassList(classList),
-                                                          "Success retrieving classes"));
+                    callback.onResult(new ServiceResult<>(
+                            true,
+                            fromApiClassList(classList),
+                            "Success retrieving classes"
+                    ));
                 }
                 else if (result instanceof RepositoryResult.Fail) {
                     var exception = ((RepositoryResult.Fail<?, ?>) result).getException();
                     var code = exception.getCode();
                     if (code == ClassExceptionCode.API_DISCONNECTED && BuildConfig.DEBUG &&
                             BuildConfig.USE_MOCK_AUTH) {
-                        callback.onResult(new ServiceResult<>(true,
-                                                              getMockClasses(),
-                                                              "Success mocking classes."));
+                        callback.onResult(new ServiceResult<>(
+                                true,
+                                getMockClasses(),
+                                "Success mocking classes."
+                        ));
                         return;
                     }
 
@@ -106,36 +113,54 @@ public class ScheduleService {
     private static ArrayList<ClassDto> getMockClasses() {
         ArrayList<ClassDto> mockClasses = new ArrayList<>();
 
-        mockClasses.add(new ClassDto("#606 · DS-3202",
-                                     "Machine Learning",
-                                     "7:00 AM - 9:00 AM | AV 308b",
-                                     "Mon",
-                                     1));
-        mockClasses.add(new ClassDto("#607 · CS-301",
-                                     "Automata Theory",
-                                     "10:00 AM - 12:00 PM | RM 402",
-                                     "Mon",
-                                     1));
-        mockClasses.add(new ClassDto("#608 · OS-101",
-                                     "Operating Systems",
-                                     "1:00 PM - 3:00 PM | LB 204",
-                                     "Mon",
-                                     1));
-        mockClasses.add(new ClassDto("#609 · DS-3203",
-                                     "Data Science",
-                                     "3:00 PM - 5:00 PM | AV 308b",
-                                     "Mon",
-                                     1));
-        mockClasses.add(new ClassDto("#610 · IT-402",
-                                     "Network Security",
-                                     "8:00 AM - 10:00 AM | Lab 1",
-                                     "Mon",
-                                     1));
-        mockClasses.add(new ClassDto("#611 · CS-202",
-                                     "Data Structures",
-                                     "10:00 AM - 12:00 PM | RM 302",
-                                     "Mon",
-                                     1));
+        mockClasses.add(new ClassDto(
+                -1,
+                "#606 · DS-3202",
+                "Machine Learning",
+                "7:00 AM - 9:00 AM | AV 308b",
+                "Mon",
+                1
+        ));
+        mockClasses.add(new ClassDto(
+                -1,
+                "#607 · CS-301",
+                "Automata Theory",
+                "10:00 AM - 12:00 PM | RM 402",
+                "Mon",
+                1
+        ));
+        mockClasses.add(new ClassDto(
+                -1,
+                "#608 · OS-101",
+                "Operating Systems",
+                "1:00 PM - 3:00 PM | LB 204",
+                "Mon",
+                1
+        ));
+        mockClasses.add(new ClassDto(
+                -1,
+                "#609 · DS-3203",
+                "Data Science",
+                "3:00 PM - 5:00 PM | AV 308b",
+                "Mon",
+                1
+        ));
+        mockClasses.add(new ClassDto(
+                -1,
+                "#610 · IT-402",
+                "Network Security",
+                "8:00 AM - 10:00 AM | Lab 1",
+                "Mon",
+                1
+        ));
+        mockClasses.add(new ClassDto(
+                -1,
+                "#611 · CS-202",
+                "Data Structures",
+                "10:00 AM - 12:00 PM | RM 302",
+                "Mon",
+                1
+        ));
         return mockClasses;
     }
 }

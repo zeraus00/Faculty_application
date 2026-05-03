@@ -1,11 +1,13 @@
 package com.example.faculty_app.mainapp.classes;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.faculty_app.R;
@@ -38,8 +40,14 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ViewHolder> 
         holder.d.setText(m.details);
 
         holder.itemView.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putInt("classId", m.id);
+
             HomePageActivity activity = (HomePageActivity) v.getContext();
-            activity.loadFragment(new ClassAttendanceFragment());
+
+            Fragment classAttendanceFragment = new ClassAttendanceFragment();
+            classAttendanceFragment.setArguments(bundle);
+            activity.loadFragment(classAttendanceFragment);
         });
     }
 
