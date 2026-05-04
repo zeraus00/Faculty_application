@@ -74,9 +74,11 @@ public class ClassAttendanceAdapter extends RecyclerView.Adapter<ClassAttendance
             );
             holder.spinnerViolation.setAdapter(spinAdapter);
 
+            holder.spinnerViolation.setOnItemSelectedListener(null);
+
             for (int i = 0; i < violations.length; i++) {
                 if (violations[i].equals(attendanceItem.getViolation())) {
-                    holder.spinnerViolation.setSelection(i);
+                    holder.spinnerViolation.setSelection(i, false);
                     break;
                 }
             }
@@ -96,13 +98,17 @@ public class ClassAttendanceAdapter extends RecyclerView.Adapter<ClassAttendance
             updateToggleUI(holder, isPresent);
 
             holder.btnPresent.setOnClickListener(v -> {
-                //  todo: set present status
-                updateToggleUI(holder, true);
+                if (!"present".equalsIgnoreCase(attendanceItem.getStatus())) {
+                    attendanceItem.setStatus("present");
+                    notifyItemChanged(holder.getAdapterPosition());
+                }
             });
 
             holder.btnAbsent.setOnClickListener(v -> {
-                //  todo: set absent status
-                updateToggleUI(holder, false);
+                if (!"absent".equalsIgnoreCase(attendanceItem.getStatus())) {
+                    attendanceItem.setStatus("absent");
+                    notifyItemChanged(holder.getAdapterPosition());
+                }
             });
         }
         else {
