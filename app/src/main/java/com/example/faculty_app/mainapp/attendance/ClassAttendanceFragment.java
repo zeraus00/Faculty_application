@@ -1,6 +1,7 @@
 package com.example.faculty_app.mainapp.attendance;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -159,15 +161,18 @@ public class ClassAttendanceFragment extends Fragment {
     }
 
     private void updateSessions(SessionsModel data) {
-        try {
-            Log.d("CLASS_ATTENDANCE_FRAGMENT", data.sessions.toString());
+        Log.d("CLASS_ATTENDANCE_FRAGMENT", data.sessions.toString());
 
-            var recentId = data.sessions.getLast().id;
+        var sessions = data.sessions;
 
-            loadClassAttendance(recentId);
-        } catch (NoSuchElementException e) {
-            Log.e("CLASS_ATTENDANCE_FRAGMENT", "No sessions found.", e);
+        if (sessions.isEmpty()) {
+            Log.e("CLASS_ATTENDANCE_FRAGMENT", "No sessions found.");
+            return;
         }
+
+        var recentId = sessions.get(sessions.size() - 1).id;
+
+        loadClassAttendance(recentId);
     }
 
     private void loadClassAttendance(int sessionId) {

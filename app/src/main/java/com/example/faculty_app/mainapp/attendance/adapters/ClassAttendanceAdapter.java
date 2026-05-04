@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.faculty_app.R;
 import com.example.faculty_app.mainapp.attendance.PresentHistoryFragment;
 import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.AttendanceItemModel;
-import com.example.faculty_app.mainapp.attendance.data.local.models.classattendance.ClassAttendanceModel;
 
 import java.util.ArrayList;
 
